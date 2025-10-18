@@ -1,0 +1,50 @@
+name: Update Training Set from Google Sheets
+
+on:
+  schedule:
+    - cron: '0 14 * * *'  # Runs daily at 7 AM PT (14:00 UTC)
+  workflow_dispatch:        # Allows manual runs from the GitHub Actions tab
+
+jobs:
+  update-training-set:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout your repository
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install pandas google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+
+      # Step 4: Recreate your service account JSON from GitHub Secret
+      - name: Create service account file
+        run: |
+          echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      # Step 5: Run your Google Sheet extractor script
+      - name: Run Google Sheet extractor
+        run: |
+          python google-sheet-extract.py
+
+      # Step 6: Commit and push updated training set(s)
+      - name: Commit and push updated training set
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Add all timestamped and latest CSVs
+          git add data/training_set_*.csv data/training_set_latest.csv || echo "No files to add"
+
+          # Commit only if there are changes
+          git commit -m "Auto-update training set from Google Sheets on $(date)" || echo "No changes to commit"
+
+          git push
