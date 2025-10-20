@@ -30,10 +30,11 @@ jobs:
         run: |
           echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
 
-      # Step 5: Run your Google Sheet extractor script
+      # Step 5: Run your Google Sheet extractor
       - name: Run Google Sheet extractor
         run: |
           python google-sheet-extract.py
+
 
       # Step 6: Commit and push updated training set(s)
       - name: Commit and push updated training set
