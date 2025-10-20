@@ -34,11 +34,17 @@ else:
     df = pd.DataFrame(data_rows, columns=headers)
     df = df.dropna(how="all").reset_index(drop=True)
 
-    # --- Create timestamped output filename ---
+    # --- Create timestamped output filenames ---
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     out_dir = Path("data")
     out_dir.mkdir(exist_ok=True)
-    out_path = out_dir / f"training_set_{timestamp}.csv"
 
-    df.to_csv(out_path, index=False)
-    print(f"✅ Saved {len(df)} games to {out_path}")
+    timestamped_path = out_dir / f"training_set_{timestamp}.csv"
+    latest_path = out_dir / "training_set_latest.csv"
+
+    # --- Save both versions ---
+    df.to_csv(timestamped_path, index=False)
+    df.to_csv(latest_path, index=False)
+
+    print(f"✅ Saved {len(df)} games to {timestamped_path}")
+    print(f"🆕 Latest version also saved to {latest_path}")
