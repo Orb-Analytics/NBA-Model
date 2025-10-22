@@ -17,3 +17,7 @@ data/*.csv
 .env
 *.env
 .DS_Store
+
+# --- Allow daily training set exports ---
+!data/training_set_*.csv
+!data/training_set_latest.csv
