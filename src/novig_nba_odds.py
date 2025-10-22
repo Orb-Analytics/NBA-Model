@@ -1,3 +1,4 @@
+from pathlib import Path
 import requests
 import pandas as pd
 from dateutil import parser
@@ -13,10 +14,11 @@ now_eastern = datetime.now(eastern)
 today_str = now_eastern.date().isoformat()
 
 # === File System Setup ===
-output_folder = "/workspaces/NBA-model/data/novig-odds"
-os.makedirs(output_folder, exist_ok=True)
+# Output directory
+output_folder = Path("data/novig-odds")
+output_folder.mkdir(parents=True, exist_ok=True)
+output_file = output_folder / f"novig_nba_spreads_{today_str}.csv"
 
-output_file = os.path.join(output_folder, f"novig_nba_spreads_{today_str}.csv")
 
 # === GraphQL Setup ===
 url = "https://gql.novig.us/v1/graphql"
