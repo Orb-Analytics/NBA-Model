@@ -6,7 +6,7 @@ from datetime import datetime
 
 # --- Google Sheet details ---
 SPREADSHEET_ID = "11L6GRPLvBqZU0TxuYaUuSH8T74elONg_qKWASThF7vI"
-SHEET_NAME = "training set"
+SHEET_NAME = "Training Set"   # <-- Correct capitalization
 RANGE_NAME = f"'{SHEET_NAME}'!B2:HW17"   # Header in row 2, data rows 3–17
 
 # --- Authenticate with Service Account ---
