@@ -6,8 +6,8 @@ from datetime import datetime
 
 # --- Google Sheet details ---
 SPREADSHEET_ID = "11L6GRPLvBqZU0TxuYaUuSH8T74elONg_qKWASThF7vI"
-SHEET_NAME = "Training Set"
-RANGE_NAME = f"'{SHEET_NAME}'!B2:HW17"  # Header in row 2, data rows 3–17
+SHEET_NAME = "Training Set"   # exact case
+RANGE_NAME = f"'{SHEET_NAME}'!B3:HW17"   # start at row 3 to skip headers
 
 # --- Authenticate with Service Account ---
 creds = service_account.Credentials.from_service_account_file(
@@ -25,43 +25,31 @@ result = (
 )
 values = result.get("values", [])
 
-# --- Process data ---
-if not values or len(values) < 2:
-    print("⚠️ No game data found in the specified range.")
+# --- File paths ---
+data_path = Path("data") / "NBA Training Set 25-26.csv"
+data_path.parent.mkdir(exist_ok=True)
+
+# --- If nothing found ---
+if not values:
+    print("⚠️ No new data found in the Google Sheet range.")
+    exit()
+
+# --- Convert to DataFrame ---
+new_data = pd.DataFrame(values)
+
+# --- Load existing master file (if it exists) ---
+if data_path.exists():
+    existing = pd.read_csv(data_path)
+    combined = pd.concat([existing, new_data], ignore_index=True)
+    print(f"📈 Existing rows: {len(existing)}, Adding: {len(new_data)} → New total: {len(combined)}")
 else:
-    headers = values[0]
-    data_rows = values[1:]
-    df_new = pd.DataFrame(data_rows, columns=headers)
-    df_new = df_new.dropna(how="all").reset_index(drop=True)
+    combined = new_data
+    print(f"🆕 Creating new master file with {len(new_data)} rows.")
 
-    # --- Paths ---
-    out_dir = Path("data")
-    out_dir.mkdir(exist_ok=True)
+# --- Save combined file ---
+combined.to_csv(data_path, index=False)
+print(f"✅ Updated master training set saved to: {data_path}")
 
-    master_path = out_dir / "NBA Training Set 25-26.csv"
-
-    # --- Append to existing dataset if present ---
-    if master_path.exists():
-        df_master = pd.read_csv(master_path)
-        print(f"📂 Loaded existing master dataset with {len(df_master)} rows.")
-        combined_df = pd.concat([df_master, df_new], ignore_index=True)
-        combined_df.drop_duplicates(inplace=True)
-        print(f"🧩 Appended {len(df_new)} new rows (now {len(combined_df)} total).")
-    else:
-        combined_df = df_new
-        print(f"🆕 Created new master dataset with {len(df_new)} rows.")
-
-    # --- Save updated master file ---
-    combined_df.to_csv(master_path, index=False)
-    print(f"✅ Updated master dataset saved to {master_path}")
-
-    # --- Also save timestamped & latest daily versions ---
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    timestamped_path = out_dir / f"training_set_{timestamp}.csv"
-    latest_path = out_dir / "training_set_latest.csv"
-
-    df_new.to_csv(timestamped_path, index=False)
-    df_new.to_csv(latest_path, index=False)
-
-    print(f"✅ Saved {len(df_new)} new rows to {timestamped_path}")
-    print(f"🆕 Latest version also saved to {latest_path}")
+# --- Optional timestamp for logging ---
+timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+print(f"🕒 Run completed at {timestamp}")
