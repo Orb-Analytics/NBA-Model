@@ -18,6 +18,9 @@ data/*.csv
 *.env
 .DS_Store
 
-# --- Allow daily training set exports ---
+# --- Allow master training set CSVs ---
+!data/NBA Training Set 25-26.csv
 !data/training_set_*.csv
 !data/training_set_latest.csv
+!data/novig-odds/*.csv
+
