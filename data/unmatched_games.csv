@@ -1,0 +1,1013 @@
+Date,Favorite,Underdog
+2025-11-21,Detroit,Charlotte
+2025-11-21,Minnesota,Toronto
+2025-11-21,San Antonio,Utah
+2025-11-21,Los Angeles,Orlando
+2025-11-22,Philadelphia,Brooklyn
+2025-11-22,Boston,Washington
+2025-11-22,Golden State,New Orleans
+2025-11-22,Milwaukee,Indiana
+2025-11-22,Atlanta,Chicago
+2025-11-22,Houston,Portland
+2025-11-22,Denver,Dallas
+2025-11-22,Sacremento,Sacramento
+2025-11-23,New York,Utah
+2025-11-23,Orlando,Detroit
+2025-11-23,Memphis,Chicago
+2025-11-23,Houston,Portland
+2025-11-23,Milwaukee,Charlotte
+2025-11-23,Golden State,San Antonio
+2025-11-23,Los Angeles,Denver
+2025-11-24,Boston,Minnesota
+2025-11-24,Indiana,Washington
+2025-11-24,Miami,Dallas
+2025-11-24,LA Clippers,Philadelphia
+2025-11-24,Cleveland,Toronto
+2025-11-24,Sacremento,Brooklyn
+2025-11-25,Orlando,Charlotte
+2025-11-25,Detroit,Toronto
+2025-11-25,Indiana,New Orleans
+2025-11-25,Atlanta,Dallas
+2025-11-25,Boston,LA Clippers
+2025-11-25,Memphis,Portland
+2025-11-25,Denver,New York
+2025-11-25,Golden State,Brooklyn
+2025-11-25,Oklahoma City,Sacramento
+2025-11-26,Chicago,Washington
+2025-11-26,Miami,Milwaukee
+2025-11-26,Minnesota,Houston
+2025-11-26,San Antonio,Utah
+2025-11-26,Phoenix,Los Angeles
+2025-11-27,Miami,Charlotte
+2025-11-27,Cleveland,Atlanta
+2025-11-27,Indiana,Portland
+2025-11-27,Orlando,Chicago
+2025-11-27,Houston,Philadelphia
+2025-11-27,LA Clippers,Washington
+2025-11-27,New York,Dallas
+2025-11-27,Memphis,Detroit
+2025-11-27,Minnesota,Sacramento
+2025-11-27,New Orleans,Toronto
+2025-11-27,LA Lakers,San Antonio
+2025-11-27,Pheonix,Brooklyn
+2025-11-27,Denver,Utah
+2025-11-27,Okla City,Golden State
+2025-11-29,New York,Charlotte
+2025-11-29,Cleveland,Atlanta
+2025-11-29,Memphis,New Orleans
+2025-11-29,Orlando,Brooklyn
+2025-11-29,Minnesota,LA Clippers
+2025-11-29,Indiana,Detroit
+2025-11-29,Miami,Toronto
+2025-11-29,Boston,Chicago
+2025-11-29,Okla City,LA Lakers
+2025-11-29,Sacremento,Sacramento
+2025-11-30,Atlanta,Charlotte
+2025-11-30,Detroit,Philadelphia
+2025-11-30,Milwaukee,Washington
+2025-11-30,Pheonix,Golden State
+2025-11-30,Dallas,Utah
+2025-12-01,Orlando,Brooklyn
+2025-12-01,Memphis,Indiana
+2025-12-01,Boston,Cleveland
+2025-12-01,New York,New Orleans
+2025-12-01,Miami,Toronto
+2025-12-01,Okla City,Houston
+2025-12-01,LA Lakers,Utah
+2025-12-01,Dallas,Portland
+2025-12-01,Sacremento,San Antonio
+2025-12-01,Denver,LA Clippers
+2025-12-02,Atlanta,New Orleans
+2025-12-02,Boston,Miami
+2025-12-02,Chicago,Brooklyn
+2025-12-02,Minnesota,LA Lakers
+2025-12-03,Philadelphia,Charlotte
+2025-12-03,Cleveland,Washington
+2025-12-03,Milwaukee,Detroit
+2025-12-03,New York,Orlando
+2025-12-03,Indiana,Toronto
+2025-12-03,Okla City,Utah
+2025-12-03,Dallas,Memphis
+2025-12-03,Pheonix,San Antonio
+2025-12-03,Denver,Golden State
+2025-12-03,Sacremento,Houston
+2025-12-04,Indiana,Brooklyn
+2025-12-04,Miami,LA Lakers
+2025-12-04,Orlando,Philadelphia
+2025-12-04,Milwaukee,Atlanta
+2025-12-04,Minnesota,LA Clippers
+2025-12-05,Cleveland,Denver
+2025-12-05,Dallas,Washington
+2025-12-05,New York,Charlotte
+2025-12-05,Okla City,Oklahoma City
+2025-12-05,Memphis,Sacramento
+2025-12-05,Pheonix,Phoenix
+2025-12-05,San Antonio,Chicago
+2025-12-05,Houston,Golden State
+2025-12-06,Orlando,Philadelphia
+2025-12-06,Atlanta,Los Angeles
+2025-12-06,Boston,Milwaukee
+2025-12-06,Indiana,Chicago
+2025-12-06,Sacramento,San Antonio
+2025-12-06,Minnesota,Golden State
+2025-12-06,Portland,Utah
+2025-12-07,Cleveland,Charlotte
+2025-12-07,Denver,Washington
+2025-12-07,Oklahoma City,New Orleans
+2025-12-07,New York,Detroit
+2025-12-07,Boston,Memphis
+2025-12-07,Miami,Phoenix
+2025-12-08,Philadelphia,Chicago
+2025-12-08,Milwaukee,Brooklyn
+2025-12-08,Indiana,Charlotte
+2025-12-08,Atlanta,Denver
+2025-12-08,Cleveland,Miami
+2025-12-08,Orlando,Pheonix
+2025-12-08,Memphis,Washington
+2025-12-08,San Antonio,New Orleans
+2025-12-08,Golden State,Minnesota
+2025-12-08,Houston,LA Clippers
+2025-12-08,Sacramento,Utah
+2025-12-08,Los Angeles,Portland
+2025-12-09,New York,Toronto
+2025-12-10,Milwaukee,Orlando
+2025-12-10,Oklahoma City,Dallas
+2025-12-11,New York,Atlanta
+2025-12-11,Houston,Golden State
+2025-12-12,Miami,Toronto
+2025-12-12,Sacramento,New Orleans
+2025-12-13,Cleveland,Washington
+2025-12-13,Philadelphia,Indiana
+2025-12-13,Minnesota,Los Angeles
+2025-12-13,Memphis,Brooklyn
+2025-12-13,Chicago,Charlotte
+2025-12-13,Denver,LA Clippers
+2025-12-13,Phoenix,Utah
+2025-12-13,San Antonio,Portland
+2025-12-14,Milwaukee,Atlanta
+2025-12-14,Oklahoma City,Houston
+2025-12-15,Indiana,New Orleans
+2025-12-15,Boston,Washington
+2025-12-15,New York,Orlando
+2025-12-15,Minnesota,San Antonio
+2025-12-15,Phoenix,Portland
+2025-12-15,Dallas,Golden State
+2025-12-15,Memphis,Los Angeles
+2025-12-16,Philadelphia,Charlotte
+2025-12-16,Miami,Detroit
+2025-12-16,Chicago,Toronto
+2025-12-16,Cleveland,Brooklyn
+2025-12-16,Sacramento,Denver
+2025-12-16,LA Clippers,Utah
+2025-12-17,Oklahoma City,Milwaukee
+2025-12-19,Detroit,Utah
+2025-12-19,Okla City,Orlando
+2025-12-19,Boston,Chicago
+2025-12-19,Toronto,Brooklyn
+2025-12-19,Houston,New Orleans
+2025-12-19,Memphis,Golden State
+2025-12-19,San Antonio,Atlanta
+2025-12-19,Dallas,LA Clippers
+2025-12-19,Phoenix,Indiana
+2025-12-19,Minnesota,New York
+2025-12-19,Denver,Portland
+2025-12-20,Philadelphia,Charlotte
+2025-12-20,Okla City,Miami
+2025-12-21,Orlando,Miami
+2025-12-21,Memphis,Atlanta
+2025-12-21,Brooklyn,Utah
+2025-12-21,Cleveland,Philadelphia
+2025-12-21,Boston,Chicago
+2025-12-21,Milwaukee,Washington
+2025-12-21,Minnesota,Golden State
+2025-12-21,New York,New Orleans
+2025-12-21,Dallas,LA Clippers
+2025-12-21,San Antonio,Portland
+2025-12-21,Phoenix,Detroit
+2025-12-22,Houston,Toronto
+2025-12-22,Sacramento,Indiana
+2025-12-22,Denver,New Orleans
+2025-12-23,Houston,Charlotte
+2025-12-23,Cleveland,Utah
+2025-12-23,Boston,Orlando
+2025-12-23,Philadelphia,San Antonio
+2025-12-23,Minnesota,Atlanta
+2025-12-23,Miami,Brooklyn
+2025-12-23,New York,Toronto
+2025-12-23,Chicago,Milwaukee
+2025-12-23,Memphis,LA Clippers
+2025-12-23,Okla City,Washington
+2025-12-23,Dallas,Portland
+2025-12-23,Denver,Phoenix
+2025-12-23,Golden State,Indiana
+2025-12-23,LA Lakers,Detroit
+2025-12-25,New York,San Antonio
+2025-12-25,Dallas,Minnesota
+2025-12-25,Boston,Philadelphia
+2025-12-25,Golden State,LA Lakers
+2025-12-25,Denver,Phoenix
+2025-12-26,Okla City,Indiana
+2025-12-26,Orlando,Miami
+2025-12-26,Atlanta,Chicago
+2025-12-26,Memphis,Toronto
+2025-12-26,Milwaukee,Brooklyn
+2025-12-26,Houston,New Orleans
+2025-12-26,Portland,Utah
+2025-12-26,Sacramento,Detroit
+2025-12-27,New York,Orlando
+2025-12-27,Boston,Indiana
+2025-12-27,Houston,Minnesota
+2025-12-27,Memphis,New Orleans
+2025-12-27,Cleveland,Denver
+2025-12-27,Phoenix,Dallas
+2025-12-27,LA Clippers,Golden State
+2025-12-28,Atlanta,Miami
+2025-12-28,Okla City,Charlotte
+2025-12-28,New York,Washington
+2025-12-28,Milwaukee,Chicago
+2025-12-28,Golden State,Phoenix
+2025-12-28,Denver,Detroit
+2025-12-28,Philadelphia,Utah
+2025-12-28,Dallas,Portland
+2025-12-29,Orlando,Brooklyn
+2025-12-29,Boston,Indiana
+2025-12-29,Toronto,Atlanta
+2025-12-29,Houston,Miami
+2025-12-29,Memphis,Okla City
+2025-12-29,Minnesota,San Antonio
+2025-12-30,Chicago,Charlotte
+2025-12-30,New York,Washington
+2025-12-30,LA Clippers,New Orleans
+2025-12-30,Denver,Utah
+2025-12-30,Cleveland,Golden State
+2025-12-30,Philadelphia,Portland
+2025-12-30,Sacramento,Dallas
+2025-12-31,Boston,Toronto
+2025-12-31,Milwaukee,Indiana
+2025-12-31,San Antonio,LA Clippers
+2025-12-31,Okla City,Okla City
+2025-12-31,Phoenix,Memphis
+2025-12-31,Cleveland,LA Lakers
+2025-01-01,Detroit,Orlando
+2025-01-01,Chicago,Washington
+2025-01-01,Miami,New Orleans
+2025-01-01,New York,Utah
+2025-01-01,Toronto,Brooklyn
+2025-01-01,Houston,Dallas
+2025-01-01,Denver,Atlanta
+2025-01-01,Sacramento,Philadelphia
+2025-01-02,Miami,Indiana
+2025-01-02,Boston,Minnesota
+2025-01-02,Milwaukee,Brooklyn
+2025-01-02,Okla City,LA Clippers
+2025-01-02,Golden State,Philadelphia
+2025-01-02,LA Lakers,Portland
+2025-01-03,Detroit,Charlotte
+2025-01-03,Orlando,Toronto
+2025-01-03,Boston,Houston
+2025-01-03,New Orleans,Washington
+2025-01-03,Okla City,New York
+2025-01-03,Cleveland,Dallas
+2025-01-03,Denver,San Antonio
+2025-01-03,Sacramento,Memphis
+2025-01-03,LA Lakers,Atlanta
+2025-01-04,Philadelphia,Brooklyn
+2025-01-04,Minnesota,Detroit
+2025-01-04,Indiana,Phoenix
+2025-01-04,Miami,Utah
+2025-01-04,New York,Chicago
+2025-01-04,Milwaukee,Portland
+2025-01-04,Denver,San Antonio
+2025-01-04,Golden State,Memphis
+2025-01-04,LA Clippers,Atlanta
+2025-01-05,Okla City,Boston
+2025-01-05,Cleveland,Charlotte
+2025-01-05,New Orleans,Washington
+2025-01-05,Orlando,Utah
+2025-01-05,Houston,LA Lakers
+2025-01-05,Golden State,Sacramento
+2025-01-06,Detroit,Portland
+2025-01-06,Phoenix,Philadelphia
+2025-01-06,Indiana,Brooklyn
+2025-01-06,New York,Orlando
+2025-01-06,Milwaukee,Toronto
+2025-01-06,San Antonio,Chicago
+2025-01-06,Memphis,Dallas
+2025-01-06,Minnesota,LA Clippers
+2025-01-06,Sacramento,Miami
+2025-01-07,Phoenix,Charlotte
+2025-01-07,Houston,Washington
+2025-01-07,LA Lakers,Dallas
+2025-01-07,Minnesota,New Orleans
+2025-01-07,Atlanta,Utah
+2025-01-07,Boston,Denver
+2025-01-07,Golden State,Miami
+2025-01-08,Cleveland,Okla City
+2025-01-08,Indiana,Chicago
+2025-01-08,Philadelphia,Washington
+2025-01-08,New York,Toronto
+2025-01-08,Detroit,Brooklyn
+2025-01-08,New Orleans,Portland
+2025-01-08,LA Clippers,Denver
+2025-01-08,Milwaukee,San Antonio
+2025-01-09,Cleveland,Toronto
+2025-01-09,Detroit,Golden State
+2025-01-09,Minnesota,Orlando
+2025-01-09,Dallas,Portland
+2025-01-09,Memphis,Houston
+2025-01-09,Phoenix,Atlanta
+2025-01-10,Indiana,Golden State
+2025-01-10,Milwaukee,Orlando
+2025-01-10,Philadelphia,New Orleans
+2025-01-10,Boston,Sacramento
+2025-01-10,Okla City,New York
+2025-01-10,Chicago,Washington
+2025-01-10,Denver,Brooklyn
+2025-01-11,Phoenix,Utah
+2025-01-11,Detroit,Toronto
+2025-01-11,Minnesota,Memphis
+2025-01-11,Miami,Portland
+2025-01-12,New York,Milwaukee
+2025-01-12,Denver,Dallas
+2025-01-12,Sacramento,Chicago
+2025-01-12,Boston,New Orleans
+2025-01-12,Cleveland,Indiana
+2025-01-12,Philadelphia,Orlando
+2025-01-12,Okla City,Washington
+2025-01-12,Utah,Brooklyn
+2025-01-12,Phoenix,Charlotte
+2025-01-13,Minnesota,Washington
+2025-01-13,New York,Detroit
+2025-01-13,Golden State,Toronto
+2025-01-13,Houston,Memphis
+2025-01-13,LA Lakers,San Antonio
+2025-01-13,LA Clippers,Miami
+2025-01-14,Cleveland,Indiana
+2025-01-14,Okla City,Philadelphia
+2025-01-14,Phoenix,Atlanta
+2025-01-14,Chicago,New Orleans
+2025-01-14,Milwaukee,Sacramento
+2025-01-14,Denver,Dallas
+2025-01-14,Portland,Brooklyn
+2025-01-15,New York,Philadelphia
+2025-01-15,Boston,Toronto
+2025-01-15,Chicago,Atlanta
+2025-01-15,Milwaukee,Orlando
+2025-01-15,New Orleans,Dallas
+2025-01-15,Memphis,San Antonio
+2025-01-15,Denver,Houston
+2025-01-15,Charlotte,Utah
+2025-01-15,Minnesota,Golden State
+2025-01-15,LA Lakers,Miami
+2025-01-15,LA Clippers,Brooklyn
+2025-01-16,Detroit,Indiana
+2025-01-16,Phoenix,Washington
+2025-01-16,Okla City,Cleveland
+2025-01-16,Sacramento,Houston
+2025-01-17,Boston,Orlando
+2025-01-17,New York,Minnesota
+2025-01-17,Miami,Denver
+2025-01-17,Milwaukee,Toronto
+2025-01-17,New Orleans,Utah
+2025-01-17,Chicago,Charlotte
+2025-01-17,Okla City,Dallas
+2025-01-17,Memphis,San Antonio
+2025-01-17,LA Lakers,Brooklyn
+2025-01-18,Phoenix,Detroit
+2025-01-18,Boston,Atlanta
+2025-01-18,Indiana,Philadelphia
+2025-01-18,Golden State,Washington
+2025-01-18,Cleveland,Minnesota
+2025-01-18,Houston,Portland
+2025-01-19,Miami,San Antonio
+2025-01-19,Denver,Orlando
+2025-01-19,Milwaukee,Philadelphia
+2025-01-19,Okla City,Brooklyn
+2025-01-19,LA Clippers,LA Lakers
+2025-01-19,Chicago,Portland
+2025-01-19,Sacramento,Washington
+2025-01-20,Dallas,Charlotte
+2025-01-20,Houston,Detroit
+2025-01-20,Memphis,Minnesota
+2025-01-20,New York,Atlanta
+2025-01-20,Cleveland,Phoenix
+2025-01-20,Boston,Golden State
+2025-01-20,New Orleans,Utah
+2025-01-20,LA Clippers,Chicago
+2025-01-21,New York,Brooklyn
+2025-01-21,Miami,Portland
+2025-01-21,Orlando,Toronto
+2025-01-21,Denver,Philadelphia
+2025-01-21,LA Lakers,Washington
+2025-01-22,Atlanta,Detroit
+2025-01-22,Phoenix,Brooklyn
+2025-01-22,Minnesota,Dallas
+2025-01-22,Cleveland,Houston
+2025-01-22,Memphis,Charlotte
+2025-01-22,Okla City,Utah
+2025-01-22,Sacramento,Golden State
+2025-01-22,Boston,LA Clippers
+2025-01-23,Indiana,San Antonio
+2025-01-23,Orlando,Portland
+2025-01-23,Atlanta,Toronto
+2025-01-23,Milwaukee,Miami
+2025-01-23,Okla City,Dallas
+2025-01-23,Denver,Sacramento
+2025-01-23,Golden State,Chicago
+2025-01-23,Boston,LA Lakers
+2025-01-23,LA Clippers,Washington
+2025-01-24,Charlotte,Portland
+2025-01-24,Cleveland,Philadelphia
+2025-01-24,Memphis,New Orleans
+2025-01-25,Indiana,San Antonio
+2025-01-25,Denver,Minnesota
+2025-01-25,Boston,Dallas
+2025-01-25,Miami,Brooklyn
+2025-01-25,New Orleans,Charlotte
+2025-01-25,Orlando,Detroit
+2025-01-25,Atlanta,Toronto
+2025-01-25,Cleveland,Houston
+2025-01-25,New York,Sacramento
+2025-01-25,Chicago,Philadelphia
+2025-01-25,Memphis,Utah
+2025-01-25,LA Lakers,Golden State
+2025-01-25,Phoenix,Washington
+2025-01-25,LA Clippers,Milwaukee
+2025-01-26,Okla City,Portland
+2025-01-27,LA Lakers,Charlotte
+2025-01-27,Cleveland,Detroit
+2025-01-27,Boston,Houston
+2025-01-27,Sacramento,Brooklyn
+2025-01-27,Orlando,Miami
+2025-01-27,New York,Memphis
+2025-01-27,New Orleans,Toronto
+2025-01-27,Denver,Chicago
+2025-01-27,Minnesota,Atlanta
+2025-01-27,Dallas,Washington
+2025-01-27,Milwaukee,Utah
+2025-01-27,LA Clippers,Phoenix
+2025-01-28,LA Lakers,Philadelphia
+2025-01-28,Houston,Atlanta
+2025-01-28,Golden State,Utah
+2025-01-28,Milwaukee,Portland
+2025-01-29,Charlotte,Brooklyn
+2025-01-29,Indiana,Detroit
+2025-01-29,Toronto,Washington
+2025-01-29,Boston,Chicago
+2025-01-29,Cleveland,Miami
+2025-01-29,New York,Denver
+2025-01-29,Sacramento,Philadelphia
+2025-01-29,Dallas,New Orleans
+2025-01-29,LA Clippers,San Antonio
+2025-01-29,Minnesota,Phoenix
+2025-01-29,Okla City,Golden State
+2025-01-30,LA Lakers,Washington
+2025-01-30,Cleveland,Atlanta
+2025-01-30,Minnesota,Utah
+2025-01-30,Memphis,Houston
+2025-01-30,Orlando,Portland
+2025-01-31,LA Clippers,Charlotte
+2025-01-31,Detroit,Dallas
+2025-01-31,Denver,Philadelphia
+2025-01-31,Toronto,Chicago
+2025-01-31,Boston,New Orleans
+2025-01-31,Milwaukee,San Antonio
+2025-01-31,Phoenix,Golden State
+2025-02-01,Indiana,Atlanta
+2025-02-01,Orlando,Utah
+2025-02-01,Denver,Charlotte
+2025-02-01,Houston,Brooklyn
+2025-02-01,Minnesota,Washington
+2025-02-01,Okla City,Sacramento
+2025-02-01,New York,LA Lakers
+2025-02-01,San Antonio,Miami
+2025-02-01,Phoenix,Portland
+2025-02-02,Detroit,Chicago
+2025-02-02,Cleveland,Dallas
+2025-02-02,LA Clippers,Toronto
+2025-02-02,Boston,Philadelphia
+2025-02-02,Milwaukee,Memphis
+2025-02-03,Detroit,Atlanta
+2025-02-03,New York,Houston
+2025-02-03,Memphis,San Antonio
+2025-02-03,Minnesota,Sacramento
+2025-02-03,Okla City,Milwaukee
+2025-02-03,Denver,New Orleans
+2025-02-03,Indiana,Utah
+2025-02-03,Golden State,Orlando
+2025-02-03,Phoenix,Portland
+2025-02-04,Philadelphia,Dallas
+2025-02-04,Cleveland,Boston
+2025-02-04,Houston,Brooklyn
+2025-02-04,New York,Toronto
+2025-02-04,Miami,Chicago
+2025-02-04,LA Clippers,LA Lakers
+2025-02-04,Indiana,Portland
+2025-02-05,Milwaukee,Charlotte
+2025-02-05,Cleveland,Detroit
+2025-02-05,San Antonio,Atlanta
+2025-02-05,Brooklyn,Washington
+2025-02-05,Philadelphia,Miami
+2025-02-05,Memphis,Toronto
+2025-02-05,Minnesota,Chicago
+2025-02-05,Golden State,Utah
+2025-02-05,Denver,New Orleans
+2025-02-05,Okla City,Phoenix
+2025-02-05,Sacramento,Orlando
+2025-02-06,Boston,Dallas
+2025-02-06,Houston,Minnesota
+2025-02-06,Denver,Orlando
+2025-02-06,LA Lakers,Golden State
+2025-02-06,Portland,Sacramento
+2025-02-06,LA Clippers,Indiana
+2025-02-07,San Antonio,Charlotte
+2025-02-07,Cleveland,Washington
+2025-02-07,Milwaukee,Atlanta
+2025-02-07,Miami,Brooklyn
+2025-02-07,Philadelphia,Detroit
+2025-02-07,Okla City,Toronto
+2025-02-07,Phoenix,Utah
+2025-02-08,Dallas,Houston
+2025-02-08,Indiana,LA Lakers
+2025-02-08,Orlando,San Antonio
+2025-02-08,Atlanta,Washington
+2025-02-08,Golden State,Chicago
+2025-02-08,Okla City,Memphis
+2025-02-08,Minnesota,Portland
+2025-02-08,Boston,New York
+2025-02-08,Denver,Phoenix
+2025-02-08,Sacramento,New Orleans
+2025-02-08,LA Clippers,Utah
+2025-02-09,Detroit,Charlotte
+2025-02-09,Houston,Toronto
+2025-02-09,Philadelphia,Milwaukee
+2025-02-10,Cleveland,Minnesota
+2025-02-10,Orlando,Atlanta
+2025-02-10,San Antonio,Washington
+2025-02-10,Brooklyn,Charlotte
+2025-02-10,Boston,Miami
+2025-02-10,Golden State,Milwaukee
+2025-02-10,Okla City,New Orleans
+2025-02-10,Dallas,Sacramento
+2025-02-10,Denver,Portland
+2025-02-10,LA Lakers,Utah
+2025-02-11,Philadelphia,Toronto
+2025-02-11,New York,Indiana
+2025-02-11,Detroit,Chicago
+2025-02-11,Memphis,Phoenix
+2025-02-12,Boston,San Antonio
+2025-02-12,Orlando,Charlotte
+2025-02-12,Indiana,Washington
+2025-02-12,Philadelphia,Brooklyn
+2025-02-12,New York,Atlanta
+2025-02-12,Cleveland,Toronto
+2025-02-12,Detroit,Chicago
+2025-02-12,Minnesota,Milwaukee
+2025-02-12,Sacramento,New Orleans
+2025-02-12,Okla City,Miami
+2025-02-12,Houston,Phoenix
+2025-02-12,Denver,Portland
+2025-02-12,LA Lakers,Utah
+2025-02-12,Golden State,Dallas
+2025-02-12,LA Clippers,Memphis
+2025-02-13,Houston,Golden State
+2025-02-13,Sacramento,New Orleans
+2025-02-13,Miami,Dallas
+2025-02-13,Okla City,Minnesota
+2025-02-13,LA Clippers,Utah
+2025-02-19,LA Lakers,Charlotte
+2025-02-20,Memphis,Indiana
+2025-02-20,Boston,Philadelphia
+2025-02-20,Orlando,Atlanta
+2025-02-20,Cleveland,Brooklyn
+2025-02-20,New York,Chicago
+2025-02-20,LA Clippers,Milwaukee
+2025-02-20,Denver,Charlotte
+2025-02-20,Phoenix,San Antonio
+2025-02-20,LA Lakers,Portland
+2025-02-21,Cleveland,New York
+2025-02-21,Memphis,Orlando
+2025-02-21,Milwaukee,Washington
+2025-02-21,Miami,Toronto
+2025-02-21,Detroit,San Antonio
+2025-02-21,Dallas,New Orleans
+2025-02-21,Houston,Minnesota
+2025-02-21,Okla City,Utah
+2025-02-21,Golden State,Sacramento
+2025-02-22,Phoenix,Chicago
+2025-02-22,Philadelphia,Brooklyn
+2025-02-22,Denver,LA Lakers
+2025-02-22,Houston,Utah
+2025-02-22,Portland,Charlotte
+2025-02-24,LA Clippers,Detroit
+2025-02-24,Denver,Indiana
+2025-02-24,Philadelphia,Chicago
+2025-02-24,Brooklyn,Washington
+2025-02-24,Miami,Atlanta
+2025-02-24,Okla City,Minnesota
+2025-02-24,Portland,Utah
+2025-02-24,Sacramento,Charlotte
+2025-02-25,Boston,Toronto
+2025-02-25,Cleveland,Orlando
+2025-02-25,Houston,Milwaukee
+2025-02-25,Memphis,Phoenix
+2025-02-25,New Orleans,San Antonio
+2025-02-25,Golden State,Charlotte
+2025-02-25,LA Lakers,Dallas
+2025-02-26,Indiana,Toronto
+2025-02-26,New York,Philadelphia
+2025-02-26,Portland,Washington
+2025-02-26,Okla City,Brooklyn
+2025-02-26,Miami,Atlanta
+2025-02-26,LA Clippers,Chicago
+2025-02-26,Sacramento,Utah
+2025-02-26,Houston,San Antonio
+2025-02-27,Golden State,Orlando
+2025-02-27,Denver,Milwaukee
+2025-02-27,Dallas,Charlotte
+2025-02-27,Phoenix,New Orleans
+2025-02-27,LA Lakers,Minnesota
+2025-02-28,Detroit,Denver
+2025-02-28,Okla City,Atlanta
+2025-02-28,Boston,Cleveland
+2025-02-28,Portland,Brooklyn
+2025-02-28,Indiana,Miami
+2025-02-28,Chicago,Toronto
+2025-02-28,Memphis,New York
+2025-02-28,Phoenix,New Orleans
+2025-02-28,Minnesota,Utah
+2025-02-28,LA Clippers,LA Lakers
+2025-03-01,Detroit,Brooklyn
+2025-03-01,Houston,Sacramento
+2025-03-01,Memphis,San Antonio
+2025-03-01,Golden State,Philadelphia
+2025-03-01,Milwaukee,Dallas
+2025-03-02,Cleveland,Portland
+2025-03-02,Indiana,Chicago
+2025-03-02,Orlando,Toronto
+2025-03-02,Okla City,San Antonio
+2025-03-02,New Orleans,Utah
+2025-03-02,Phoenix,Minnesota
+2025-03-02,LA Clippers,LA Lakers
+2025-03-03,Golden State,Charlotte
+2025-03-03,Philadelphia,Portland
+2025-03-03,Miami,Washington
+2025-03-03,Memphis,Atlanta
+2025-03-03,Sacramento,Dallas
+2025-03-03,Detroit,Utah
+2025-03-04,Indiana,Houston
+2025-03-04,Orlando,Toronto
+2025-03-04,Milwaukee,Atlanta
+2025-03-04,New York,Golden State
+2025-03-04,Cleveland,Chicago
+2025-03-04,Minnesota,Philadelphia
+2025-03-04,LA Clippers,Phoenix
+2025-03-04,LA Lakers,New Orleans
+2025-03-05,Boston,Portland
+2025-03-05,Minnesota,Charlotte
+2025-03-05,Cleveland,Miami
+2025-03-05,Washington,Utah
+2025-03-05,Milwaukee,Dallas
+2025-03-05,Denver,Sacramento
+2025-03-05,Okla City,Memphis
+2025-03-05,Detroit,LA Clippers
+2025-03-06,Orlando,Chicago
+2025-03-06,Indiana,Atlanta
+2025-03-06,Boston,Philadelphia
+2025-03-06,Golden State,Brooklyn
+2025-03-06,Houston,New Orleans
+2025-03-06,LA Lakers,New York
+2025-03-07,Cleveland,Charlotte
+2025-03-07,Toronto,Utah
+2025-03-07,Memphis,Dallas
+2025-03-07,Minnesota,Miami
+2025-03-07,Okla City,Portland
+2025-03-07,Denver,Phoenix
+2025-03-07,Sacramento,San Antonio
+2025-03-07,LA Clippers,New York
+2025-03-08,Brooklyn,Charlotte
+2025-03-08,Houston,New Orleans
+2025-03-08,Indiana,Atlanta
+2025-03-08,Toronto,Washington
+2025-03-08,Miami,Chicago
+2025-03-08,Milwaukee,Orlando
+2025-03-08,Boston,LA Lakers
+2025-03-08,Golden State,Detroit
+2025-03-09,Phoenix,Dallas
+2025-03-09,Memphis,New Orleans
+2025-03-09,Philadelphia,Utah
+2025-03-09,Minnesota,San Antonio
+2025-03-09,Detroit,Portland
+2025-03-09,LA Clippers,Sacramento
+2025-03-10,Atlanta,Philadelphia
+2025-03-10,Boston,Utah
+2025-03-10,LA Lakers,Brooklyn
+2025-03-10,Miami,Charlotte
+2025-03-10,Toronto,Washington
+2025-03-10,Indiana,Chicago
+2025-03-10,Houston,Orlando
+2025-03-10,Memphis,Phoenix
+2025-03-10,Okla City,Denver
+2025-03-10,San Antonio,Dallas
+2025-03-10,Golden State,Portland
+2025-03-10,New York,Sacramento
+2025-03-11,Cleveland,Brooklyn
+2025-03-11,Detroit,Washington
+2025-03-11,Milwaukee,Indiana
+2025-03-11,LA Clippers,New Orleans
+2025-03-12,Atlanta,Charlotte
+2025-03-12,Boston,Okla City
+2025-03-12,Toronto,Philadelphia
+2025-03-12,Miami,LA Clippers
+2025-03-12,Houston,Phoenix
+2025-03-12,Memphis,Utah
+2025-03-12,San Antonio,Dallas
+2025-03-12,Denver,Minnesota
+2025-03-12,New York,Portland
+2025-03-13,Detroit,Washington
+2025-03-13,Milwaukee,LA Lakers
+2025-03-13,Chicago,Brooklyn
+2025-03-13,Orlando,New Orleans
+2025-03-13,Golden State,Sacramento
+2025-03-14,Boston,Miami
+2025-03-14,Indiana,Philadelphia
+2025-03-14,LA Clippers,Atlanta
+2025-03-14,Houston,Dallas
+2025-03-14,Cleveland,Memphis
+2025-03-14,Minnesota,Orlando
+2025-03-14,San Antonio,Charlotte
+2025-03-14,Denver,LA Lakers
+2025-03-14,Utah,Toronto
+2025-03-14,Phoenix,Sacramento
+2025-03-15,Boston,Brooklyn
+2025-03-15,Okla City,Detroit
+2025-03-15,Houston,Chicago
+2025-03-15,Memphis,Miami
+2025-03-15,Milwaukee,Indiana
+2025-03-15,New Orleans,San Antonio
+2025-03-15,Golden State,New York
+2025-03-15,Denver,Washington
+2025-03-16,Dallas,Philadelphia
+2025-03-16,Cleveland,Orlando
+2025-03-16,LA Lakers,Phoenix
+2025-03-16,Atlanta,Brooklyn
+2025-03-16,Portland,Toronto
+2025-03-16,Minnesota,Utah
+2025-03-16,LA Clippers,Charlotte
+2025-03-16,Okla City,Milwaukee
+2025-03-17,Houston,Philadelphia
+2025-03-17,Detroit,New Orleans
+2025-03-17,Chicago,Utah
+2025-03-17,Golden State,Denver
+2025-03-17,Phoenix,Toronto
+2025-03-17,Sacramento,Memphis
+2025-03-17,Portland,Washington
+2025-03-17,LA Lakers,San Antonio
+2025-03-18,Atlanta,Charlotte
+2025-03-18,Boston,Brooklyn
+2025-03-18,Milwaukee,Golden State
+2025-03-18,Cleveland,LA Clippers
+2025-03-19,Indiana,Dallas
+2025-03-19,Houston,Orlando
+2025-03-19,Detroit,Miami
+2025-03-19,Minnesota,New Orleans
+2025-03-19,Okla City,Philadelphia
+2025-03-19,New York,San Antonio
+2025-03-19,Utah,Washington
+2025-03-19,Denver,LA Lakers
+2025-03-19,Phoenix,Chicago
+2025-03-19,Memphis,Portland
+2025-03-19,Cleveland,Sacramento
+2025-03-20,New York,Charlotte
+2025-03-20,Indiana,Brooklyn
+2025-03-20,Golden State,Toronto
+2025-03-20,Sacramento,Chicago
+2025-03-20,Milwaukee,LA Lakers
+2025-03-21,Orlando,Washington
+2025-03-21,Houston,Miami
+2025-03-21,Minnesota,New Orleans
+2025-03-21,Okla City,Charlotte
+2025-03-21,San Antonio,Philadelphia
+2025-03-21,Detroit,Dallas
+2025-03-21,Boston,Utah
+2025-03-21,Cleveland,Phoenix
+2025-03-21,Portland,Denver
+2025-03-21,LA Clippers,Memphis
+2025-03-22,Indiana,Brooklyn
+2025-03-22,Golden State,Atlanta
+2025-03-22,New York,Washington
+2025-03-22,Sacramento,Milwaukee
+2025-03-22,LA Lakers,Chicago
+2025-03-23,Atlanta,Philadelphia
+2025-03-23,Miami,Charlotte
+2025-03-23,Toronto,San Antonio
+2025-03-23,Boston,Portland
+2025-03-23,Houston,Denver
+2025-03-23,Okla City,LA Clippers
+2025-03-24,LA Lakers,Orlando
+2025-03-24,Washington,Toronto
+2025-03-24,Dallas,Brooklyn
+2025-03-24,New Orleans,Philadelphia
+2025-03-24,Denver,Chicago
+2025-03-24,Phoenix,Milwaukee
+2025-03-24,Boston,Sacramento
+2025-03-25,Orlando,Charlotte
+2025-03-25,Detroit,San Antonio
+2025-03-25,Golden State,Miami
+2025-03-25,New York,Dallas
+2025-03-25,Houston,Atlanta
+2025-03-25,Memphis,Utah
+2025-03-25,Cleveland,Portland
+2025-03-25,Okla City,Sacramento
+2025-03-26,Philadelphia,Washington
+2025-03-26,Brooklyn,Toronto
+2025-03-26,LA Lakers,Indiana
+2025-03-26,LA Clippers,New York
+2025-03-26,Denver,Milwaukee
+2025-03-26,Boston,Phoenix
+2025-03-27,Cleveland,San Antonio
+2025-03-27,Orlando,Dallas
+2025-03-27,Indiana,Washington
+2025-03-27,Miami,Atlanta
+2025-03-27,LA Lakers,Chicago
+2025-03-27,Okla City,Memphis
+2025-03-27,Houston,Utah
+2025-03-27,Sacramento,Portland
+2025-03-28,Cleveland,Detroit
+2025-03-28,LA Clippers,Brooklyn
+2025-03-28,Toronto,Charlotte
+2025-03-28,Milwaukee,New York
+2025-03-28,Minnesota,Phoenix
+2025-03-28,Golden State,New Orleans
+2025-03-28,Denver,Utah
+2025-03-29,Orlando,Sacramento
+2025-03-29,Washington,Brooklyn
+2025-03-29,Miami,Philadelphia
+2025-03-29,Chicago,Dallas
+2025-03-29,Memphis,LA Lakers
+2025-03-29,Okla City,Indiana
+2025-03-29,Boston,San Antonio
+2025-03-30,Cleveland,LA Clippers
+2025-03-30,New York,Portland
+2025-03-30,Milwaukee,Atlanta
+2025-03-30,Minnesota,Detroit
+2025-03-30,New Orleans,Charlotte
+2025-03-30,Golden State,San Antonio
+2025-03-30,Toronto,Philadelphia
+2025-03-30,Houston,Phoenix
+2025-03-31,Charlotte,Utah
+2025-03-31,Indiana,Sacramento
+2025-03-31,LA Clippers,Orlando
+2025-03-31,Miami,Washington
+2025-03-31,Boston,Memphis
+2025-03-31,Okla City,Chicago
+2025-03-31,Dallas,Brooklyn
+2025-03-31,LA Lakers,Houston
+2025-04-01,Atlanta,Portland
+2025-04-01,New York,Philadelphia
+2025-04-01,Milwaukee,Phoenix
+2025-04-01,Orlando,San Antonio
+2025-04-01,Chicago,Toronto
+2025-04-01,Golden State,Memphis
+2025-04-01,Denver,Minnesota
+2025-04-02,Cleveland,New York
+2025-04-02,Indiana,Charlotte
+2025-04-02,Sacramento,Washington
+2025-04-02,Boston,Miami
+2025-04-02,Houston,Utah
+2025-04-02,Dallas,Atlanta
+2025-04-02,Denver,San Antonio
+2025-04-02,Okla City,Detroit
+2025-04-02,LA Clippers,New Orleans
+2025-04-03,Orlando,Washington
+2025-04-03,Milwaukee,Philadelphia
+2025-04-03,Minnesota,Brooklyn
+2025-04-03,Memphis,Miami
+2025-04-03,Portland,Toronto
+2025-04-03,LA Lakers,Golden State
+2025-04-04,Sacramento,Charlotte
+2025-04-04,Indiana,Utah
+2025-04-04,Boston,Phoenix
+2025-04-04,Detroit,Toronto
+2025-04-04,Chicago,Portland
+2025-04-04,Okla City,Houston
+2025-04-04,Cleveland,San Antonio
+2025-04-04,Denver,Golden State
+2025-04-04,LA Lakers,New Orleans
+2025-04-04,LA Clippers,Dallas
+2025-04-05,New York,Atlanta
+2025-04-05,Memphis,Detroit
+2025-04-05,Minnesota,Philadelphia
+2025-04-05,Miami,Milwaukee
+2025-04-05,LA Clippers,Dallas
+2025-04-06,Chicago,Charlotte
+2025-04-06,Toronto,Brooklyn
+2025-04-06,Okla City,LA Lakers
+2025-04-06,Atlanta,Utah
+2025-04-06,Boston,Washington
+2025-04-06,Cleveland,Sacramento
+2025-04-06,Portland,San Antonio
+2025-04-06,New York,Phoenix
+2025-04-06,Denver,Indiana
+2025-04-06,Golden State,Houston
+2025-04-06,Milwaukee,New Orleans
+2025-04-07,Detroit,Sacramento
+2025-04-07,Miami,Philadelphia
+2025-04-08,Memphis,Charlotte
+2025-04-08,Cleveland,Chicago
+2025-04-08,Indiana,Washington
+2025-04-08,Orlando,Atlanta
+2025-04-08,Brooklyn,New Orleans
+2025-04-08,New York,Boston
+2025-04-08,Minnesota,Milwaukee
+2025-04-08,Okla City,LA Lakers
+2025-04-08,Golden State,Phoenix
+2025-04-08,LA Clippers,San Antonio
+2025-04-09,Orlando,Boston
+2025-04-09,Philadelphia,Washington
+2025-04-09,Toronto,Charlotte
+2025-04-09,LA Lakers,Dallas
+2025-04-09,Miami,Chicago
+2025-04-09,Portland,Utah
+2025-04-09,Golden State,San Antonio
+2025-04-09,Okla City,Phoenix
+2025-04-09,Denver,Sacramento
+2025-04-09,LA Clippers,Houston
+2025-04-10,Detroit,New York
+2025-04-10,Indiana,Cleveland
+2025-04-10,Atlanta,Brooklyn
+2025-04-10,Milwaukee,New Orleans
+2025-04-10,Minnesota,Memphis
+2025-04-11,Detroit,Milwaukee
+2025-04-11,Indiana,Orlando
+2025-04-11,Atlanta,Philadelphia
+2025-04-11,Boston,Charlotte
+2025-04-11,New York,Cleveland
+2025-04-11,Chicago,Washington
+2025-04-11,Miami,New Orleans
+2025-04-11,Minnesota,Brooklyn
+2025-04-11,Denver,Memphis
+2025-04-11,Okla City,Utah
+2025-04-11,Phoenix,San Antonio
+2025-04-11,Golden State,Portland
+2025-04-11,LA Clippers,Sacramento
+2025-04-11,LA Lakers,Houston
+2025-04-13,Orlando,Atlanta
+2025-04-13,Boston,Charlotte
+2025-04-13,New York,Brooklyn
+2025-04-13,Indiana,Cleveland
+2025-04-13,Miami,Washington
+2025-04-13,Chicago,Philadelphia
+2025-04-13,Detroit,Milwaukee
+2025-04-13,Denver,Houston
+2025-04-13,Dallas,Memphis
+2025-04-13,Minnesota,Utah
+2025-04-13,Okla City,New Orleans
+2025-04-13,San Antonio,Toronto
+2025-04-13,Golden State,LA Clippers
+2025-04-13,Portland,LA Lakers
+2025-04-13,Sacramento,Phoenix
+2025-10-21,Okla City,Houston
+2025-10-21,Golden State,LA Lakers
+2025-10-22,Cleveland,New York
+2025-10-22,Charlotte,Brooklyn
+2025-10-22,Orlando,Miami
+2025-10-22,Atlanta,Toronto
+2025-10-22,Boston,Philadelphia
+2025-10-22,Detroit,Chicago
+2025-10-22,Memphis,New Orleans
+2025-10-22,Milwaukee,Washington
+2025-10-22,LA Clippers,Utah
+2025-10-22,Dallas,San Antonio
+2025-10-22,Phoenix,Sacramento
+2025-10-22,Minnesota,Portland
+2025-10-23,Okla City,Indiana
+2025-10-23,Golden State,Denver
+2025-10-24,Toronto,Milwaukee
+2025-10-24,Orlando,Atlanta
+2025-10-24,Cleveland,Brooklyn
+2025-10-24,New York,Boston
+2025-10-24,Houston,Detroit
+2025-10-24,Memphis,Miami
+2025-10-24,San Antonio,New Orleans
+2025-10-24,Dallas,Washington
+2025-10-24,Minnesota,LA Lakers
+2025-10-24,Golden State,Portland
+2025-10-24,Sacramento,Utah
+2025-10-24,LA Clippers,Phoenix
+2025-10-25,Orlando,Chicago
+2025-10-25,Okla City,Atlanta
+2025-10-25,Philadelphia,Charlotte
+2025-10-25,Memphis,Indiana
+2025-10-25,Denver,Phoenix
+2025-10-27,Cleveland,Detroit
+2025-10-27,Orlando,Philadelphia
+2025-10-27,Atlanta,Chicago
+2025-10-27,Houston,Brooklyn
+2025-10-27,New Orleans,Boston
+2025-10-27,San Antonio,Toronto
+2025-10-27,Okla City,Dallas
+2025-10-27,Utah,Phoenix
+2025-10-27,Denver,Minnesota
+2025-10-27,Golden State,Memphis
+2025-10-27,Portland,LA Lakers
