@@ -1,4 +1,4 @@
-Date,Favorite,Underdog
+Date,Fav,Dog
 2025-11-21,Detroit,Charlotte
 2025-11-21,Minnesota,Toronto
 2025-11-21,San Antonio,Utah
@@ -91,6 +91,8 @@ Date,Favorite,Underdog
 2025-12-03,Pheonix,San Antonio
 2025-12-03,Denver,Golden State
 2025-12-03,Sacremento,Houston
+2025-12-03,LA Clippers,Portland
+2025-12-04,Boston,Detroit
 2025-12-04,Indiana,Brooklyn
 2025-12-04,Miami,LA Lakers
 2025-12-04,Orlando,Philadelphia
@@ -115,6 +117,7 @@ Date,Favorite,Underdog
 2025-12-07,Denver,Washington
 2025-12-07,Oklahoma City,New Orleans
 2025-12-07,New York,Detroit
+2025-12-07,Dallas,Toronto
 2025-12-07,Boston,Memphis
 2025-12-07,Miami,Phoenix
 2025-12-08,Philadelphia,Chicago
@@ -134,6 +137,7 @@ Date,Favorite,Underdog
 2025-12-10,Oklahoma City,Dallas
 2025-12-11,New York,Atlanta
 2025-12-11,Houston,Golden State
+2025-12-12,Boston,Detroit
 2025-12-12,Miami,Toronto
 2025-12-12,Sacramento,New Orleans
 2025-12-13,Cleveland,Washington
@@ -162,6 +166,7 @@ Date,Favorite,Underdog
 2025-12-17,Oklahoma City,Milwaukee
 2025-12-19,Detroit,Utah
 2025-12-19,Okla City,Orlando
+2025-12-19,Charlotte,Washington
 2025-12-19,Boston,Chicago
 2025-12-19,Toronto,Brooklyn
 2025-12-19,Houston,New Orleans
@@ -171,8 +176,11 @@ Date,Favorite,Underdog
 2025-12-19,Phoenix,Indiana
 2025-12-19,Minnesota,New York
 2025-12-19,Denver,Portland
+2025-12-19,Sacramento,LA Lakers
 2025-12-20,Philadelphia,Charlotte
+2025-12-20,Cleveland,Milwaukee
 2025-12-20,Okla City,Miami
+2025-12-21,Sacramento,LA Lakers
 2025-12-21,Orlando,Miami
 2025-12-21,Memphis,Atlanta
 2025-12-21,Brooklyn,Utah
@@ -208,6 +216,7 @@ Date,Favorite,Underdog
 2025-12-25,Denver,Phoenix
 2025-12-26,Okla City,Indiana
 2025-12-26,Orlando,Miami
+2025-12-26,Charlotte,Washington
 2025-12-26,Atlanta,Chicago
 2025-12-26,Memphis,Toronto
 2025-12-26,Milwaukee,Brooklyn
@@ -216,6 +225,7 @@ Date,Favorite,Underdog
 2025-12-26,Sacramento,Detroit
 2025-12-27,New York,Orlando
 2025-12-27,Boston,Indiana
+2025-12-27,San Antonio,Brooklyn
 2025-12-27,Houston,Minnesota
 2025-12-27,Memphis,New Orleans
 2025-12-27,Cleveland,Denver
@@ -229,6 +239,7 @@ Date,Favorite,Underdog
 2025-12-28,Denver,Detroit
 2025-12-28,Philadelphia,Utah
 2025-12-28,Dallas,Portland
+2025-12-28,LA Lakers,Sacramento
 2025-12-29,Orlando,Brooklyn
 2025-12-29,Boston,Indiana
 2025-12-29,Toronto,Atlanta
@@ -363,6 +374,7 @@ Date,Favorite,Underdog
 2025-01-16,Detroit,Indiana
 2025-01-16,Phoenix,Washington
 2025-01-16,Okla City,Cleveland
+2025-01-16,LA Clippers,Portland
 2025-01-16,Sacramento,Houston
 2025-01-17,Boston,Orlando
 2025-01-17,New York,Minnesota
@@ -487,6 +499,7 @@ Date,Favorite,Underdog
 2025-02-02,LA Clippers,Toronto
 2025-02-02,Boston,Philadelphia
 2025-02-02,Milwaukee,Memphis
+2025-02-03,Charlotte,Washington
 2025-02-03,Detroit,Atlanta
 2025-02-03,New York,Houston
 2025-02-03,Memphis,San Antonio
@@ -614,6 +627,7 @@ Date,Favorite,Underdog
 2025-02-25,New Orleans,San Antonio
 2025-02-25,Golden State,Charlotte
 2025-02-25,LA Lakers,Dallas
+2025-02-26,Boston,Detroit
 2025-02-26,Indiana,Toronto
 2025-02-26,New York,Philadelphia
 2025-02-26,Portland,Washington
@@ -637,6 +651,7 @@ Date,Favorite,Underdog
 2025-02-28,Phoenix,New Orleans
 2025-02-28,Minnesota,Utah
 2025-02-28,LA Clippers,LA Lakers
+2025-03-01,Charlotte,Washington
 2025-03-01,Detroit,Brooklyn
 2025-03-01,Houston,Sacramento
 2025-03-01,Memphis,San Antonio
@@ -644,6 +659,7 @@ Date,Favorite,Underdog
 2025-03-01,Milwaukee,Dallas
 2025-03-02,Cleveland,Portland
 2025-03-02,Indiana,Chicago
+2025-03-02,New York,Miami
 2025-03-02,Orlando,Toronto
 2025-03-02,Okla City,San Antonio
 2025-03-02,New Orleans,Utah
@@ -661,6 +677,7 @@ Date,Favorite,Underdog
 2025-03-04,New York,Golden State
 2025-03-04,Cleveland,Chicago
 2025-03-04,Minnesota,Philadelphia
+2025-03-04,San Antonio,Brooklyn
 2025-03-04,LA Clippers,Phoenix
 2025-03-04,LA Lakers,New Orleans
 2025-03-05,Boston,Portland
@@ -696,6 +713,7 @@ Date,Favorite,Underdog
 2025-03-09,Phoenix,Dallas
 2025-03-09,Memphis,New Orleans
 2025-03-09,Philadelphia,Utah
+2025-03-09,Cleveland,Milwaukee
 2025-03-09,Minnesota,San Antonio
 2025-03-09,Detroit,Portland
 2025-03-09,LA Clippers,Sacramento
@@ -755,7 +773,9 @@ Date,Favorite,Underdog
 2025-03-16,Minnesota,Utah
 2025-03-16,LA Clippers,Charlotte
 2025-03-16,Okla City,Milwaukee
+2025-03-17,New York,Miami
 2025-03-17,Houston,Philadelphia
+2025-03-17,Minnesota,Indiana
 2025-03-17,Detroit,New Orleans
 2025-03-17,Chicago,Utah
 2025-03-17,Golden State,Denver
@@ -804,6 +824,7 @@ Date,Favorite,Underdog
 2025-03-23,Boston,Portland
 2025-03-23,Houston,Denver
 2025-03-23,Okla City,LA Clippers
+2025-03-24,Indiana,Minnesota
 2025-03-24,LA Lakers,Orlando
 2025-03-24,Washington,Toronto
 2025-03-24,Dallas,Brooklyn
@@ -945,6 +966,7 @@ Date,Favorite,Underdog
 2025-04-11,New York,Cleveland
 2025-04-11,Chicago,Washington
 2025-04-11,Miami,New Orleans
+2025-04-11,Dallas,Toronto
 2025-04-11,Minnesota,Brooklyn
 2025-04-11,Denver,Memphis
 2025-04-11,Okla City,Utah
@@ -1000,6 +1022,15 @@ Date,Favorite,Underdog
 2025-10-25,Philadelphia,Charlotte
 2025-10-25,Memphis,Indiana
 2025-10-25,Denver,Phoenix
+2025-10-26,San Antonio,Brooklyn
+2025-10-26,Detroit,Boston
+2025-10-26,Cleveland,Milwaukee
+2025-10-26,New York,Miami
+2025-10-26,Washington,Charlotte
+2025-10-26,Minnesota,Indiana
+2025-10-26,Dallas,Toronto
+2025-10-26,LA Clippers,Portland
+2025-10-26,LA Lakers,Sacramento
 2025-10-27,Cleveland,Detroit
 2025-10-27,Orlando,Philadelphia
 2025-10-27,Atlanta,Chicago
