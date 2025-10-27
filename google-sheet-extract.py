@@ -6,8 +6,8 @@ from datetime import datetime
 
 # --- Google Sheet details ---
 SPREADSHEET_ID = "11L6GRPLvBqZU0TxuYaUuSH8T74elONg_qKWASThF7vI"
-SHEET_NAME = "Training Set"   # exact case
-RANGE_NAME = f"'{SHEET_NAME}'!B3:HW17"   # start at row 3 to skip headers
+SHEET_NAME = "Training Set"
+RANGE_NAME = f"'{SHEET_NAME}'!B2:HW"  # Start from header row (row 2)
 
 # --- Authenticate with Service Account ---
 creds = service_account.Credentials.from_service_account_file(
@@ -15,7 +15,7 @@ creds = service_account.Credentials.from_service_account_file(
     scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"]
 )
 
-# --- Connect to Sheets API ---
+# --- Connect to Google Sheets API ---
 service = build("sheets", "v4", credentials=creds)
 result = (
     service.spreadsheets()
@@ -23,33 +23,55 @@ result = (
     .get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME)
     .execute()
 )
+
 values = result.get("values", [])
 
-# --- File paths ---
-data_path = Path("data") / "NBA Training Set 25-26.csv"
-data_path.parent.mkdir(exist_ok=True)
-
-# --- If nothing found ---
 if not values:
-    print("⚠️ No new data found in the Google Sheet range.")
+    print("⚠️ No data found in Google Sheet.")
     exit()
 
 # --- Convert to DataFrame ---
-new_data = pd.DataFrame(values)
+headers = values[0]
+rows = [
+    r for r in values[1:]
+    if any(cell.strip() for cell in r if isinstance(cell, str))  # filter out completely blank rows
+]
 
-# --- Load existing master file (if it exists) ---
-if data_path.exists():
-    existing = pd.read_csv(data_path)
-    combined = pd.concat([existing, new_data], ignore_index=True)
-    print(f"📈 Existing rows: {len(existing)}, Adding: {len(new_data)} → New total: {len(combined)}")
+df_new = pd.DataFrame(rows, columns=headers)
+df_new = df_new.dropna(how="all").reset_index(drop=True)
+
+# --- Only keep rows with valid Date values ---
+if "Date" in df_new.columns:
+    df_new = df_new[df_new["Date"].astype(str).str.strip() != ""]
 else:
-    combined = new_data
-    print(f"🆕 Creating new master file with {len(new_data)} rows.")
+    print("⚠️ No 'Date' column found in sheet.")
+    exit()
 
-# --- Save combined file ---
+# --- Path to local master dataset ---
+data_path = Path("data") / "NBA Training Set 25-26.csv"
+data_path.parent.mkdir(exist_ok=True)
+
+if data_path.exists():
+    df_existing = pd.read_csv(data_path, low_memory=False)
+else:
+    df_existing = pd.DataFrame(columns=df_new.columns)
+
+# --- Align columns between Sheet and existing CSV ---
+common_cols = [c for c in df_new.columns if c in df_existing.columns]
+if not df_existing.empty:
+    df_existing = df_existing[common_cols]
+df_new = df_new[common_cols]
+
+# --- Append & deduplicate by Date + Favorite + Underdog ---
+combined = pd.concat([df_existing, df_new], ignore_index=True)
+before = len(combined)
+combined = combined.drop_duplicates(subset=["Date", "Favorite", "Underdog"], keep="first")
+after = len(combined)
+
+added_rows = after - len(df_existing)
+print(f"📊 Existing: {len(df_existing)} | Added: {added_rows} | Total: {after}")
+
+# --- Save final version ---
 combined.to_csv(data_path, index=False)
-print(f"✅ Updated master training set saved to: {data_path}")
-
-# --- Optional timestamp for logging ---
-timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-print(f"🕒 Run completed at {timestamp}")
+print(f"✅ Updated master file saved to: {data_path}")
+print(f"🕒 Run completed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

@@ -1,26 +1,19 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Ignore virtual environment folders
+venv/
+.env/
+
 # Ignore service account credentials
 service_account.json
 
-# Ignore Python cache and temp files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Ignore Jupyter notebook checkpoints
-.ipynb_checkpoints/
-
-# Ignore data outputs (optional, comment out if you want to track them)
-data/*.csv
-
-# Ignore environment and system files
-.env
-*.env
+# Ignore system files
 .DS_Store
 
-# --- Allow master training set CSVs ---
-!data/NBA Training Set 25-26.csv
-!data/training_set_*.csv
-!data/training_set_latest.csv
-!data/novig-odds/*.csv
-
+# ✅ Do NOT ignore your data folder
+# (remove "data/" or "*.csv" if currently ignored)
