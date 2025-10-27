@@ -1,0 +1,34 @@
+name: 🏀 Daily NBA Auto Update
+
+on:
+  schedule:
+    - cron: "30 13 * * *"  # runs daily at 6:30 AM PST (13:30 UTC)
+  workflow_dispatch:       # allows manual trigger
+
+jobs:
+  update-nba:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install pandas requests
+
+      - name: ⚙️ Run NBA update script
+        run: python src/update_nba_data.py
+
+      - name: 💾 Commit & push if changes exist
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "🏀 Automated NBA update $(date '+%Y-%m-%d')"
+          git push
