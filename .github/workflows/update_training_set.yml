@@ -3,52 +3,55 @@ name: Update Training Set from Google Sheets
 on:
   schedule:
     - cron: '30 17 * * *'  # Runs daily at 10:30 AM PT (17:30 UTC)
-  workflow_dispatch:
+  workflow_dispatch:        # Allow manual runs from GitHub Actions tab
 
 jobs:
   update-training-set:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repo
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           pip install pandas requests python-dateutil pytz \
             google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
+      # Step 4: Recreate your service account JSON from GitHub secret
       - name: Create service account file
         run: |
           echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
 
-      - name: Run Google Sheet extractor
+      # Step 5: Run Google Sheets append script
+      - name: Append daily Google Sheet data
         run: |
-          python google-sheet-extract.py
+          python src/google_sheet_append.py
 
-      # NEW: Pull Novig NBA odds and save CSV(s)
-      - name: Run Novig NBA odds pull
+      # Step 6: Run Novig NBA odds pull
+      - name: Pull Novig NBA odds
         run: |
           python src/novig_nba_odds.py
 
-      - name: Commit and push updated data
+      # Step 7: Commit and push updated data
+      - name: Commit and push updates
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Add Sheet + Novig outputs (ignore absence without failing)
-          git add data/training_set_*.csv data/training_set_latest.csv || true
+          # Add updated data files
+          git add "data/NBA Training Set 25-26.csv" || true
           git add data/novig-odds/*.csv || true
 
-          # Commit only if there are staged changes
-          git commit -m "Daily data update (Sheets + Novig) on $(date -u +"%Y-%m-%d %H:%M:%S UTC")" || echo "No changes to commit"
-
-          # Push (will be a no-op if nothing changed)
+          git commit -m "🗓️ Daily data update from Sheets + Novig ($(date -u +"%Y-%m-%d %H:%M UTC"))" || echo "No changes to commit"
           git push
