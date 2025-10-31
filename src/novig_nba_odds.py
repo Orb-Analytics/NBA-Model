@@ -1,3 +1,9 @@
+"""
+🏀 Novig NBA Odds Extraction
+Fetches today's NBA pregame spreads and odds from Novig's GraphQL API.
+Outputs to: data/novig-odds/novig_nba_spreads_<YYYY-MM-DD>.csv
+"""
+
 from pathlib import Path
 import requests
 import pandas as pd
@@ -7,20 +13,20 @@ import pytz
 import re
 import os
 from collections import defaultdict
+import sys
 
-# === File System Setup ===
+# === Setup ===
 eastern = pytz.timezone('US/Eastern')
 now_eastern = datetime.now(eastern)
 today_str = now_eastern.date().isoformat()
 
-# === File System Setup ===
-# Output directory
-output_folder = Path("data/novig-odds")
+# Determine repo root dynamically (so it works in GitHub Actions or locally)
+repo_root = Path(__file__).resolve().parents[1]
+output_folder = repo_root / "data" / "novig-odds"
 output_folder.mkdir(parents=True, exist_ok=True)
 output_file = output_folder / f"novig_nba_spreads_{today_str}.csv"
 
-
-# === GraphQL Setup ===
+# === Novig GraphQL API ===
 url = "https://gql.novig.us/v1/graphql"
 query = """
 query {
@@ -33,9 +39,7 @@ query {
     ]}) {
     id
     description
-    game {
-      scheduled_start
-    }
+    game { scheduled_start }
     markets {
       description
       updated_at
@@ -72,44 +76,50 @@ def price_to_american(price):
 def is_fav_home(fav_abbr, home_team_full):
     return fav_abbr.upper() in home_team_full.upper()
 
-# === Data Fetching ===
-response = requests.post(url, json={'query': query})
-data = response.json()
+# === Data Fetch ===
+print(f"📅 Fetching Novig NBA spreads for {today_str}...")
+
+try:
+    response = requests.post(url, json={'query': query}, timeout=10)
+    response.raise_for_status()
+    data = response.json()
+except Exception as e:
+    print(f"❌ Failed to fetch data from Novig API: {e}")
+    sys.exit(1)
 
 now_est = now_eastern
 today_est = now_eastern.date()
 results = []
 
 spread_regex = re.compile(r'([A-Z]{2,3}) ([+-]?\d+\.5)')
-one_half_regex = re.compile(r'\b1H\b', re.IGNORECASE)  # identify first-half markets
+one_half_regex = re.compile(r'\b1H\b', re.IGNORECASE)
 
 for event in data['data']['event']:
-    desc = event['description']
+    desc = event.get('description', '')
     if " @ " in desc:
         away_team, home_team = desc.split(" @ ")
     else:
         away_team, home_team = "", ""
 
-    # Convert UTC to Eastern Time
-    game_time_utc = parser.parse(event['game']['scheduled_start'])
-    game_time_est = game_time_utc.astimezone(eastern)
+    # Convert UTC to Eastern
+    try:
+        game_time_utc = parser.parse(event['game']['scheduled_start'])
+        game_time_est = game_time_utc.astimezone(eastern)
+    except Exception:
+        continue
 
     # Skip past or non-today games
     if game_time_est.date() != today_est or game_time_est < now_est:
         continue
 
-    for market in event['markets']:
+    for market in event.get('markets', []):
         if not market.get("is_consensus"):
             continue
+        if one_half_regex.search(market.get("description", "")):
+            continue
 
-        market_desc = market.get('description') or ""
-        if one_half_regex.search(market_desc):
-            continue  # skip 1H markets
-
-        for outcome in market['outcomes']:
-            out_desc = outcome.get('description') or ""
-
-            # Skip 1H outcomes
+        for outcome in market.get('outcomes', []):
+            out_desc = outcome.get('description', '') or ""
             if one_half_regex.search(out_desc):
                 continue
 
@@ -119,7 +129,6 @@ for event in data['data']['event']:
 
             team = match.group(1)
             line = float(match.group(2))
-
             market_timestamp = outcome.get('updated_at') or market.get('updated_at') or "N/A"
             try:
                 ts = parser.parse(market_timestamp)
@@ -138,26 +147,21 @@ for event in data['data']['event']:
                 "game_time_est": game_time_est.isoformat(),
                 "market_timestamp": market_timestamp,
                 "timestamp_dt": ts,
-                "market_desc": market_desc
+                "market_desc": market.get('description', "")
             })
 
-# === De-dup exact duplicates (keep newest) ===
+# === Deduplicate and Pair ===
 best_by_key = {}
 for r in results:
     key = (r['event_id'], r['team'], r['line'])
     prev = best_by_key.get(key)
-    if prev is None:
+    if not prev or (r.get("timestamp_dt") and prev.get("timestamp_dt") and r["timestamp_dt"] > prev["timestamp_dt"]):
         best_by_key[key] = r
-    else:
-        ts, prev_ts = r.get("timestamp_dt"), prev.get("timestamp_dt")
-        if (ts and not prev_ts) or (ts and prev_ts and ts > prev_ts):
-            best_by_key[key] = r
 
 deduped_results = list(best_by_key.values())
-
-# === Pair up spreads and format output ===
 output_rows = []
 output = defaultdict(dict)
+
 for r in deduped_results:
     key = (r['teams'], abs(r['line']))
     output[key][r['line']] = r
@@ -189,4 +193,6 @@ for (teams, abs_line), spread_pair in output.items():
 # === Save to CSV ===
 df = pd.DataFrame(output_rows)
 df.to_csv(output_file, index=False)
+
 print(f"✅ Novig NBA spreads saved to {output_file}")
+print(f"📊 {len(df)} games extracted.")
