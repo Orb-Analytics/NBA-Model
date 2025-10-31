@@ -1,174 +1,245 @@
-# 🏀 NBA Data Pipeline — Repo Overview and Cleanup Framework
+# 🧠 NBA Data Pipeline — Copilot Framework
 
-## 🎯 Purpose
-This repository automates the **daily ingestion and enrichment of NBA data** for model training and betting analysis.  
-Each day, the pipeline collects raw team and odds data, merges it with prior-day scores, and updates the master dataset:
-`data/NBA Training Set 25-26.csv`.
+## ⚙️ 1. Overview
 
----
+This repository powers the **NBA Model ETL pipeline**, which automates the creation and maintenance of a master dataset used for predictive modeling.  
+The workflow integrates **Google Sheets (raw metrics)**, **Novig odds data**, and **ESPN scores** into a unified dataset stored at:
 
-## 🧩 Data Flow Overview
+/data/NBA Training Set 25-26.csv
 
-### 🧾 Step 1: Google Sheets → GitHub (Automated via Apps Script)
-- The Google Apps Script (`GoogleSheetsCopyAndExport.gs`) runs daily and:
-  1. Copies the master Google Sheet `NBA Statistics Export - Model Export YYYY-MM-DD`
-  2. Extracts only the `"Training Set"` sheet
-  3. Uploads it to GitHub as a CSV file:
-     ```
-     data/raw/NBA_Training_Set_YYYY-MM-DD.csv
-     ```
-- This file is the **raw input** for the daily pipeline.
-
-> ❌ The old extractor `google_sheet_extract.py` is **no longer used** — remove it.
+yaml
+Copy code
 
 ---
 
-### 🧮 Step 2: Novig API — Daily Odds Extraction
-- The `novig_nba_odds.py` script fetches **daily betting odds** from the Novig API:
-  - Favorite & underdog teams
-  - Spread values
-  - Odds (moneyline, spread)
-- Output: data/novig-odds/novig_nba_spreads_YYYY-MM-DD.csv
-- These odds will later **replace** the spreads from the Sheets data and populate missing columns like:
-- `Fav Odds`
-- `Dog Odds`
+## 🧩 2. Core Data Flow
 
-> ⚠️ Keep this file but prepare to refactor it for better naming + API consistency.
+Each daily update performs the following sequence:
+
+1. **Fetch daily raw sheet** (from Google Apps Script export → `/data/raw/NBA_Training_Set_YYYY-MM-DD.csv`)
+2. **Fetch today’s spreads & odds** from Novig (`src/novig_nba_odds.py`)
+3. **Fetch yesterday’s ESPN scores** (`src/update_nba_data.py`)
+4. **Normalize & merge** into the master training set
+5. **Commit and push** updates to GitHub automatically
 
 ---
 
-### 🏁 Step 3: ESPN API — Prior Day Final Scores
-- The `nba_scores_yesterday.py` script fetches final scores for yesterday’s NBA games: data/yesterdays_scores/nba_scores_YYYY-MM-DD.csv
-- These are merged with the master dataset via `merge_nba_scores.py`.
+## 📁 3. Folder Structure
 
-> The individual score CSVs in `data/` are redundant (e.g., `nba_scores_2025-10-26.csv` to `nba_scores_2025-10-30.csv`).  
-> ✅ Move them to `/data/yesterdays_scores/` or delete — the subfolder version is what’s used.
+/data
+├── NBA Training Set 25-26.csv # Master dataset
+├── raw/ # Daily Google Sheet exports
+├── novig-odds/ # Daily Novig API CSVs
+├── yesterdays_scores/ # Daily ESPN score files
+├── unmatched_games.csv # Diagnostics for failed merges
+/src
+├── novig_nba_odds.py # Fetches Novig spreads
+├── update_nba_data.py # Fetches ESPN scores + merges results
+├── merge_nba_scores.py # Aligns scores to training set
+├── daily_update.py # (new) master orchestrator script
 
----
-
-### 🔄 Step 4: Data Merge + Transformation
-- The `merge_nba_scores.py` script merges:
-- The latest Google Sheets CSV (training data)
-- Novig odds
-- ESPN scores
-
-- It then computes or updates:
-- `Favorite - Underdog (+/-)` = `Fav Score - Dog Score`
-- `Favorite Cover?` = `1 if (FavDiff > Spread) else 0`
-- `Favorite Win?` = `1 if Fav Score > Dog Score else 0`
-- `Home/Away +/-` = `Home Score - Away Score`
-- Replaces `Spread` with Novig’s updated spread
-- Adds `Fav Odds` and `Dog Odds` columns from Novig
-
-- The processed file becomes: data/processed/NBA_Training_Set_Processed_YYYY-MM-DD.csv
-and optionally updates the master: data/NBA Training Set 25-26.csv
+yaml
+Copy code
 
 ---
 
-## 🧹 CLEANUP PLAN
+## 🧮 4. Column Alignment
 
-### ❌ Files to Remove
-These are outdated or replaced:
+### 🏀 Master Dataset — `/data/NBA Training Set 25-26.csv`
+Key initial columns:
+Date, Favorite, Favorite Score, Underdog, Underdog Score, Spread,
+Fav. At Home?, Winner, Favorite - Underdog (+/-),
+Favorite Cover?, Favorite Win?, Away, Away Score, Home, Home Score, Home/Away +/-
 
-google_sheet_extract.py
-src/etl/google_sheet_extract.py
-src/etl/novig_nba_odds.py
-src/etl/update_nba_data.py
-data/nba_scores_2025-10-26.csv
-data/nba_scores_2025-10-27.csv
-data/nba_scores_2025-10-28.csv
-data/nba_scores_2025-10-29.csv
-data/nba_scores_2025-10-30.csv
+kotlin
+Copy code
+Followed by team statistics (PPG, efficiency, rebounds, etc.).
 
+### 📊 Scores File — `/data/yesterdays_scores/nba_scores_YYYY-MM-DD.csv`
+Date, Home, Away, Home Score, Away Score, Winner, Status
 
----
+shell
+Copy code
 
-## 🗂️ New Folder Structure (Target Tree)
-The repo should evolve into this structure:
+### 💵 Odds File — `/data/novig-odds/novig_nba_spreads_YYYY-MM-DD.csv`
+fav_team, dog_team, fav_line, dog_line,
+fav_price, dog_price, fav_price_american, dog_price_american,
+home_favorite, game_time_est, market, market_timestamp
 
-NBA-model/
-│
-├── data/
-│ ├── raw/ # Daily exports from Google Sheets
-│ ├── novig-odds/ # Daily odds data from Novig API
-│ ├── yesterdays_scores/ # Final scores from ESPN
-│ ├── processed/ # Merged and cleaned datasets
-│ └── NBA Training Set 25-26.csv # Ongoing master file
-│
-├── src/
-│ ├── novig_nba_odds.py
-│ ├── nba_scores_yesterday.py
-│ ├── merge_nba_scores.py
-│ ├── update_nba_data.py # (Will orchestrate all merges + pushes)
-│ ├── utils/
-│ │ ├── team_name_map.py
-│ │ ├── merge_helpers.py
-│ │ └── data_cleaning.py
-│
-├── .github/
-│ └── workflows/
-│ ├── daily-update.yml # Automates Novig → Scores → Merge daily
-│ └── sheet-upload.yml # (Optional) handles Google upload verification
-│
-└── README.md or COPILOT_FRAMEWORK.md
-
+swift
+Copy code
 
 ---
 
-## ⚙️ Next Automation Steps
+## 🔁 5. Merge Rules
 
-### Phase 1 — Cleanup & Refactor
-- Delete unused Python scripts listed above.
-- Move historical raw/score data into proper subfolders.
-- Update imports and paths in scripts to reflect new structure.
+### Step 1 — Normalize
+- All dates → `YYYY-MM-DD`
+- Trim whitespace
+- Ensure numeric columns are `float` or `int`
+- Ensure `Fav. At Home?` is `0` or `1`
 
-### Phase 2 — Merge Automation
-- Modify `update_nba_data.py` to:
-  1. Detect new `NBA_Training_Set_YYYY-MM-DD.csv` in `/data/raw`
-  2. Load yesterday’s scores + Novig odds
-  3. Merge and update master dataset
-  4. Commit back to GitHub with message:
-     ```
-     🏀 Daily Update: Merged data for YYYY-MM-DD
-     ```
+### Step 2 — Integrate ESPN Scores
+- Match by `Date`, `Favorite`, `Underdog` (or Home/Away via mapping)
+- Fill:
+  - `Favorite Score`, `Underdog Score`
+  - `Winner`
+  - `Favorite - Underdog (+/-)` = `Favorite Score - Underdog Score`
+  - `Favorite Win?` = `1 if Favorite Score > Underdog Score else 0`
+  - `Favorite Cover?` = `1 if Favorite - Underdog (+/-) > Spread else 0`
+  - `Home/Away +/-` = `Home Score - Away Score`
 
-### Phase 3 — Continuous Integration
-- Set GitHub Action trigger to run when:
-  - A new file is added to `/data/raw/`
-  - Or daily at 11:59PM PST
-
-### Phase 4 — Enhancements
-- Normalize team names across APIs using `team_name_map.py`
-- Ensure consistent `YYYY-MM-DD` date formatting
-- Handle missing data gracefully (log unmatched games)
-- (Optional) push merged dataset to an analytics tool (Tableau / Streamlit)
+### Step 3 — Integrate Novig Odds
+- Replace existing `Spread` with `fav_line`
+- Insert **two new columns** right after `Spread`:
+  - `Fav. Odds` ← `fav_price_american`
+  - `Dog Odds` ← `dog_price_american`
+- If no odds found → default both to `-110`
+- Update `Fav. At Home?` from Novig’s `home_favorite`
 
 ---
 
-## 🧠 Instructions for Copilot
-When editing or refactoring:
-- Always use the **new folder structure**.
-- Assume Google Sheets data already uploads automatically to GitHub (no Sheets extraction needed).
-- Focus automation on **combining Novig odds + ESPN scores** into the training set.
-- Maintain daily snapshots of all source data.
-- Never overwrite raw data; always write merged outputs to `/data/processed/` and append to `NBA Training Set 25-26.csv`.
+## 🧱 6. Team Mapping Reference
 
----
+```python
+TEAM_NAME_MAP = {
+  "Atlanta": "ATL", "Boston": "BOS", "Brooklyn": "BKN", "Charlotte": "CHA",
+  "Chicago": "CHI", "Cleveland": "CLE", "Dallas": "DAL", "Denver": "DEN",
+  "Detroit": "DET", "Golden State": "GS", "Houston": "HOU", "Indiana": "IND",
+  "LA Clippers": "LAC", "LA Lakers": "LAL", "Memphis": "MEM", "Miami": "MIA",
+  "Milwaukee": "MIL", "Minnesota": "MIN", "New Orleans": "NO", "New York": "NY",
+  "Okla City": "OKC", "Orlando": "ORL", "Philadelphia": "PHI", "Phoenix": "PHX",
+  "Portland": "POR", "Sacramento": "SAC", "San Antonio": "SA", "Toronto": "TOR",
+  "Utah": "UTAH", "Washington": "WSH"
+}
+Use this map to normalize team names across ESPN, Novig, and the Google Sheet.
 
-## ✅ Example Daily Run Summary
+🧾 7. Output Expectations
+After merging:
 
-| Step | Script | Input | Output |
-|------|--------|--------|--------|
-| 1 | GoogleSheetsCopyAndExport.gs | Google Sheet | data/raw/NBA_Training_Set_2025-10-31.csv |
-| 2 | novig_nba_odds.py | Novig API | data/novig-odds/novig_nba_spreads_2025-10-31.csv |
-| 3 | nba_scores_yesterday.py | ESPN API | data/yesterdays_scores/nba_scores_2025-10-30.csv |
-| 4 | merge_nba_scores.py | All above | data/processed/NBA_Training_Set_Processed_2025-10-31.csv |
-| 5 | update_nba_data.py | All above | data/NBA Training Set 25-26.csv (updated master) |
+/data/NBA Training Set 25-26.csv is the updated master
 
----
+/data/unmatched_games.csv logs unmatched rows
 
-## 🚀 Summary
-- Google Sheets → GitHub is **handled by Apps Script**
-- Python scripts handle **odds**, **scores**, and **merging**
-- GitHub Actions will eventually handle **automation + commits**
-- Clean, modular repo = faster debugging, better reproducibility
+Dates are normalized to ISO format
+
+Odds columns are populated or defaulted
+
+New daily commit message is formatted as:
+
+scss
+Copy code
+🏀 NBA Auto-Update: YYYY-MM-DD
+✅ 8. Copilot To-Do Checklist
+🗂 Data Normalization
+ Normalize all Date fields to YYYY-MM-DD
+
+ Clean whitespace, ensure consistent casing for teams
+
+ Convert numeric columns to proper types
+
+ Validate Fav. At Home? = {0, 1}
+
+🔗 Merging & Mapping
+ Match games using TEAM_NAME_MAP
+
+ Add fuzzy matching (Levenshtein ≥ 85%)
+
+ Export data/unmatched_games.csv for review
+
+ Recalculate spreads and cover/win metrics after merges
+
+💵 Odds Integration
+ Replace Spread with fav_line
+
+ Add columns Fav. Odds and Dog Odds
+
+ Default to -110 if missing
+
+ Update Fav. At Home? from Novig data
+
+📊 Dataset Automation
+ Build unified script (src/daily_update.py)
+
+ Sequence: Novig fetch → ESPN fetch → Merge → Push
+
+ Commit daily updates automatically via GitHub Action
+
+🧹 Repository Maintenance
+ Remove deprecated ETL scripts
+
+ Add .gitignore for temp CSVs and caches
+
+ Create version tags (v1.0.0, v1.1.0, etc.)
+
+🧠 Validation
+ Test that all merges increase row count
+
+ No nulls in Date, Favorite, Underdog, Spread
+
+ Validate odds range (−10000 to +10000)
+
+ Add pytest for merge logic and odds population
+
+🧰 9. src/daily_update.py — Skeleton
+python
+Copy code
+"""
+Daily NBA Data Update Pipeline
+Author: Orb Analytics (Liam Chaitin)
+Purpose: Orchestrate full daily ETL (Novig odds, ESPN scores, raw sheet merge)
+"""
+
+import subprocess
+import sys
+from datetime import datetime
+
+def run_script(script_path):
+    print(f"🚀 Running {script_path} ...")
+    try:
+        subprocess.run(["python", script_path], check=True)
+        print(f"✅ Completed: {script_path}")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error running {script_path}: {e}")
+        sys.exit(1)
+
+def main():
+    print("\n🏀 Starting Daily NBA Data Pipeline...\n")
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    # 1️⃣ Fetch today's Novig odds
+    run_script("src/novig_nba_odds.py")
+
+    # 2️⃣ Fetch yesterday’s ESPN scores
+    run_script("src/update_nba_data.py")
+
+    # 3️⃣ Merge raw sheet (latest file in /data/raw)
+    run_script("src/merge_nba_scores.py")
+
+    print(f"\n🎯 Daily NBA Data Pipeline Complete — {today}\n")
+
+    # 4️⃣ Commit + Push
+    try:
+        subprocess.run(["git", "add", "."], check=True)
+        commit_msg = f"🏀 NBA Auto-Update: {today}"
+        subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+        subprocess.run(["git", "push"], check=True)
+        print("✅ Successfully pushed updates to GitHub.")
+    except Exception as e:
+        print(f"⚠️ Git push failed: {e}")
+
+if __name__ == "__main__":
+    main()
+🧩 10. Notes for Copilot
+When editing or generating code in this repository, always:
+
+Keep file paths consistent (/data/... and /src/...)
+
+Preserve ISO date formatting
+
+Maintain logs and emoji indicators (✅, ⚠️, ❌)
+
+Never overwrite NBA Training Set 25-26.csv destructively — always update in place
+
+Always produce human-readable console output for debugging
+

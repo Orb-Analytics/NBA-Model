@@ -1,6 +1,7 @@
 import pandas as pd
 from pathlib import Path
 import sys
+from difflib import SequenceMatcher
 
 # ==============================
 # CONFIGURATION
@@ -36,6 +37,17 @@ TEAM_NAME_MAP = {
     "Toronto": "TOR", "Utah": "UTAH", "Washington": "WSH"
 }
 
+def fuzzy_match(team, candidates, threshold=0.85):
+    """Find best fuzzy match for team name."""
+    best_match = None
+    best_score = 0
+    for candidate in candidates:
+        score = SequenceMatcher(None, team, candidate).ratio()
+        if score > best_score and score >= threshold:
+            best_match = candidate
+            best_score = score
+    return best_match, best_score
+
 # ==============================
 # LOAD DATA
 # ==============================
@@ -60,7 +72,7 @@ for i, row in df_master.iterrows():
     dog = row["Underdog"]
     fav_home = int(row["Fav. At Home?"])
 
-    # find matching score
+    # find matching score - exact match first
     match = df_scores[
         (df_scores["Date"] == date)
         & (
@@ -68,6 +80,25 @@ for i, row in df_master.iterrows():
             | ((df_scores["Home"] == dog) & (df_scores["Away"] == fav))
         )
     ]
+
+    # If no exact match, try fuzzy matching
+    if match.empty:
+        # Get all games on this date
+        date_games = df_scores[df_scores["Date"] == date]
+        if not date_games.empty:
+            available_teams = set(date_games["Home"].dropna()) | set(date_games["Away"].dropna())
+            fav_match, fav_score = fuzzy_match(fav, available_teams)
+            dog_match, dog_score = fuzzy_match(dog, available_teams)
+            
+            if fav_match and dog_match and fav_score >= 0.85 and dog_score >= 0.85:
+                # Check if they play each other
+                fuzzy_match_games = date_games[
+                    ((date_games["Home"] == fav_match) & (date_games["Away"] == dog_match)) |
+                    ((date_games["Home"] == dog_match) & (date_games["Away"] == fav_match))
+                ]
+                if not fuzzy_match_games.empty:
+                    match = fuzzy_match_games
+                    print(f"🔍 Fuzzy matched: {fav}/{dog} → {fav_match}/{dog_match} (scores: {fav_score:.2f}/{dog_score:.2f})")
 
     if match.empty:
         unmatched.append((date, fav, dog))

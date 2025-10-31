@@ -1,56 +1,29 @@
-"""
-🏀 update_nba_data.py
-Automates the daily NBA data workflow:
-  1️⃣ Fetches latest Novig spreads
-  2️⃣ Fetches yesterday's scores from ESPN
-  3️⃣ Merges scores into master dataset
-  4️⃣ Commits and pushes updates to GitHub
-"""
-
 import os
 import shutil
-import subprocess
-from pathlib import Path
-from datetime import datetime, timedelta
 import pandas as pd
+from datetime import datetime, timedelta
+from pathlib import Path
+import subprocess
 import requests
 
 # === CONFIG ===
 DATA_DIR = Path("data")
-NOVIG_DIR = DATA_DIR / "novig-odds"
 YESTERDAYS_DIR = DATA_DIR / "yesterdays_scores"
 MASTER_FILE = DATA_DIR / "NBA Training Set 25-26.csv"
 
-for d in [DATA_DIR, NOVIG_DIR, YESTERDAYS_DIR]:
-    d.mkdir(parents=True, exist_ok=True)
+DATA_DIR.mkdir(exist_ok=True)
+YESTERDAYS_DIR.mkdir(exist_ok=True)
 
 
-# === STEP 1: Run Novig Odds Script ===
-def fetch_novig_odds():
-    print("🎯 Fetching today's Novig NBA spreads...")
-    try:
-        result = subprocess.run(
-            ["python", "src/novig_nba_odds.py"],
-            capture_output=True, text=True, check=True
-        )
-        print(result.stdout)
-        print("✅ Novig odds successfully fetched and saved.")
-    except subprocess.CalledProcessError as e:
-        print("❌ Novig odds script failed:")
-        print(e.stderr)
-
-
-# === STEP 2: Fetch Yesterday’s Scores from ESPN ===
 def fetch_yesterdays_scores():
+    """Fetch NBA scores from ESPN public API."""
     print("🏀 Fetching yesterday’s NBA scores...")
     target_date = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
     url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={target_date}"
 
-    try:
-        resp = requests.get(url, timeout=10)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"❌ ESPN request failed: {e}")
+    resp = requests.get(url)
+    if resp.status_code != 200:
+        print(f"❌ ESPN request failed ({resp.status_code})")
         return None
 
     data = resp.json()
@@ -81,63 +54,21 @@ def fetch_yesterdays_scores():
             "Status": status
         })
 
-    date_str = datetime.strptime(target_date, "%Y%m%d").strftime("%Y-%m-%d")
-    csv_path = DATA_DIR / f"nba_scores_{date_str}.csv"
     df = pd.DataFrame(records)
+    csv_path = DATA_DIR / f"nba_scores_{datetime.strptime(target_date, '%Y%m%d').strftime('%Y-%m-%d')}.csv"
     df.to_csv(csv_path, index=False)
     print(f"💾 Saved scores → {csv_path}")
 
+    # Copy to yesterdays_scores
     shutil.copy(csv_path, YESTERDAYS_DIR / csv_path.name)
     print(f"📂 Copied to yesterdays_scores/")
-    print(df)
 
+    print(df)
     return csv_path
 
-TEAM_NAME_MAP = {
-    "Atlanta": "Atlanta",
-    "Boston": "Boston",
-    "Brooklyn": "Brooklyn",
-    "Charlotte": "Charlotte",
-    "Chicago": "Chicago",
-    "Cleveland": "Cleveland",
-    "Dallas": "Dallas",
-    "Denver": "Denver",
-    "Detroit": "Detroit",
-    "Golden State": "Golden State",
-    "Houston": "Houston",
-    "Indiana": "Indiana",
-    "LA Clippers": "LA Clippers",
-    "LA Lakers": "LA Lakers",
-    "Memphis": "Memphis",
-    "Miami": "Miami",
-    "Milwaukee": "Milwaukee",
-    "Minnesota": "Minnesota",
-    "New Orleans": "New Orleans",
-    "New York": "New York",
-    "Oklahoma City": "Okla City",
-    "Orlando": "Orlando",
-    "Philadelphia": "Philadelphia",
-    "Phoenix": "Phoenix",
-    "Portland": "Portland",
-    "Sacramento": "Sacramento",
-    "San Antonio": "San Antonio",
-    "Toronto": "Toronto",
-    "Utah": "Utah",
-    "Washington": "Washington"
-}
 
-# === STEP 3: Merge Scores into Master Dataset ===
 def merge_into_master(scores_path):
-    master["Home"] = master["Home"].replace(TEAM_NAME_MAP)
-    master["Away"] = master["Away"].replace(TEAM_NAME_MAP)
-    scores["Home"] = scores["Home"].replace(TEAM_NAME_MAP)
-    scores["Away"] = scores["Away"].replace(TEAM_NAME_MAP)
-
-    print("🔄 Merging scores into master dataset...")
-    if not MASTER_FILE.exists():
-        print(f"⚠️ Master file not found at {MASTER_FILE}")
-        return
-
+    """Merge yesterday's scores into the master training set."""
     master = pd.read_csv(MASTER_FILE)
     scores = pd.read_csv(scores_path)
 
@@ -169,34 +100,24 @@ def merge_into_master(scores_path):
     print(f"📊 Games updated: {updated}")
 
     if unmatched:
-        unmatched_path = DATA_DIR / "unmatched_games.csv"
-        pd.DataFrame(unmatched).to_csv(unmatched_path, index=False)
-        print(f"⚠️ Unmatched games exported → {unmatched_path}")
+        pd.DataFrame(unmatched).to_csv(DATA_DIR / "unmatched_games.csv", index=False)
+        print("⚠️ Unmatched games exported → data/unmatched_games.csv")
 
 
-# === STEP 4: Commit and Push to GitHub ===
 def push_to_github():
-    print("📤 Pushing updates to GitHub...")
+    """Commit and push changes to GitHub."""
     try:
         subprocess.run(["git", "add", "."], check=True)
-        msg = f"🏀 NBA Auto-Update: {datetime.now().strftime('%Y-%m-%d')}"
+        msg = f"🏀 NBA update {datetime.now().strftime('%Y-%m-%d')}"
         subprocess.run(["git", "commit", "-m", msg], check=True)
         subprocess.run(["git", "push"], check=True)
         print("✅ Successfully pushed to GitHub.")
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print(f"⚠️ Git push failed: {e}")
 
 
-# === MAIN PIPELINE ===
 if __name__ == "__main__":
-    print("🚀 Starting daily NBA data update...")
-    fetch_novig_odds()
     scores_path = fetch_yesterdays_scores()
-
     if scores_path:
         merge_into_master(scores_path)
-    else:
-        print("⚠️ Skipping merge — no scores fetched.")
-
-    push_to_github()
-    print("✅ Daily NBA data update complete.")
+        push_to_github()

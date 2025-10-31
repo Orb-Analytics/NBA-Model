@@ -15,5 +15,11 @@ service_account.json
 # Ignore system files
 .DS_Store
 
+# Ignore temp CSVs and caches
+*.tmp
+temp/
+cache/
+*.log
+
 # ✅ Do NOT ignore your data folder
 # (remove "data/" or "*.csv" if currently ignored)
