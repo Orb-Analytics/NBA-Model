@@ -93,9 +93,46 @@ def fetch_yesterdays_scores():
 
     return csv_path
 
+TEAM_NAME_MAP = {
+    "Atlanta": "Atlanta",
+    "Boston": "Boston",
+    "Brooklyn": "Brooklyn",
+    "Charlotte": "Charlotte",
+    "Chicago": "Chicago",
+    "Cleveland": "Cleveland",
+    "Dallas": "Dallas",
+    "Denver": "Denver",
+    "Detroit": "Detroit",
+    "Golden State": "Golden State",
+    "Houston": "Houston",
+    "Indiana": "Indiana",
+    "LA Clippers": "LA Clippers",
+    "LA Lakers": "LA Lakers",
+    "Memphis": "Memphis",
+    "Miami": "Miami",
+    "Milwaukee": "Milwaukee",
+    "Minnesota": "Minnesota",
+    "New Orleans": "New Orleans",
+    "New York": "New York",
+    "Oklahoma City": "Okla City",
+    "Orlando": "Orlando",
+    "Philadelphia": "Philadelphia",
+    "Phoenix": "Phoenix",
+    "Portland": "Portland",
+    "Sacramento": "Sacramento",
+    "San Antonio": "San Antonio",
+    "Toronto": "Toronto",
+    "Utah": "Utah",
+    "Washington": "Washington"
+}
 
 # === STEP 3: Merge Scores into Master Dataset ===
 def merge_into_master(scores_path):
+    master["Home"] = master["Home"].replace(TEAM_NAME_MAP)
+    master["Away"] = master["Away"].replace(TEAM_NAME_MAP)
+    scores["Home"] = scores["Home"].replace(TEAM_NAME_MAP)
+    scores["Away"] = scores["Away"].replace(TEAM_NAME_MAP)
+
     print("🔄 Merging scores into master dataset...")
     if not MASTER_FILE.exists():
         print(f"⚠️ Master file not found at {MASTER_FILE}")
