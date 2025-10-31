@@ -1,0 +1,37 @@
+name: 📧 Email NBA Dataset
+
+on:
+  workflow_run:
+    workflows: ["Update Training Set from Google Sheets"]
+    types:
+      - completed
+  workflow_dispatch:  # Allow manual testing
+
+jobs:
+  email-dataset:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 📧 Send NBA Dataset Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "NBA Training Dataset Updated"
+          body: |
+            NBA Training Dataset has been successfully updated!
+
+            Repository: ${{ github.repository }}
+            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Updated: ${{ github.event.workflow_run.updated_at }}
+
+            The latest NBA Training Set 25-26.csv is attached.
+          to: lpchaitin@gmail.com,eborsook@gmail.com
+          from: GitHub Actions <noreply@github.com>
+          attachments: data/NBA Training Set 25-26.csv
