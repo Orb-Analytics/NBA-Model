@@ -55,13 +55,9 @@ def fetch_yesterdays_scores():
         })
 
     df = pd.DataFrame(records)
-    csv_path = DATA_DIR / f"nba_scores_{datetime.strptime(target_date, '%Y%m%d').strftime('%Y-%m-%d')}.csv"
+    csv_path = YESTERDAYS_DIR / f"nba_scores_{datetime.strptime(target_date, '%Y%m%d').strftime('%Y-%m-%d')}.csv"
     df.to_csv(csv_path, index=False)
     print(f"💾 Saved scores → {csv_path}")
-
-    # Copy to yesterdays_scores
-    shutil.copy(csv_path, YESTERDAYS_DIR / csv_path.name)
-    print(f"📂 Copied to yesterdays_scores/")
 
     print(df)
     return csv_path
