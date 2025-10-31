@@ -21,21 +21,30 @@ def main():
     print("\n🏀 Starting Daily NBA Data Pipeline...\n")
     today = datetime.now().strftime("%Y-%m-%d")
 
-    # 1️⃣ Fetch today's Novig odds
+    # 1️⃣ Merge raw training data (exported from Google Sheets)
+    run_script("src/merge_raw_data.py")
+
+    # 2️⃣ Normalize and clean master dataset
+    run_script("src/normalize_data.py")
+
+    # 3️⃣ Fetch today's Novig odds
     run_script("src/novig_nba_odds.py")
 
-    # 1.5️⃣ Merge Novig odds into master
+    # 4️⃣ Merge Novig odds into master
     run_script("src/merge_novig_odds.py")
 
-    # 2️⃣ Fetch yesterday’s ESPN scores
+    # 5️⃣ Fetch yesterday's ESPN scores
     run_script("src/update_nba_data.py")
 
-    # 3️⃣ Merge raw sheet (latest file in /data/raw)
+    # 6️⃣ Merge scores into master
     run_script("src/merge_nba_scores.py")
+
+    # 7️⃣ Validate data integrity
+    run_script("src/validate_data.py")
 
     print(f"\n🎯 Daily NBA Data Pipeline Complete — {today}\n")
 
-    # 4️⃣ Commit + Push
+    # 8️⃣ Commit + Push
     try:
         subprocess.run(["git", "add", "."], check=True)
         commit_msg = f"🏀 NBA Auto-Update: {today}"

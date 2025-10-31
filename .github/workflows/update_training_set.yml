@@ -31,17 +31,12 @@ jobs:
         run: |
           echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
 
-      # Step 5: Run Google Sheets extraction + append script
-      - name: Extract and append Google Sheet data
+      # Step 5: Run complete daily update pipeline
+      - name: Run complete NBA data pipeline
         run: |
-          python google-sheet-extract.py
+          python src/daily_update.py
 
-      # Step 6: Run Novig NBA odds pull
-      - name: Pull Novig NBA odds
-        run: |
-          python src/novig_nba_odds.py
-
-      # Step 7: Commit and push updated data
+      # Step 6: Commit and push updates
       - name: Commit and push updates
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,9 +44,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Add updated data files
+          # Add all updated data files
           git add "data/NBA Training Set 25-26.csv" || true
           git add data/novig-odds/*.csv || true
+          git add data/yesterdays_scores/*.csv || true
+          git add data/raw/*.csv || true
+          git add data/unmatched_games.csv || true
 
-          git commit -m "🗓️ Daily data update from Sheets + Novig ($(date -u +"%Y-%m-%d %H:%M UTC"))" || echo "No changes to commit"
+          git commit -m "🗓️ Complete NBA data pipeline update ($(date -u +"%Y-%m-%d %H:%M UTC"))" || echo "No changes to commit"
           git push
