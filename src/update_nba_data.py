@@ -2,6 +2,7 @@ import os
 import shutil
 import pandas as pd
 from datetime import datetime, timedelta
+import pytz
 from pathlib import Path
 import subprocess
 import requests
@@ -18,8 +19,13 @@ YESTERDAYS_DIR.mkdir(exist_ok=True)
 def fetch_yesterdays_scores():
     """Fetch NBA scores from ESPN public API."""
     print("🏀 Fetching yesterday’s NBA scores...")
-    target_date = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
+    # Use US/Eastern to align with ESPN's notion of game dates (avoid UTC midnight issues)
+    eastern = pytz.timezone('US/Eastern')
+    now_eastern = datetime.now(eastern)
+    target_date_dt = now_eastern - timedelta(days=1)
+    target_date = target_date_dt.strftime("%Y%m%d")
     url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={target_date}"
+    print(f"🔎 Target date (Eastern): {target_date_dt.date()} -> {target_date}")
 
     resp = requests.get(url)
     if resp.status_code != 200:
@@ -28,21 +34,57 @@ def fetch_yesterdays_scores():
 
     data = resp.json()
     events = data.get("events", [])
+    # Only process yesterday's games - no fallback to avoid adding old data
     if not events:
-        print("❌ No games found for that date.")
+        print(f"ℹ️ No games found for {target_date_dt.date()} — this is normal if no games were scheduled")
         return None
 
     records = []
     for event in events:
         comp = event["competitions"][0]
         status = comp["status"]["type"]["name"]
-        home = comp["competitors"][0]
-        away = comp["competitors"][1]
-        home_team = home["team"]["location"]
-        away_team = away["team"]["location"]
-        home_score = int(home["score"]) if home.get("score") else None
-        away_score = int(away["score"]) if away.get("score") else None
-        winner = home_team if home.get("winner") else away_team
+        # Competitors ordering may vary; find home/away by 'homeAway' field when available
+        competitors = comp.get("competitors", [])
+        home = None
+        away = None
+        if len(competitors) >= 2:
+            for c in competitors:
+                if c.get("homeAway") == "home":
+                    home = c
+                elif c.get("homeAway") == "away":
+                    away = c
+        # Fallback to index-based if fields not present
+        if home is None or away is None:
+            if len(competitors) >= 2:
+                home = competitors[0]
+                away = competitors[1]
+
+        def _extract_team_name(comp_item):
+            if not comp_item:
+                return ""
+            team = comp_item.get("team", {})
+            return team.get("location") or team.get("displayName") or team.get("name") or ""
+
+        home_team = _extract_team_name(home)
+        away_team = _extract_team_name(away)
+
+        def _extract_score(comp_item):
+            if not comp_item:
+                return None
+            s = comp_item.get("score")
+            try:
+                return int(s) if s not in (None, "") else None
+            except Exception:
+                return None
+
+        home_score = _extract_score(home)
+        away_score = _extract_score(away)
+
+        winner = None
+        if home and home.get("winner"):
+            winner = home_team
+        elif away and away.get("winner"):
+            winner = away_team
 
         records.append({
             "Date": datetime.strptime(target_date, "%Y%m%d").strftime("%Y-%m-%d"),

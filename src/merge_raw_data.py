@@ -1,6 +1,7 @@
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
+from dateutil import parser as date_parser
 
 def merge_raw_training_sets():
     """Merge raw training set files into the master dataset."""
@@ -11,9 +12,16 @@ def merge_raw_training_sets():
     df_master = pd.read_csv(master_file)
     print(f"📂 Loaded {len(df_master)} rows from master")
 
-    # Get all raw files
-    raw_files = sorted(raw_dir.glob("NBA_Training_Set_*.csv"))
-    print(f"📂 Found {len(raw_files)} raw files")
+    # Get only TODAY's raw file (not historical files)
+    today = datetime.now().strftime("%Y-%m-%d")
+    today_alt = datetime.now().strftime("%Y_%m_%d")  # Alternative format with underscores
+    
+    # Try both date formats that might be used in filenames
+    raw_files = list(raw_dir.glob(f"NBA_Training_Set_{today}.csv"))
+    raw_files.extend(list(raw_dir.glob(f"NBA_Training_Set_{today_alt}.csv")))
+    
+    print(f"📂 Looking for today's raw file: {today} or {today_alt}")
+    print(f"📂 Found {len(raw_files)} raw file(s) for today")
 
     new_rows = 0
 
@@ -23,18 +31,25 @@ def merge_raw_training_sets():
         # Load raw file
         df_raw = pd.read_csv(raw_file)
 
-        # Normalize dates from DD-MMM to YYYY-MM-DD
+        # Normalize dates from various incoming formats to YYYY-MM-DD
         def normalize_date(date_str):
             if pd.isna(date_str):
                 return None
+            s = str(date_str).strip()
+            # Try a flexible parse first (handles verbose timestamps / timezones)
             try:
-                # Parse DD-MMM format
-                parsed = datetime.strptime(str(date_str), "%d-%b")
-                # Assume current year 2025
-                normalized = parsed.replace(year=2025).strftime("%Y-%m-%d")
-                return normalized
-            except:
-                return date_str
+                parsed = date_parser.parse(s, fuzzy=True)
+                return parsed.strftime("%Y-%m-%d")
+            except Exception:
+                # Fallback to original DD-MMM behaviour (e.g. '02-Nov')
+                try:
+                    parsed = datetime.strptime(s, "%d-%b")
+                    # Assume current year 2025
+                    return parsed.replace(year=2025).strftime("%Y-%m-%d")
+                except Exception:
+                    # As a last resort, return the original string so later steps
+                    # can handle/flag it (normalize_data will coerce if possible)
+                    return s
 
         df_raw['Date'] = df_raw['Date'].apply(normalize_date)
 
