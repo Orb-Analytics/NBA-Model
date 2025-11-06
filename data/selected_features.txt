@@ -1,0 +1,36 @@
+HOME FAVORITE MODEL - TOP 15 FEATURES
+================================================================================
+ 1. Favorite Opp. Steals P/G L3
+ 2. Underdog Opp. Assists Per Game L3
+ 3. Underdog Blocks P/G L1
+ 4. Underdog 3 Pointers P/G L3
+ 5. Favorite Def. Rebounds P/G
+ 6. Favorite PPGA Home
+ 7. Favorite Opp. Assists Per Game L3
+ 8. Underdog Turnovers P/G
+ 9. Favorite 3 Pointers P/G L3
+10. Underdog Off. Rebounds P/G L3
+11. Underdog Assists Per Game
+12. Underdog Def. Rebounds P/G L1
+13. Favorite Turnovers P/G L3
+14. Underdog PPG L3
+15. Underdog Opp. Steals P/G L1
+
+
+AWAY FAVORITE MODEL - TOP 15 FEATURES
+================================================================================
+ 1. Favorite Opp. Blocks P/G L1
+ 2. Underdog Turnovers P/G L1
+ 3. Favorite Def. Rebounds P/G L3
+ 4. Underdog Steals P/G L3
+ 5. Favorite Opp. 3 Pointers P/G L3
+ 6. Favorite PPGA L3
+ 7. Underdog Opp. Turnovers P/G L3
+ 8. Favorite PPGA Away
+ 9. Favorite Opp. 3 Pointers P/G L1
+10. Underdog Opp. Assists Per Game Home
+11. Underdog Off. Rebounds P/G L3
+12. Underdog Turnovers P/G Home
+13. Favorite Assists Per Game L3
+14. Underdog 3 Pointers P/G L1
+15. Favorite PPG L3
