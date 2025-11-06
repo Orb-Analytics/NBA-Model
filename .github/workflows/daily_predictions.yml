@@ -84,6 +84,10 @@ jobs:
           
           Good luck! 🍀
           EOF
+          
+          # Show the email content for debugging
+          echo "Email body content:"
+          cat email_body.txt
 
       - name: 📧 Send Predictions Email
         uses: dawidd6/action-send-mail@v3
@@ -93,9 +97,10 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "🏀 NBA Spread Predictions - ${{ steps.predictions.outputs.prediction_date }}"
-          body: file://email_body.txt
+          body: "See attached file for today's NBA spread predictions. Good luck! 🍀"
           to: lpchaitin@gmail.com,eborsook@gmail.com
           from: NBA Predictions Bot <noreply@github.com>
+          attachments: email_body.txt
           convert_markdown: false
 
       - name: 💾 Upload predictions as artifact
