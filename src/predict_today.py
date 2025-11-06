@@ -112,7 +112,11 @@ def predict_today_games(data_path, today_date=None):
 
 def main():
     """Main execution."""
-    data_path = '/workspaces/NBA-model/data/NBA Training Set 25-26.csv'
+    # Use relative path that works in both dev container and GitHub Actions
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    data_path = os.path.join(project_root, 'data', 'NBA Training Set 25-26.csv')
     
     # Get today's date (or from command line argument)
     if len(sys.argv) > 1:
@@ -127,7 +131,9 @@ def main():
     print(predictions_text)
     
     # Also save to file
-    output_file = f'./data/predictions_{today_date.replace("-", "_")}.txt'
+    output_dir = os.path.join(project_root, 'data')
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = os.path.join(output_dir, f'predictions_{today_date.replace("-", "_")}.txt')
     with open(output_file, 'w') as f:
         f.write(predictions_text)
     
