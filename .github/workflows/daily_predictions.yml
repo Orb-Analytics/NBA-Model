@@ -46,12 +46,16 @@ jobs:
           
           # Run prediction script and capture output
           python src/predict_today.py "$PRED_DATE" > predictions_output.txt 2>&1
+          EXIT_CODE=$?
+          
+          # Show the output
+          cat predictions_output.txt
           
           # Store the date for later steps
           echo "prediction_date=$PRED_DATE" >> $GITHUB_OUTPUT
           
-          # Show the output
-          cat predictions_output.txt
+          # Exit with the script's exit code
+          exit $EXIT_CODE
 
       - name: 📧 Send Predictions Email
         uses: dawidd6/action-send-mail@v3
