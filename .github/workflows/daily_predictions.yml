@@ -57,6 +57,36 @@ jobs:
           # Exit with the script's exit code
           exit $EXIT_CODE
 
+      - name: � Prepare Email Body
+        id: email_body
+        run: |
+          # Read the predictions file
+          PREDICTIONS=$(cat predictions_output.txt)
+          
+          # Create the email body (need to use EOF for multiline)
+          cat > email_body.txt << 'EOF'
+          NBA Spread Predictions for ${{ steps.predictions.outputs.prediction_date }}
+          
+          Generated using rolling logistic regression with dynamic feature selection.
+          
+          ────────────────────────────────────────────────────────────────────
+          
+          EOF
+          
+          # Append predictions
+          cat predictions_output.txt >> email_body.txt
+          
+          # Append footer
+          cat >> email_body.txt << 'EOF'
+          
+          ────────────────────────────────────────────────────────────────────
+          
+          Repository: ${{ github.repository }}
+          Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          
+          Good luck! 🍀
+          EOF
+
       - name: 📧 Send Predictions Email
         uses: dawidd6/action-send-mail@v3
         with:
@@ -65,24 +95,9 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "🏀 NBA Spread Predictions - ${{ steps.predictions.outputs.prediction_date }}"
-          body: |
-            NBA Spread Predictions for ${{ steps.predictions.outputs.prediction_date }}
-            
-            Generated using rolling logistic regression with dynamic feature selection.
-            
-            ────────────────────────────────────────────────────────────────────
-            
-            $(cat predictions_output.txt)
-            
-            ────────────────────────────────────────────────────────────────────
-            
-            Repository: ${{ github.repository }}
-            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            
-            Good luck! 🍀
+          body: file://email_body.txt
           to: lpchaitin@gmail.com,eborsook@gmail.com
           from: NBA Predictions Bot <noreply@github.com>
-          content_type: text/plain
           convert_markdown: false
 
       - name: 💾 Upload predictions as artifact
