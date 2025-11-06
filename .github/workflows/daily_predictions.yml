@@ -57,15 +57,15 @@ jobs:
           # Exit with the script's exit code
           exit $EXIT_CODE
 
-      - name: � Prepare Email Body
+      - name: 📝 Prepare Email Body
         id: email_body
         run: |
-          # Read the predictions file
-          PREDICTIONS=$(cat predictions_output.txt)
+          PRED_DATE="${{ steps.predictions.outputs.prediction_date }}"
+          REPO="${{ github.repository }}"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           
-          # Create the email body (need to use EOF for multiline)
-          cat > email_body.txt << 'EOF'
-          NBA Spread Predictions for ${{ steps.predictions.outputs.prediction_date }}
+          cat > email_body.txt << EOF
+          NBA Spread Predictions for ${PRED_DATE}
           
           Generated using rolling logistic regression with dynamic feature selection.
           
@@ -73,16 +73,14 @@ jobs:
           
           EOF
           
-          # Append predictions
           cat predictions_output.txt >> email_body.txt
           
-          # Append footer
-          cat >> email_body.txt << 'EOF'
+          cat >> email_body.txt << EOF
           
           ────────────────────────────────────────────────────────────────────
           
-          Repository: ${{ github.repository }}
-          Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          Repository: ${REPO}
+          Workflow Run: ${RUN_URL}
           
           Good luck! 🍀
           EOF
