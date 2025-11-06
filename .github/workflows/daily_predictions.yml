@@ -82,7 +82,7 @@ jobs:
           convert_markdown: false
 
       - name: 💾 Upload predictions as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: predictions-${{ steps.predictions.outputs.prediction_date }}
           path: predictions_output.txt
