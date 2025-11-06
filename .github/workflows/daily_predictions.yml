@@ -1,0 +1,89 @@
+name: 🎯 Generate & Email Daily Predictions
+
+on:
+  workflow_run:
+    workflows: ["📧 Email NBA Dataset"]
+    types:
+      - completed
+  workflow_dispatch:  # Allow manual testing
+    inputs:
+      prediction_date:
+        description: 'Date to predict (YYYY-MM-DD, default: today)'
+        required: false
+        type: string
+
+jobs:
+  predict-and-email:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy scikit-learn
+
+      - name: 🎯 Generate Today's Predictions
+        id: predictions
+        run: |
+          if [ -n "${{ github.event.inputs.prediction_date }}" ]; then
+            PRED_DATE="${{ github.event.inputs.prediction_date }}"
+          else
+            PRED_DATE=$(date -u +%Y-%m-%d)
+          fi
+          
+          echo "Generating predictions for: $PRED_DATE"
+          
+          # Run prediction script and capture output
+          python src/predict_today.py "$PRED_DATE" > predictions_output.txt 2>&1
+          
+          # Store the date for later steps
+          echo "prediction_date=$PRED_DATE" >> $GITHUB_OUTPUT
+          
+          # Show the output
+          cat predictions_output.txt
+
+      - name: 📧 Send Predictions Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "🏀 NBA Spread Predictions - ${{ steps.predictions.outputs.prediction_date }}"
+          body: |
+            NBA Spread Predictions for ${{ steps.predictions.outputs.prediction_date }}
+            
+            Generated using rolling logistic regression with dynamic feature selection.
+            
+            ────────────────────────────────────────────────────────────────────
+            
+            $(cat predictions_output.txt)
+            
+            ────────────────────────────────────────────────────────────────────
+            
+            Repository: ${{ github.repository }}
+            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            Good luck! 🍀
+          to: lpchaitin@gmail.com,eborsook@gmail.com
+          from: NBA Predictions Bot <noreply@github.com>
+          content_type: text/plain
+          convert_markdown: false
+
+      - name: 💾 Upload predictions as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: predictions-${{ steps.predictions.outputs.prediction_date }}
+          path: predictions_output.txt
+          retention-days: 30
