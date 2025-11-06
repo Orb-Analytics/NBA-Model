@@ -52,14 +52,15 @@ def predict_today_games(data_path, today_date=None):
     if today_date is None:
         today_date = datetime.now().strftime('%Y-%m-%d')
     
-    print(f"🎯 Generating predictions for {today_date}")
+    # Don't print this in production, only the final formatted output
+    # print(f"🎯 Generating predictions for {today_date}")
     
     # Initialize predictor
     predictor = DailySpreadPredictor(data_path)
-    predictor.load_data()
+    predictor.load_data(verbose=False)
     
-    # Run prediction for today only
-    result = predictor.train_and_predict_day(today_date)
+    # Run prediction for today only (verbose=False for clean email output)
+    result = predictor.train_and_predict_day(today_date, verbose=False)
     
     if result is None or len(result['predictions']) == 0:
         return f"No games scheduled for {today_date}"

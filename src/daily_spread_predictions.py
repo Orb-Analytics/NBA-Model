@@ -154,12 +154,14 @@ class DailySpreadPredictor:
         self.df = None
         self.daily_results = []
         
-    def load_data(self):
+    def load_data(self, verbose=True):
         """Load and prepare the data."""
-        print("📊 Loading data from:", self.data_path)
+        if verbose:
+            print("📊 Loading data from:", self.data_path)
         self.df = pd.read_csv(self.data_path)
         self.df['Date'] = pd.to_datetime(self.df['Date'])
-        print(f"✅ Loaded {len(self.df)} total games")
+        if verbose:
+            print(f"✅ Loaded {len(self.df)} total games")
         return self.df
     
     def select_top_features(self, X, y, feature_names, n_features=15):
@@ -175,12 +177,13 @@ class DailySpreadPredictor:
         top_features = [feature_names[i] for i in top_indices]
         return top_features
     
-    def train_and_predict_day(self, prediction_date):
+    def train_and_predict_day(self, prediction_date, verbose=True):
         """
         Train on data before prediction_date, predict games on that date.
         
         Args:
             prediction_date: Date to predict (as datetime or string)
+            verbose: Whether to print detailed output (default: True)
             
         Returns:
             Dictionary with results for that day
@@ -195,11 +198,12 @@ class DailySpreadPredictor:
         if len(predict_df) == 0:
             return None
         
-        print(f"\n{'='*80}")
-        print(f"📅 DATE: {prediction_date.strftime('%Y-%m-%d')}")
-        print(f"{'='*80}")
-        print(f"Training on {len(train_df)} games before this date")
-        print(f"Predicting {len(predict_df)} games on this date")
+        if verbose:
+            print(f"\n{'='*80}")
+            print(f"📅 DATE: {prediction_date.strftime('%Y-%m-%d')}")
+            print(f"{'='*80}")
+            print(f"Training on {len(train_df)} games before this date")
+            print(f"Predicting {len(predict_df)} games on this date")
         
         # Only use training data with known outcomes
         train_df = train_df[train_df['Favorite Cover?'].notna()]
@@ -218,8 +222,9 @@ class DailySpreadPredictor:
         home_fav_predict = predict_df[predict_df['Fav. At Home?'] == 1].copy()
         
         if len(home_fav_predict) > 0 and len(home_fav_train) >= 50:
-            print(f"\n🏠 HOME FAVORITE GAMES: {len(home_fav_predict)}")
-            print(f"   Training samples: {len(home_fav_train)}")
+            if verbose:
+                print(f"\n🏠 HOME FAVORITE GAMES: {len(home_fav_predict)}")
+                print(f"   Training samples: {len(home_fav_train)}")
             
             # Get available predictors (don't clean NaN yet - let imputer handle it)
             available_predictors = [col for col in HOME_PREDICTORS if col in home_fav_train.columns]
@@ -231,7 +236,8 @@ class DailySpreadPredictor:
                 y_train = home_fav_train_clean['Favorite Cover?'].values
                 
                 top_features = self.select_top_features(X_train, y_train, available_predictors, n_features=15)
-                print(f"   Top features selected: {len(top_features)}")
+                if verbose:
+                    print(f"   Top features selected: {len(top_features)}")
                 
                 # Create pipeline with imputer, scaler, and model
                 pipeline = Pipeline([
@@ -265,15 +271,17 @@ class DailySpreadPredictor:
                             'correct': (pred == actual_cover) if pd.notna(actual_cover) else None
                         })
                     except Exception as e:
-                        print(f"   ⚠️  Error predicting game {game['Favorite']} vs {game['Underdog']}: {e}")
+                        if verbose:
+                            print(f"   ⚠️  Error predicting game {game['Favorite']} vs {game['Underdog']}: {e}")
         
         # Process Away Favorite games
         away_fav_train = train_df[train_df['Fav. At Home?'] == 0].copy()
         away_fav_predict = predict_df[predict_df['Fav. At Home?'] == 0].copy()
         
         if len(away_fav_predict) > 0 and len(away_fav_train) >= 50:
-            print(f"\n✈️  AWAY FAVORITE GAMES: {len(away_fav_predict)}")
-            print(f"   Training samples: {len(away_fav_train)}")
+            if verbose:
+                print(f"\n✈️  AWAY FAVORITE GAMES: {len(away_fav_predict)}")
+                print(f"   Training samples: {len(away_fav_train)}")
             
             # Get available predictors (don't clean NaN yet - let imputer handle it)
             available_predictors = [col for col in AWAY_PREDICTORS if col in away_fav_train.columns]
@@ -285,7 +293,8 @@ class DailySpreadPredictor:
                 y_train = away_fav_train_clean['Favorite Cover?'].values
                 
                 top_features = self.select_top_features(X_train, y_train, available_predictors, n_features=15)
-                print(f"   Top features selected: {len(top_features)}")
+                if verbose:
+                    print(f"   Top features selected: {len(top_features)}")
                 
                 # Create pipeline with imputer, scaler, and model
                 pipeline = Pipeline([
@@ -319,10 +328,11 @@ class DailySpreadPredictor:
                             'correct': (pred == actual_cover) if pd.notna(actual_cover) else None
                         })
                     except Exception as e:
-                        print(f"   ⚠️  Error predicting game {game['Favorite']} vs {game['Underdog']}: {e}")
+                        if verbose:
+                            print(f"   ⚠️  Error predicting game {game['Favorite']} vs {game['Underdog']}: {e}")
         
         # Print predictions for this day
-        if len(day_results['predictions']) > 0:
+        if len(day_results['predictions']) > 0 and verbose:
             print(f"\n📋 PREDICTIONS FOR {prediction_date.strftime('%Y-%m-%d')}:")
             print("-" * 80)
             
