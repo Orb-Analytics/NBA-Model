@@ -130,8 +130,8 @@ def merge_novig_odds():
             dog_odds = odds_row["dog_price_american"]
             home_fav = odds_row["home_favorite"]
 
-            # Update spread (fav_line)
-            df_master.at[i, "Spread"] = fav_line
+            # Update spread (fav_line) - always use absolute value for consistency
+            df_master.at[i, "Spread"] = abs(fav_line)
 
             # Update odds
             df_master.at[i, "Fav. Odds"] = fav_odds

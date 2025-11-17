@@ -12,11 +12,32 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 import sys
+import os
 import warnings
 warnings.filterwarnings('ignore')
 
 # Import feature lists
 from daily_spread_predictions import HOME_PREDICTORS, AWAY_PREDICTORS, DailySpreadPredictor
+
+
+def american_odds_to_probability(odds):
+    """
+    Convert American odds to implied probability.
+    
+    For negative odds (e.g., -110): probability = |odds| / (|odds| + 100)
+    For positive odds (e.g., +110): probability = 100 / (odds + 100)
+    """
+    if pd.isna(odds):
+        return None
+    
+    odds = float(odds)
+    
+    if odds < 0:
+        # Negative odds (favorite)
+        return abs(odds) / (abs(odds) + 100)
+    else:
+        # Positive odds (underdog)
+        return 100 / (odds + 100)
 
 
 def get_confidence_emoji(probability):
@@ -32,9 +53,70 @@ def format_prediction_text(pred):
     emoji = get_confidence_emoji(pred['cover_probability'])
     cover_text = "COVER" if pred['predicted_cover'] == 1 else "NO COVER"
     
+    # Calculate predictive edges
+    fav_odds = pred.get('fav_odds', -110)
+    dog_odds = pred.get('dog_odds', -110)
+    
+    model_fav_prob = pred['cover_probability']
+    model_dog_prob = 1 - model_fav_prob
+    
+    fav_implied_prob = american_odds_to_probability(fav_odds)
+    dog_implied_prob = american_odds_to_probability(dog_odds)
+    
+    fav_edge = model_fav_prob - fav_implied_prob if fav_implied_prob else None
+    dog_edge = model_dog_prob - dog_implied_prob if dog_implied_prob else None
+    
+    # Determine best side
+    if fav_edge and dog_edge:
+        if fav_edge > dog_edge:
+            best_side = "FAVORITE"
+            best_edge = fav_edge
+            best_team = pred['favorite']
+        else:
+            best_side = "UNDERDOG"
+            best_edge = dog_edge
+            best_team = pred['underdog']
+    else:
+        best_side = "N/A"
+        best_edge = None
+        best_team = None
+    
+    # Format edge indicators
+    fav_edge_text = ""
+    dog_edge_text = ""
+    
+    if fav_edge is not None:
+        if fav_edge > 0:
+            fav_edge_text = f"✅ FAV Edge: +{fav_edge:.1%}"
+        else:
+            fav_edge_text = f"❌ FAV Edge: {fav_edge:.1%}"
+    
+    if dog_edge is not None:
+        if dog_edge > 0:
+            dog_edge_text = f"✅ DOG Edge: +{dog_edge:.1%}"
+        else:
+            dog_edge_text = f"❌ DOG Edge: {dog_edge:.1%}"
+    
+    best_bet_text = ""
+    # Only show best bet if at least one side has positive edge
+    if fav_edge is not None and dog_edge is not None:
+        # If both are negative, no bet
+        if fav_edge <= 0 and dog_edge <= 0:
+            best_bet_text = f"\n   ⛔ NO BET: No positive edge on either side"
+        # If both are positive, take the greater one
+        elif fav_edge > 0 and dog_edge > 0:
+            if fav_edge > dog_edge and best_team:
+                best_bet_text = f"\n   🎯 BEST BET: {best_team} ({fav_edge:+.1%} edge)"
+            elif best_team:
+                best_bet_text = f"\n   🎯 BEST BET: {best_team} ({dog_edge:+.1%} edge)"
+        # Otherwise, take the positive edge
+        elif best_edge and best_edge > 0 and best_team:
+            best_bet_text = f"\n   🎯 BEST BET: {best_team} ({best_edge:+.1%} edge)"
+    
     return f"""{emoji} {pred['favorite']} vs {pred['underdog']} (Spread: {pred['spread']})
    Prediction: Favorite will {cover_text}
    Confidence: {pred['cover_probability']:.1%}
+   {fav_edge_text} | {dog_edge_text}{best_bet_text}
    Model: {pred['model']}"""
 
 
@@ -67,6 +149,24 @@ def predict_today_games(data_path, today_date=None):
     
     predictions = result['predictions']
     
+    # Load master data to get odds for today's games
+    df_master = pd.read_csv(data_path)
+    df_master['Date'] = pd.to_datetime(df_master['Date']).dt.strftime('%Y-%m-%d')
+    today_games = df_master[df_master['Date'] == today_date]
+    
+    # Add odds to predictions
+    for pred in predictions:
+        game_match = today_games[
+            (today_games['Favorite'] == pred['favorite']) &
+            (today_games['Underdog'] == pred['underdog'])
+        ]
+        if not game_match.empty:
+            pred['fav_odds'] = game_match.iloc[0].get('Fav. Odds', -110)
+            pred['dog_odds'] = game_match.iloc[0].get('Dog Odds', -110)
+        else:
+            pred['fav_odds'] = -110
+            pred['dog_odds'] = -110
+    
     # Sort by confidence (high confidence first)
     predictions_sorted = sorted(
         predictions, 
@@ -86,6 +186,41 @@ def predict_today_games(data_path, today_date=None):
     
     # Add summary
     output.append("=" * 70)
+    
+    # Calculate model's season record up to this date
+    try:
+        results_df = pd.read_csv(os.path.join(os.path.dirname(data_path), 'daily_predictions_results.csv'))
+        results_df['date'] = pd.to_datetime(results_df['date'])
+        today_dt = pd.to_datetime(today_date)
+        
+        # Get all predictions before today
+        prior_results = results_df[results_df['date'] < today_dt].copy()
+        
+        if len(prior_results) > 0:
+            # Overall record
+            total_games = len(prior_results)
+            correct = prior_results['correct'].sum()
+            accuracy = (correct / total_games * 100) if total_games > 0 else 0
+            
+            # Record by model type
+            home_fav = prior_results[prior_results['model'] == 'Home Favorite']
+            away_fav = prior_results[prior_results['model'] == 'Away Favorite']
+            
+            home_record = f"{home_fav['correct'].sum()}-{len(home_fav) - home_fav['correct'].sum()}" if len(home_fav) > 0 else "0-0"
+            away_record = f"{away_fav['correct'].sum()}-{len(away_fav) - away_fav['correct'].sum()}" if len(away_fav) > 0 else "0-0"
+            
+            home_acc = (home_fav['correct'].sum() / len(home_fav) * 100) if len(home_fav) > 0 else 0
+            away_acc = (away_fav['correct'].sum() / len(away_fav) * 100) if len(away_fav) > 0 else 0
+            
+            output.append("\n📊 MODEL RECORD THIS SEASON (through " + str(today_dt.date()) + "):")
+            output.append(f"Overall: {correct}-{total_games - correct} ({accuracy:.1f}%)")
+            output.append(f"🏠 Home Favorite Model: {home_record} ({home_acc:.1f}%)")
+            output.append(f"✈️  Away Favorite Model: {away_record} ({away_acc:.1f}%)")
+            output.append("")
+    except Exception as e:
+        # If we can't load results, just skip the record section
+        pass
+    
     output.append("\n📊 CONFIDENCE BREAKDOWN:")
     
     high_conf = [p for p in predictions if p['cover_probability'] >= 0.7 or p['cover_probability'] <= 0.3]
