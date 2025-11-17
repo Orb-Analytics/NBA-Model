@@ -70,6 +70,62 @@ def fuzzy_match(team, candidates, threshold=0.85):
             best_score = score
     return best_match, best_score
 
+def fix_all_computed_columns(df):
+    """
+    Fix all computed columns to ensure they're correctly calculated.
+    This runs at the end of merging to catch any errors.
+    """
+    print("🔧 Verifying and fixing all computed columns...")
+    
+    fixes = 0
+    for idx, row in df.iterrows():
+        # Fix Fav. At Home?
+        expected_fav_home = 1 if row['Favorite'] == row['Home'] else 0
+        if row['Fav. At Home?'] != expected_fav_home:
+            df.at[idx, 'Fav. At Home?'] = expected_fav_home
+            fixes += 1
+        
+        # For completed games
+        if pd.notna(row['Favorite Score']) and pd.notna(row['Underdog Score']):
+            # Fix Winner
+            expected_winner = row['Favorite'] if row['Favorite Score'] > row['Underdog Score'] else row['Underdog']
+            if row['Winner'] != expected_winner:
+                df.at[idx, 'Winner'] = expected_winner
+                fixes += 1
+            
+            # Fix Favorite - Underdog (+/-)
+            expected_diff = row['Favorite Score'] - row['Underdog Score']
+            if pd.isna(row['Favorite - Underdog (+/-)']) or abs(row['Favorite - Underdog (+/-)'] - expected_diff) > 0.01:
+                df.at[idx, 'Favorite - Underdog (+/-)'] = expected_diff
+                fixes += 1
+            
+            # Fix Favorite Cover?
+            if pd.notna(row['Spread']):
+                expected_cover = 1 if expected_diff > row['Spread'] else 0
+                if pd.isna(row['Favorite Cover?']) or row['Favorite Cover?'] != expected_cover:
+                    df.at[idx, 'Favorite Cover?'] = expected_cover
+                    fixes += 1
+            
+            # Fix Favorite Win?
+            expected_fav_win = 1 if row['Favorite Score'] > row['Underdog Score'] else 0
+            if pd.isna(row['Favorite Win?']) or row['Favorite Win?'] != expected_fav_win:
+                df.at[idx, 'Favorite Win?'] = expected_fav_win
+                fixes += 1
+        
+        # Fix Home/Away +/-
+        if pd.notna(row['Home Score']) and pd.notna(row['Away Score']):
+            expected_home_diff = row['Home Score'] - row['Away Score']
+            if pd.isna(row['Home/Away +/-']) or abs(row['Home/Away +/-'] - expected_home_diff) > 0.01:
+                df.at[idx, 'Home/Away +/-'] = expected_home_diff
+                fixes += 1
+    
+    if fixes > 0:
+        print(f"   ✅ Fixed {fixes} computed column values")
+    else:
+        print(f"   ✅ All computed columns verified correct")
+    
+    return df
+
 # ==============================
 # LOAD DATA
 # ==============================
@@ -189,6 +245,11 @@ def merge_scores():
         all_unmatched.extend(unmatched)
         print(f"  ✅ Updated {updated_rows} games from {scores_file.name}")
 
+    # ==============================
+    # FIX ALL COMPUTED COLUMNS
+    # ==============================
+    df_master = fix_all_computed_columns(df_master)
+    
     # ==============================
     # SAVE RESULTS
     # ==============================
