@@ -98,7 +98,7 @@ jobs:
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "🏀 NBA Spread Predictions - ${{ steps.predictions.outputs.prediction_date }}"
           body: "See attached file for today's NBA spread predictions. Good luck! 🍀"
-          to: lpchaitin@gmail.com,eborsook@gmail.com
+          to: lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com
           from: NBA Predictions Bot <noreply@github.com>
           attachments: email_body.txt
           convert_markdown: false
