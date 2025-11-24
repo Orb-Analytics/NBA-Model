@@ -29,7 +29,10 @@ SCORE_TO_MASTER_TEAM_MAP = {
     "Atlanta": "Atlanta", "Boston": "Boston", "Brooklyn": "Brooklyn", "Charlotte": "Charlotte",
     "Chicago": "Chicago", "Cleveland": "Cleveland", "Dallas": "Dallas", "Denver": "Denver",
     "Detroit": "Detroit", "Golden State": "Golden State", "Houston": "Houston", "Indiana": "Indiana",
-    "LA Clippers": "LA Clippers", "LA Lakers": "La Lakers", "Los Angeles": "La Lakers",
+    "LA": "La Clippers",  # Score API uses "LA" for Clippers
+    "LA Clippers": "La Clippers", "LA Lakers": "La Lakers",
+    # Note: "Los Angeles" is ambiguous - could be Lakers or Clippers, handled in merge logic
+    "Los Angeles": "Los Angeles",  # Will be matched against both teams
     "Memphis": "Memphis", "Miami": "Miami", "Milwaukee": "Milwaukee", "Minnesota": "Minnesota",
     "New Orleans": "New Orleans", "New York": "New York", "Oklahoma City": "Okla City",
     "Orlando": "Orlando", "Philadelphia": "Philadelphia", "Phoenix": "Phoenix", "Portland": "Portland",
@@ -50,13 +53,10 @@ TEAM_NAME_MAP = {
 
 def map_score_team_name(team_name, opponent=None):
     """Map score file team name to master dataset name, handling ambiguous cases."""
+    # Note: "Los Angeles" is ambiguous (could be Lakers or Clippers)
+    # This will be handled in the merge logic by matching against both possibilities
     if team_name == "LA":
-        # Disambiguate LA based on opponent
-        west_teams = {"Golden State", "LA Clippers", "Phoenix", "Sacramento", "Portland", "Utah", "Denver", "Minnesota", "Okla City", "Dallas", "San Antonio", "New Orleans", "Memphis"}
-        if opponent in west_teams:
-            return "LA Clippers"  # LA playing Western opponent = LA Clippers
-        else:
-            return "La Lakers"  # LA playing Eastern opponent = LA Lakers
+        return "Los Angeles"  # Return ambiguous name, will be resolved in merge
     return SCORE_TO_MASTER_TEAM_MAP.get(team_name, team_name)
 
 def fuzzy_match(team, candidates, threshold=0.85):
@@ -164,16 +164,33 @@ def merge_scores():
             # find matching score - exact match first (map score file names to master names)
             # Create mapped versions for comparison
             df_scores_copy = df_scores.copy()
-            df_scores_copy["Home_mapped"] = df_scores_copy.apply(lambda row: map_score_team_name(row["Home"], map_score_team_name(row["Away"], None)), axis=1)
-            df_scores_copy["Away_mapped"] = df_scores_copy.apply(lambda row: map_score_team_name(row["Away"], map_score_team_name(row["Home"], None)), axis=1)
-
+            df_scores_copy["Home_mapped"] = df_scores_copy["Home"].map(SCORE_TO_MASTER_TEAM_MAP).fillna(df_scores_copy["Home"])
+            df_scores_copy["Away_mapped"] = df_scores_copy["Away"].map(SCORE_TO_MASTER_TEAM_MAP).fillna(df_scores_copy["Away"])
+            
+            # Handle "Los Angeles" ambiguity - it could be Lakers or Clippers
+            # We'll match by checking if EITHER team name matches
+            def matches_with_la_ambiguity(home_mapped, away_mapped, fav, dog):
+                """Check if teams match, handling Los Angeles ambiguity."""
+                # Direct match
+                if (home_mapped == fav and away_mapped == dog) or (home_mapped == dog and away_mapped == fav):
+                    return True
+                
+                # Handle Los Angeles ambiguity
+                if home_mapped == "Los Angeles":
+                    if (("La Lakers" == fav or "La Clippers" == fav) and away_mapped == dog) or \
+                       (("La Lakers" == dog or "La Clippers" == dog) and away_mapped == fav):
+                        return True
+                
+                if away_mapped == "Los Angeles":
+                    if (home_mapped == fav and ("La Lakers" == dog or "La Clippers" == dog)) or \
+                       (home_mapped == dog and ("La Lakers" == fav or "La Clippers" == fav)):
+                        return True
+                
+                return False
+            
             match = df_scores_copy[
-                (df_scores_copy["Date"] == date)
-                & (
-                    ((df_scores_copy["Home_mapped"] == fav) & (df_scores_copy["Away_mapped"] == dog))
-                    |
-                    ((df_scores_copy["Home_mapped"] == dog) & (df_scores_copy["Away_mapped"] == fav))
-                )
+                (df_scores_copy["Date"] == date) &
+                df_scores_copy.apply(lambda row: matches_with_la_ambiguity(row["Home_mapped"], row["Away_mapped"], fav, dog), axis=1)
             ]
 
             # If no exact match, try fuzzy matching
