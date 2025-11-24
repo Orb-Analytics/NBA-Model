@@ -1,197 +1,249 @@
 favorite,underdog,spread,fav_at_home,model,predicted_cover,cover_probability,actual_cover,correct,date
-Okla City,Houston,7.5,1,Home Favorite,0,0.4982632842267384,1.0,False,2025-10-21
-Golden State,La Lakers,2.5,0,Away Favorite,1,0.8056075466215873,1.0,True,2025-10-21
-Charlotte,Brooklyn,5.5,1,Home Favorite,1,0.5060776138404272,1.0,True,2025-10-22
-Orlando,Miami,8.5,1,Home Favorite,1,0.5060776138404272,1.0,True,2025-10-22
-Atlanta,Toronto,5.5,1,Home Favorite,1,0.5060776138404272,0.0,False,2025-10-22
-Boston,Philadelphia,4.5,1,Home Favorite,1,0.5060776138404272,0.0,False,2025-10-22
-Memphis,New Orleans,3.5,1,Home Favorite,1,0.5060776138404272,1.0,True,2025-10-22
-Milwaukee,Washington,10.5,1,Home Favorite,1,0.5060776138404272,1.0,True,2025-10-22
-Dallas,San Antonio,2.5,1,Home Favorite,1,0.5060776138404272,0.0,False,2025-10-22
-Cleveland,New York,1.5,0,Away Favorite,0,0.4586350821876533,0.0,True,2025-10-22
-Detroit,Chicago,2.5,0,Away Favorite,0,0.4586350821876533,0.0,True,2025-10-22
-La Clippers,Utah,9.5,0,Away Favorite,0,0.4586350821876533,0.0,True,2025-10-22
-Phoenix,Sacramento,4.5,0,Away Favorite,0,0.4586350821876533,1.0,False,2025-10-22
-Minnesota,Portland,4.5,0,Away Favorite,0,0.4586350821876533,1.0,False,2025-10-22
-Golden State,Denver,2.5,1,Home Favorite,0,0.30938354116614686,1.0,False,2025-10-23
-Okla City,Indiana,8.5,0,Away Favorite,0,0.3700623049526487,1.0,False,2025-10-23
-Toronto,Milwaukee,1.5,1,Home Favorite,1,0.8160340454499516,0.0,False,2025-10-24
-Orlando,Atlanta,4.5,1,Home Favorite,1,0.851244902010894,0.0,False,2025-10-24
-New York,Boston,3.5,1,Home Favorite,1,0.7938174360790984,1.0,True,2025-10-24
-Houston,Detroit,6.5,1,Home Favorite,1,0.5720995214787992,0.0,False,2025-10-24
-Memphis,Miami,2.5,1,Home Favorite,1,0.6209537815142534,0.0,False,2025-10-24
-Dallas,Washington,9.5,1,Home Favorite,1,0.679974718503604,0.0,False,2025-10-24
-Sacramento,Utah,5.5,1,Home Favorite,0,0.27525653291027097,1.0,False,2025-10-24
-Cleveland,Brooklyn,11.5,0,Away Favorite,0,0.42613419456342727,1.0,False,2025-10-24
-San Antonio,New Orleans,4.5,0,Away Favorite,0,0.3103853413609299,1.0,False,2025-10-24
-Minnesota,La Lakers,2.5,0,Away Favorite,1,0.5703530582902178,0.0,False,2025-10-24
-Golden State,Portland,2.5,0,Away Favorite,0,0.24531261896435497,0.0,True,2025-10-24
-La Clippers,Phoenix,9.5,0,Away Favorite,1,0.8704451156560677,1.0,True,2025-10-24
-Orlando,Chicago,6.5,1,Home Favorite,1,0.5820053562620537,1.0,True,2025-10-25
-Philadelphia,Charlotte,4.5,1,Home Favorite,0,0.33996579372169267,1.0,False,2025-10-25
-Memphis,Indiana,1.5,1,Home Favorite,0,0.061102427869495275,1.0,False,2025-10-25
-Denver,Phoenix,13.5,1,Home Favorite,1,0.8619185275856747,1.0,True,2025-10-25
-Okla City,Atlanta,6.5,0,Away Favorite,0,0.47297219943631524,1.0,False,2025-10-25
-Detroit,Boston,3.5,1,Home Favorite,0,0.422954910755463,1.0,False,2025-10-26
-Cleveland,Milwaukee,6.5,1,Home Favorite,0,0.4663581351463515,1.0,False,2025-10-26
-Washington,Charlotte,2.5,1,Home Favorite,1,0.6642434771238647,0.0,False,2025-10-26
-Minnesota,Indiana,12.5,1,Home Favorite,1,0.6371181516068386,1.0,True,2025-10-26
-Dallas,Toronto,1.5,1,Home Favorite,0,0.42184984338295356,1.0,False,2025-10-26
-La Clippers,Portland,8.5,1,Home Favorite,1,0.6331059912534679,0.0,False,2025-10-26
-San Antonio,Brooklyn,10.5,0,Away Favorite,1,0.6264368549626655,0.0,False,2025-10-26
-New York,Miami,2.5,0,Away Favorite,1,0.8458161075463332,0.0,False,2025-10-26
-La Lakers,Sacramento,2.5,0,Away Favorite,0,0.41897400067569385,1.0,False,2025-10-26
-Houston,Brooklyn,15.5,1,Home Favorite,1,0.7001908340079165,1.0,True,2025-10-27
-New Orleans,Boston,1.5,1,Home Favorite,0,0.35319642199730705,0.0,True,2025-10-27
-Utah,Phoenix,1.5,1,Home Favorite,1,0.6941828379789491,1.0,True,2025-10-27
-Cleveland,Detroit,2.5,0,Away Favorite,1,0.7432237593474857,1.0,True,2025-10-27
-Orlando,Philadelphia,5.5,0,Away Favorite,0,0.4340936571102104,0.0,True,2025-10-27
-Atlanta,Chicago,2.5,0,Away Favorite,0,0.1149700168563825,0.0,True,2025-10-27
-San Antonio,Toronto,4.5,0,Away Favorite,0,0.33525099631946975,0.0,True,2025-10-27
-Okla City,Dallas,8.5,0,Away Favorite,1,0.5835879170859339,0.0,False,2025-10-27
-Denver,Minnesota,6.5,0,Away Favorite,1,0.8106033756398867,1.0,True,2025-10-27
-Golden State,Memphis,7.5,0,Away Favorite,1,0.519081912744732,0.0,False,2025-10-27
-Portland,La Lakers,2.5,0,Away Favorite,1,0.9330959303206932,1.0,True,2025-10-27
-Miami,Charlotte,6.5,1,Home Favorite,1,0.596382619452283,1.0,True,2025-10-28
-Okla City,Sacramento,10.5,1,Home Favorite,0,0.4434486456837886,0.0,True,2025-10-28
-Philadelphia,Washington,4.5,0,Away Favorite,0,0.4011486873673931,1.0,False,2025-10-28
-New York,Milwaukee,1.5,0,Away Favorite,1,0.7907620411725463,0.0,False,2025-10-28
-La Clippers,Golden State,1.5,0,Away Favorite,1,0.7949014064357833,0.0,False,2025-10-28
-Chicago,Sacramento,4.5,1,Home Favorite,0,0.49155903762859715,1.0,False,2025-10-29
-Dallas,Indiana,5.5,1,Home Favorite,0,0.4792390419987098,1.0,False,2025-10-29
-Denver,New Orleans,12.5,1,Home Favorite,1,0.7385110169675704,1.0,True,2025-10-29
-Minnesota,La Lakers,7.5,1,Home Favorite,0,0.2421040035311161,1.0,False,2025-10-29
-Houston,Toronto,5.5,0,Away Favorite,1,0.5008031917765117,1.0,True,2025-10-29
-Cleveland,Boston,3.5,0,Away Favorite,1,0.6148304282880704,0.0,False,2025-10-29
-Orlando,Detroit,1.5,0,Away Favorite,1,0.9149534189117288,0.0,False,2025-10-29
-Atlanta,Brooklyn,8.5,0,Away Favorite,0,0.38310151499313877,1.0,False,2025-10-29
-Portland,Utah,3.5,0,Away Favorite,1,0.6246654208902725,0.0,False,2025-10-29
-Memphis,Phoenix,1.5,0,Away Favorite,0,0.4661513850943336,1.0,False,2025-10-29
-Orlando,Charlotte,1.5,0,Away Favorite,1,0.8589657028367121,1.0,True,2025-10-30
-Golden State,Milwaukee,3.5,0,Away Favorite,0,0.4552200321919812,0.0,True,2025-10-30
-Okla City,Washington,15.5,0,Away Favorite,0,0.3760070029818122,0.0,True,2025-10-30
-San Antonio,Miami,5.5,0,Away Favorite,0,0.13885501963533103,0.0,True,2025-10-30
-Cleveland,Toronto,4.5,1,Home Favorite,1,0.775412648128526,0.0,False,2025-10-31
-Phoenix,Utah,3.5,1,Home Favorite,1,0.5596877039127761,1.0,True,2025-10-31
-La Clippers,New Orleans,10.5,1,Home Favorite,1,0.8654555462041642,0.0,False,2025-10-31
-Atlanta,Indiana,2.5,0,Away Favorite,0,0.14927702200377202,1.0,False,2025-10-31
-Boston,Philadelphia,1.5,0,Away Favorite,1,0.7722212328434017,1.0,True,2025-10-31
-New York,Chicago,5.5,0,Away Favorite,0,0.44163667761851105,0.0,True,2025-10-31
-Memphis,La Lakers,2.5,0,Away Favorite,0,0.4564579118779928,1.0,False,2025-10-31
-Denver,Portland,5.5,0,Away Favorite,0,0.3641026274392986,1.0,False,2025-10-31
-Milwaukee,Sacramento,7.5,1,Home Favorite,1,0.526206109313074,1.0,True,2025-11-01
-Detroit,Dallas,7.5,1,Home Favorite,0,0.4325718379076516,1.0,False,2025-11-01
-Orlando,Washington,9.5,0,Away Favorite,1,0.6904837417908966,1.0,True,2025-11-01
-Minnesota,Charlotte,4.5,0,Away Favorite,1,0.6634232684564901,1.0,True,2025-11-01
-Golden State,Indiana,11.5,0,Away Favorite,1,0.6929646284658811,1.0,True,2025-11-01
-Houston,Boston,5.5,0,Away Favorite,1,0.7778244703822433,1.0,True,2025-11-01
-Okla City,New Orleans,13.5,1,Home Favorite,0,0.42697401640193333,1.0,False,2025-11-02
-Charlotte,Utah,1.5,1,Home Favorite,1,0.6664649123688291,1.0,True,2025-11-02
-Cleveland,Atlanta,6.5,1,Home Favorite,0,0.45439860437262075,1.0,False,2025-11-02
-Toronto,Memphis,4.5,1,Home Favorite,0,0.36500009593352806,1.0,False,2025-11-02
-New York,Chicago,7.5,1,Home Favorite,1,0.7618802751588338,1.0,True,2025-11-02
-Philadelphia,Brooklyn,5.5,0,Away Favorite,1,0.894390860284986,1.0,True,2025-11-02
-San Antonio,Phoenix,5.5,0,Away Favorite,0,0.3012565339808051,0.0,True,2025-11-02
-La Lakers,Miami,4.5,0,Away Favorite,0,0.04235996907103992,0.0,True,2025-11-02
-Boston,Utah,10.5,1,Home Favorite,0,0.46255931049850485,0.0,True,2025-11-03
-New York,Washington,12.5,1,Home Favorite,0,0.4049834981473884,1.0,False,2025-11-03
-Houston,Dallas,12.5,1,Home Favorite,0,0.44720782863476,1.0,False,2025-11-03
-Denver,Sacramento,11.5,1,Home Favorite,1,0.6164309010707659,1.0,True,2025-11-03
-Portland,La Lakers,3.5,1,Home Favorite,1,0.6649521122521302,0.0,False,2025-11-03
-Minnesota,Brooklyn,8.5,0,Away Favorite,1,0.8223703702936819,1.0,True,2025-11-03
-Milwaukee,Indiana,6.5,0,Away Favorite,0,0.47035235575711726,1.0,False,2025-11-03
-Detroit,Memphis,4.5,0,Away Favorite,1,0.5304546351269391,1.0,True,2025-11-03
-La Clippers,Miami,8.5,0,Away Favorite,0,0.24626763556862613,,,2025-11-03
-Toronto,Milwaukee,3.5,1,Home Favorite,1,0.5652645770158068,1.0,True,2025-11-04
-Chicago,Philadelphia,1.5,1,Home Favorite,0,0.49699372358418636,1.0,False,2025-11-04
-New Orleans,Charlotte,2.5,1,Home Favorite,0,0.46620491541861225,1.0,False,2025-11-04
-Orlando,Atlanta,3.5,0,Away Favorite,1,0.8261585684652337,0.0,False,2025-11-04
-Golden State,Phoenix,10.5,0,Away Favorite,1,0.7741622265387171,0.0,False,2025-11-04
-Okla City,La Clippers,7.5,0,Away Favorite,0,0.44562841686771076,1.0,False,2025-11-04
-Cleveland,Philadelphia,9.5,1,Home Favorite,0,0.4149791817629719,1.0,False,2025-11-05
-Detroit,Utah,9.5,1,Home Favorite,0,0.27622638708015845,1.0,False,2025-11-05
-Indiana,Brooklyn,6.5,1,Home Favorite,1,0.6983506309209416,0.0,False,2025-11-05
-Boston,Washington,12.5,1,Home Favorite,0,0.3794535499698805,1.0,False,2025-11-05
-New York,Minnesota,4.5,1,Home Favorite,1,0.5439434277588108,1.0,True,2025-11-05
-Dallas,New Orleans,7.5,1,Home Favorite,1,0.6593016093236025,0.0,False,2025-11-05
-Denver,Miami,9.5,1,Home Favorite,0,0.2930844063055061,1.0,False,2025-11-05
-Sacramento,Golden State,2.5,1,Home Favorite,0,0.3574555105357295,1.0,False,2025-11-05
-Houston,Memphis,7.5,0,Away Favorite,1,0.8737697205948051,1.0,True,2025-11-05
-La Lakers,San Antonio,2.5,0,Away Favorite,0,0.12786409384904068,1.0,False,2025-11-05
-Okla City,Portland,4.5,0,Away Favorite,1,0.686162004456054,1.0,True,2025-11-05
-Phoenix,La Clippers,2.5,0,Away Favorite,1,0.6283028697752168,0.0,False,2025-11-06
-Orlando,Boston,3.5,1,Home Favorite,1,0.505303289692899,1.0,True,2025-11-07
-Atlanta,Toronto,2.5,1,Home Favorite,0,0.42270851372597096,0.0,True,2025-11-07
-Miami,Charlotte,4.5,1,Home Favorite,1,0.7814352597742088,1.0,True,2025-11-07
-Memphis,Dallas,4.5,1,Home Favorite,0,0.3640554525017083,1.0,False,2025-11-07
-Milwaukee,Chicago,4.5,1,Home Favorite,0,0.33534074825600657,1.0,False,2025-11-07
-Minnesota,Utah,11.5,1,Home Favorite,0,0.45099641483764097,1.0,False,2025-11-07
-Denver,Golden State,10.5,1,Home Favorite,1,0.6294535533023213,1.0,True,2025-11-07
-Cleveland,Washington,13.5,0,Away Favorite,1,0.5313755198805322,1.0,True,2025-11-07
-Detroit,Brooklyn,10.5,0,Away Favorite,1,0.5052945342190731,1.0,True,2025-11-07
-Houston,San Antonio,4.5,0,Away Favorite,0,0.4798677510601159,0.0,True,2025-11-07
-Okla City,Sacramento,10.5,0,Away Favorite,1,0.863905535004021,1.0,True,2025-11-07
-Philadelphia,Toronto,5.5,1,Home Favorite,0,0.4673923249253166,1.0,False,2025-11-08
-Cleveland,Chicago,8.5,1,Home Favorite,0,0.46991483043842414,1.0,False,2025-11-08
-San Antonio,New Orleans,10.5,1,Home Favorite,0,0.4705883132711939,0.0,True,2025-11-08
-Denver,Indiana,12.5,1,Home Favorite,0,0.4824953537347059,1.0,False,2025-11-08
-Dallas,Washington,4.5,0,Away Favorite,1,0.5575152197878064,1.0,True,2025-11-08
-La Lakers,Atlanta,3.5,0,Away Favorite,0,0.3669272799941712,0.0,True,2025-11-08
-Portland,Miami,3.5,0,Away Favorite,0,0.06564344352614353,0.0,True,2025-11-08
-La Clippers,Phoenix,5.5,0,Away Favorite,1,0.501822078511348,1.0,True,2025-11-08
-New York,Brooklyn,15.5,1,Home Favorite,1,0.6433559580536268,1.0,True,2025-11-09
-Orlando,Boston,3.5,1,Home Favorite,0,0.4676385213372033,0.0,True,2025-11-09
-Houston,Milwaukee,4.5,0,Away Favorite,1,0.6772355379321592,1.0,True,2025-11-09
-Okla City,Memphis,10.5,0,Away Favorite,1,0.6484687165158035,1.0,True,2025-11-09
-Detroit,Philadelphia,4.5,0,Away Favorite,1,0.6444121261886597,1.0,True,2025-11-09
-Golden State,Indiana,12.5,0,Away Favorite,1,0.6694295880300701,0.0,False,2025-11-09
-Minnesota,Sacramento,5.5,0,Away Favorite,1,0.6653058563541164,1.0,True,2025-11-09
-Detroit,Washington,11.5,1,Home Favorite,0,0.42900889531605063,1.0,False,2025-11-10
-Orlando,Portland,2.5,1,Home Favorite,0,0.48584623396008586,1.0,False,2025-11-10
-Phoenix,New Orleans,9.5,1,Home Favorite,1,0.5388281971315824,1.0,True,2025-11-10
-La Lakers,Charlotte,8.5,0,Away Favorite,1,0.6993667949069955,1.0,True,2025-11-10
-Cleveland,Miami,7.5,0,Away Favorite,0,0.14841992201067017,1.0,False,2025-11-10
-San Antonio,Chicago,4.5,0,Away Favorite,0,0.2637603434853155,1.0,False,2025-11-10
-Milwaukee,Dallas,2.5,0,Away Favorite,0,0.22028394308711943,1.0,False,2025-11-10
-Minnesota,Utah,7.5,0,Away Favorite,0,0.24368483427437682,0.0,True,2025-11-10
-La Clippers,Atlanta,4.5,0,Away Favorite,1,0.52796127097456,,,2025-11-10
-New York,Memphis,9.5,1,Home Favorite,0,0.389683085407954,1.0,False,2025-11-11
-Philadelphia,Boston,1.5,1,Home Favorite,1,0.5936025269237241,1.0,True,2025-11-11
-Toronto,Brooklyn,10.5,0,Away Favorite,1,0.8476358760783975,1.0,True,2025-11-11
-Okla City,Golden State,7.5,0,Away Favorite,1,0.5594607341753906,0.0,False,2025-11-11
-Indiana,Utah,2.5,0,Away Favorite,0,0.3232624088135625,0.0,True,2025-11-11
-Denver,Sacramento,8.5,0,Away Favorite,1,0.7224217328291584,1.0,True,2025-11-11
-New York,Orlando,4.5,1,Home Favorite,0,0.45413436162584864,0.0,True,2025-11-12
-Boston,Memphis,6.5,1,Home Favorite,0,0.4340076400038608,1.0,False,2025-11-12
-Miami,Cleveland,5.5,1,Home Favorite,1,0.757105943427567,0.0,False,2025-11-12
-Houston,Washington,16.5,1,Home Favorite,1,0.7984238277762662,1.0,True,2025-11-12
-Milwaukee,Charlotte,4.5,0,Away Favorite,1,0.686772234950233,0.0,False,2025-11-12
-Detroit,Chicago,1.5,0,Away Favorite,1,0.5598322463914612,0.0,False,2025-11-12
-Portland,New Orleans,8.5,0,Away Favorite,1,0.789296317806076,0.0,False,2025-11-12
-San Antonio,Golden State,4.5,0,Away Favorite,1,0.7204698487998439,1.0,True,2025-11-12
-Dallas,Phoenix,1.5,0,Away Favorite,1,0.6489179864981448,1.0,True,2025-11-12
-Okla City,La Lakers,6.5,0,Away Favorite,0,0.4996054004243628,0.0,True,2025-11-12
-Atlanta,Sacramento,3.5,0,Away Favorite,1,0.8970202288199107,1.0,True,2025-11-12
-Denver,La Clippers,3.5,0,Away Favorite,0,0.2936825374606685,1.0,False,2025-11-12
-New York,Miami,6.5,1,Home Favorite,1,0.5042553223157549,1.0,True,2025-11-14
-Orlando,Brooklyn,13.5,1,Home Favorite,1,0.6849171675025307,1.0,True,2025-11-14
-Detroit,Philadelphia,4.5,1,Home Favorite,1,0.5468576814071765,1.0,True,2025-11-14
-Houston,Portland,7.5,1,Home Favorite,1,0.8206548613690812,1.0,True,2025-11-14
-Milwaukee,Charlotte,9.5,1,Home Favorite,1,0.6645290607180049,1.0,True,2025-11-14
-Minnesota,Sacramento,11.5,1,Home Favorite,1,0.665881250316941,1.0,True,2025-11-14
-La Lakers,New Orleans,9.5,0,Away Favorite,1,0.8076610135508708,1.0,True,2025-11-14
-La Clippers,Dallas,2.5,0,Away Favorite,0,0.4781023287178053,1.0,False,2025-11-14
-San Antonio,Golden State,2.5,0,Away Favorite,0,0.2495814254677831,1.0,False,2025-11-14
-Cleveland,Memphis,11.5,1,Home Favorite,1,0.5185867907743101,1.0,True,2025-11-15
-Minnesota,Denver,2.5,1,Home Favorite,1,0.7690548770732629,0.0,False,2025-11-15
-Okla City,Charlotte,15.5,0,Away Favorite,0,0.41915343892553725,1.0,False,2025-11-15
-Toronto,Indiana,6.5,0,Away Favorite,1,0.7597377773154332,1.0,True,2025-11-15
-La Lakers,Milwaukee,1.5,0,Away Favorite,1,0.8662386856217429,1.0,True,2025-11-15
-Boston,La Clippers,6.5,1,Home Favorite,0,0.42712210494740815,,,2025-11-16
-Washington,Brooklyn,2.5,1,Home Favorite,1,0.5673935354858788,,,2025-11-16
-Houston,Orlando,7.5,1,Home Favorite,1,0.6918788930997279,,,2025-11-16
-San Antonio,Sacramento,8.5,0,Away Favorite,1,0.7701379464727768,,,2025-11-16
-Golden State,New Orleans,10.5,0,Away Favorite,1,0.9256136603750884,,,2025-11-16
-Portland,Dallas,4.5,0,Away Favorite,1,0.6584841326430697,,,2025-11-16
-Atlanta,Phoenix,1.5,0,Away Favorite,1,0.6819937208219466,,,2025-11-16
-Chicago,Utah,4.5,0,Away Favorite,0,0.38195400089725245,,,2025-11-16
+Okla City,Houston,7.5,1,Home Favorite,0,0.3801180644713429,0.0,True,2025-10-21
+Golden State,La Lakers,2.5,0,Away Favorite,1,0.8534570738836711,1.0,True,2025-10-21
+Charlotte,Brooklyn,5.5,1,Home Favorite,0,0.498388992703364,1.0,False,2025-10-22
+Orlando,Miami,8.5,1,Home Favorite,0,0.498388992703364,0.0,True,2025-10-22
+Atlanta,Toronto,5.5,1,Home Favorite,0,0.498388992703364,0.0,True,2025-10-22
+Boston,Philadelphia,4.5,1,Home Favorite,0,0.498388992703364,0.0,True,2025-10-22
+Memphis,New Orleans,3.5,1,Home Favorite,0,0.498388992703364,1.0,False,2025-10-22
+Milwaukee,Washington,10.5,1,Home Favorite,0,0.498388992703364,1.0,False,2025-10-22
+Dallas,San Antonio,2.5,1,Home Favorite,0,0.498388992703364,0.0,True,2025-10-22
+Phoenix,Sacramento,4.5,1,Home Favorite,0,0.498388992703364,0.0,True,2025-10-22
+Cleveland,New York,1.5,0,Away Favorite,0,0.4558347995098015,0.0,True,2025-10-22
+Detroit,Chicago,2.5,0,Away Favorite,0,0.4558347995098015,0.0,True,2025-10-22
+La Clippers,Utah,9.5,0,Away Favorite,0,0.4558347995098015,0.0,True,2025-10-22
+Minnesota,Portland,4.5,0,Away Favorite,0,0.4558347995098015,0.0,True,2025-10-22
+Golden State,Denver,2.5,1,Home Favorite,0,0.370638894823053,1.0,False,2025-10-23
+Okla City,Indiana,8.5,0,Away Favorite,0,0.3491897881832575,0.0,True,2025-10-23
+Toronto,Milwaukee,1.5,1,Home Favorite,1,0.9563708018882116,0.0,False,2025-10-24
+Orlando,Atlanta,4.5,1,Home Favorite,1,0.7946073298360524,0.0,False,2025-10-24
+New York,Boston,3.5,1,Home Favorite,1,0.6839478828813221,1.0,True,2025-10-24
+Houston,Detroit,6.5,1,Home Favorite,1,0.7135199618253425,0.0,False,2025-10-24
+Memphis,Miami,2.5,1,Home Favorite,0,0.3416651613178453,0.0,True,2025-10-24
+Dallas,Washington,9.5,1,Home Favorite,0,0.4604089641778799,0.0,True,2025-10-24
+Sacramento,Utah,5.5,1,Home Favorite,0,0.3662966112830865,0.0,True,2025-10-24
+La Clippers,Phoenix,9.5,1,Home Favorite,0,0.0607608149338474,1.0,False,2025-10-24
+Cleveland,Brooklyn,11.5,0,Away Favorite,0,0.3859044931292458,0.0,True,2025-10-24
+San Antonio,New Orleans,4.5,0,Away Favorite,0,0.3752920990774623,0.0,True,2025-10-24
+Minnesota,La Lakers,2.5,0,Away Favorite,0,0.4502775833525607,0.0,True,2025-10-24
+Golden State,Portland,2.5,0,Away Favorite,0,0.2016445212390175,0.0,True,2025-10-24
+Orlando,Chicago,6.5,1,Home Favorite,0,0.1705089125125674,1.0,False,2025-10-25
+Philadelphia,Charlotte,4.5,1,Home Favorite,0,0.208936881061915,0.0,True,2025-10-25
+Memphis,Indiana,1.5,1,Home Favorite,0,0.1296637881820667,1.0,False,2025-10-25
+Denver,Phoenix,13.5,1,Home Favorite,1,0.8195049091796898,1.0,True,2025-10-25
+Okla City,Atlanta,6.5,0,Away Favorite,0,0.1971558293174517,1.0,False,2025-10-25
+Detroit,Boston,3.5,1,Home Favorite,0,0.2167594514205787,1.0,False,2025-10-26
+Cleveland,Milwaukee,6.5,1,Home Favorite,1,0.6898838751484434,0.0,False,2025-10-26
+Washington,Charlotte,2.5,1,Home Favorite,1,0.636988451549929,0.0,False,2025-10-26
+Minnesota,Indiana,12.5,1,Home Favorite,1,0.5914455470097363,0.0,False,2025-10-26
+Dallas,Toronto,1.5,1,Home Favorite,0,0.1676173859409691,1.0,False,2025-10-26
+La Clippers,Portland,8.5,1,Home Favorite,1,0.7785697638752257,0.0,False,2025-10-26
+San Antonio,Brooklyn,10.5,0,Away Favorite,0,0.4200864722030903,0.0,True,2025-10-26
+New York,Miami,2.5,0,Away Favorite,1,0.944696497655892,0.0,False,2025-10-26
+La Lakers,Sacramento,2.5,0,Away Favorite,0,0.2709054672831633,1.0,False,2025-10-26
+Houston,Brooklyn,15.5,1,Home Favorite,1,0.5643637040631332,1.0,True,2025-10-27
+New Orleans,Boston,1.5,1,Home Favorite,0,0.2254593133451424,0.0,True,2025-10-27
+Utah,Phoenix,1.5,1,Home Favorite,1,0.6995261529751234,1.0,True,2025-10-27
+Cleveland,Detroit,2.5,0,Away Favorite,1,0.6522025837364427,1.0,True,2025-10-27
+Orlando,Philadelphia,5.5,0,Away Favorite,0,0.3393021108828222,0.0,True,2025-10-27
+Atlanta,Chicago,2.5,0,Away Favorite,0,0.0757402320944724,0.0,True,2025-10-27
+San Antonio,Toronto,4.5,0,Away Favorite,0,0.3425094241104535,0.0,True,2025-10-27
+Okla City,Dallas,8.5,0,Away Favorite,0,0.4556465542533032,0.0,True,2025-10-27
+Denver,Minnesota,6.5,0,Away Favorite,1,0.7881784727686929,1.0,True,2025-10-27
+Golden State,Memphis,7.5,0,Away Favorite,0,0.369081706611197,0.0,True,2025-10-27
+Portland,La Lakers,2.5,0,Away Favorite,1,0.9045829022418928,1.0,True,2025-10-27
+Miami,Charlotte,6.5,1,Home Favorite,0,0.3407738332466304,1.0,False,2025-10-28
+Okla City,Sacramento,10.5,1,Home Favorite,0,0.3842690990049165,0.0,True,2025-10-28
+Philadelphia,Washington,4.5,0,Away Favorite,1,0.6350183629990195,1.0,True,2025-10-28
+New York,Milwaukee,1.5,0,Away Favorite,1,0.6163353174412997,0.0,False,2025-10-28
+La Clippers,Golden State,1.5,0,Away Favorite,1,0.7763681979112192,0.0,False,2025-10-28
+Chicago,Sacramento,4.5,1,Home Favorite,0,0.3686721806438615,1.0,False,2025-10-29
+Dallas,Indiana,5.5,1,Home Favorite,1,0.5548347215532546,0.0,False,2025-10-29
+Denver,New Orleans,12.5,1,Home Favorite,1,0.8166083926010781,1.0,True,2025-10-29
+Minnesota,La Lakers,7.5,1,Home Favorite,0,0.3643450405607639,0.0,True,2025-10-29
+Houston,Toronto,5.5,0,Away Favorite,1,0.6468255477272896,1.0,True,2025-10-29
+Cleveland,Boston,3.5,0,Away Favorite,0,0.4641141964716608,0.0,True,2025-10-29
+Orlando,Detroit,1.5,0,Away Favorite,1,0.9578220979768316,0.0,False,2025-10-29
+Atlanta,Brooklyn,8.5,0,Away Favorite,1,0.5508344752012229,0.0,False,2025-10-29
+Portland,Utah,3.5,0,Away Favorite,1,0.7416223125078727,0.0,False,2025-10-29
+Memphis,Phoenix,1.5,0,Away Favorite,0,0.3451272702960019,0.0,True,2025-10-29
+Orlando,Charlotte,1.5,0,Away Favorite,1,0.8266232929838245,1.0,True,2025-10-30
+Golden State,Milwaukee,3.5,0,Away Favorite,0,0.3503977217706733,0.0,True,2025-10-30
+Okla City,Washington,15.5,0,Away Favorite,0,0.4673410275361093,0.0,True,2025-10-30
+San Antonio,Miami,5.5,0,Away Favorite,0,0.2164326150855479,0.0,True,2025-10-30
+Cleveland,Toronto,4.5,1,Home Favorite,1,0.6341985209643934,0.0,False,2025-10-31
+Phoenix,Utah,3.5,1,Home Favorite,0,0.3480377755555605,1.0,False,2025-10-31
+La Clippers,New Orleans,10.5,1,Home Favorite,1,0.758824973329769,0.0,False,2025-10-31
+Atlanta,Indiana,2.5,0,Away Favorite,0,0.3635265527864773,1.0,False,2025-10-31
+Boston,Philadelphia,1.5,0,Away Favorite,1,0.6074097771006299,0.0,False,2025-10-31
+New York,Chicago,5.5,0,Away Favorite,1,0.7757530408031166,0.0,False,2025-10-31
+Memphis,La Lakers,2.5,0,Away Favorite,0,0.3508012134315004,1.0,False,2025-10-31
+Denver,Portland,5.5,0,Away Favorite,0,0.2316066740469188,0.0,True,2025-10-31
+Milwaukee,Sacramento,7.5,1,Home Favorite,1,0.5789554621671554,0.0,False,2025-11-01
+Detroit,Dallas,7.5,1,Home Favorite,0,0.368696016540376,1.0,False,2025-11-01
+Orlando,Washington,9.5,0,Away Favorite,1,0.8315442788207396,1.0,True,2025-11-01
+Minnesota,Charlotte,4.5,0,Away Favorite,1,0.7143849451755369,1.0,True,2025-11-01
+Golden State,Indiana,11.5,0,Away Favorite,1,0.6603147987344,0.0,False,2025-11-01
+Houston,Boston,5.5,0,Away Favorite,1,0.8941281073473473,1.0,True,2025-11-01
+Okla City,New Orleans,13.5,1,Home Favorite,1,0.7122328937628255,1.0,True,2025-11-02
+Charlotte,Utah,1.5,1,Home Favorite,1,0.5661699516496413,1.0,True,2025-11-02
+Cleveland,Atlanta,6.5,1,Home Favorite,0,0.3777819493671066,1.0,False,2025-11-02
+Toronto,Memphis,4.5,1,Home Favorite,0,0.4144722250325482,1.0,False,2025-11-02
+New York,Chicago,7.5,1,Home Favorite,1,0.6251455858317458,1.0,True,2025-11-02
+Philadelphia,Brooklyn,5.5,0,Away Favorite,1,0.9108659289396294,1.0,True,2025-11-02
+San Antonio,Phoenix,5.5,0,Away Favorite,0,0.1695295627987056,0.0,True,2025-11-02
+La Lakers,Miami,4.5,0,Away Favorite,0,0.265130652333206,0.0,True,2025-11-02
+Boston,Utah,10.5,1,Home Favorite,0,0.3550247858644346,0.0,True,2025-11-03
+New York,Washington,12.5,1,Home Favorite,1,0.5959545707975299,1.0,True,2025-11-03
+Houston,Dallas,12.5,1,Home Favorite,1,0.7477031005042613,0.0,False,2025-11-03
+Denver,Sacramento,11.5,1,Home Favorite,0,0.4152041360707381,0.0,True,2025-11-03
+Portland,La Lakers,3.5,1,Home Favorite,1,0.7854088969068117,0.0,False,2025-11-03
+La Clippers,Miami,8.5,1,Home Favorite,0,0.4696049966900817,0.0,True,2025-11-03
+Minnesota,Brooklyn,8.5,0,Away Favorite,1,0.6706724333499734,1.0,True,2025-11-03
+Milwaukee,Indiana,6.5,0,Away Favorite,0,0.4251567393867173,0.0,True,2025-11-03
+Detroit,Memphis,4.5,0,Away Favorite,1,0.5405155567645026,1.0,True,2025-11-03
+Toronto,Milwaukee,3.5,1,Home Favorite,1,0.6268051679641578,1.0,True,2025-11-04
+Chicago,Philadelphia,1.5,1,Home Favorite,0,0.4617918102812601,1.0,False,2025-11-04
+New Orleans,Charlotte,2.5,1,Home Favorite,1,0.5475952611985049,1.0,True,2025-11-04
+Orlando,Atlanta,3.5,0,Away Favorite,1,0.9057260980611528,0.0,False,2025-11-04
+Golden State,Phoenix,10.5,0,Away Favorite,0,0.3989175921754091,0.0,True,2025-11-04
+Okla City,La Clippers,7.5,0,Away Favorite,0,0.4692442830554396,1.0,False,2025-11-04
+Cleveland,Philadelphia,9.5,1,Home Favorite,0,0.4316749543183238,1.0,False,2025-11-05
+Detroit,Utah,9.5,1,Home Favorite,0,0.2078277356009104,1.0,False,2025-11-05
+Indiana,Brooklyn,6.5,1,Home Favorite,1,0.5675436926443078,0.0,False,2025-11-05
+Boston,Washington,12.5,1,Home Favorite,0,0.3089523114937362,1.0,False,2025-11-05
+New York,Minnesota,4.5,1,Home Favorite,1,0.5813154078245973,1.0,True,2025-11-05
+Dallas,New Orleans,7.5,1,Home Favorite,1,0.6931091077927926,0.0,False,2025-11-05
+Denver,Miami,9.5,1,Home Favorite,0,0.246796321662326,1.0,False,2025-11-05
+Sacramento,Golden State,2.5,1,Home Favorite,0,0.4367456094776749,1.0,False,2025-11-05
+Houston,Memphis,7.5,0,Away Favorite,1,0.9067252444489586,1.0,True,2025-11-05
+La Lakers,San Antonio,2.5,0,Away Favorite,0,0.2425920639442828,0.0,True,2025-11-05
+Okla City,Portland,4.5,0,Away Favorite,1,0.579936269703288,0.0,False,2025-11-05
+Phoenix,La Clippers,2.5,0,Away Favorite,1,0.7482162049264177,0.0,False,2025-11-06
+Orlando,Boston,3.5,1,Home Favorite,1,0.6473834740255743,1.0,True,2025-11-07
+Atlanta,Toronto,2.5,1,Home Favorite,1,0.5909682306139268,0.0,False,2025-11-07
+Miami,Charlotte,4.5,1,Home Favorite,1,0.7982518014439719,1.0,True,2025-11-07
+Memphis,Dallas,4.5,1,Home Favorite,0,0.4415224803069688,1.0,False,2025-11-07
+Milwaukee,Chicago,4.5,1,Home Favorite,0,0.4641349645822841,1.0,False,2025-11-07
+Minnesota,Utah,11.5,1,Home Favorite,0,0.4000553070789856,1.0,False,2025-11-07
+Denver,Golden State,10.5,1,Home Favorite,0,0.4746783401554481,1.0,False,2025-11-07
+Cleveland,Washington,13.5,0,Away Favorite,0,0.4180677697455601,1.0,False,2025-11-07
+Detroit,Brooklyn,10.5,0,Away Favorite,0,0.4482029343111527,1.0,False,2025-11-07
+Houston,San Antonio,4.5,0,Away Favorite,1,0.7656432274621785,0.0,False,2025-11-07
+Okla City,Sacramento,10.5,0,Away Favorite,1,0.8818201955832649,1.0,True,2025-11-07
+Philadelphia,Toronto,5.5,1,Home Favorite,0,0.4659746041672523,1.0,False,2025-11-08
+Cleveland,Chicago,8.5,1,Home Favorite,1,0.7264967155641601,0.0,False,2025-11-08
+San Antonio,New Orleans,10.5,1,Home Favorite,1,0.518983757641159,0.0,False,2025-11-08
+Denver,Indiana,12.5,1,Home Favorite,0,0.2084289209323332,1.0,False,2025-11-08
+Dallas,Washington,4.5,0,Away Favorite,0,0.3155068660704906,1.0,False,2025-11-08
+La Lakers,Atlanta,3.5,0,Away Favorite,0,0.2259246177410528,0.0,True,2025-11-08
+Portland,Miami,3.5,0,Away Favorite,0,0.2472396674884504,0.0,True,2025-11-08
+La Clippers,Phoenix,5.5,0,Away Favorite,0,0.2771250925404461,1.0,False,2025-11-08
+New York,Brooklyn,15.5,1,Home Favorite,1,0.8359521797460524,1.0,True,2025-11-09
+Orlando,Boston,3.5,1,Home Favorite,1,0.5401578049120584,0.0,False,2025-11-09
+Houston,Milwaukee,4.5,0,Away Favorite,1,0.6306430414702959,1.0,True,2025-11-09
+Okla City,Memphis,10.5,0,Away Favorite,1,0.6014576898684815,1.0,True,2025-11-09
+Detroit,Philadelphia,4.5,0,Away Favorite,1,0.608628615931407,0.0,False,2025-11-09
+Golden State,Indiana,12.5,0,Away Favorite,0,0.3257825699354457,0.0,True,2025-11-09
+Minnesota,Sacramento,5.5,0,Away Favorite,1,0.5896768735574562,1.0,True,2025-11-09
+Detroit,Washington,11.5,1,Home Favorite,1,0.5948557679655728,0.0,False,2025-11-10
+Orlando,Portland,2.5,1,Home Favorite,1,0.5733793993618317,1.0,True,2025-11-10
+Phoenix,New Orleans,9.5,1,Home Favorite,1,0.6145653536177164,1.0,True,2025-11-10
+La Clippers,Atlanta,4.5,1,Home Favorite,0,0.4976091484362701,0.0,True,2025-11-10
+La Lakers,Charlotte,8.5,0,Away Favorite,1,0.6205525679911665,1.0,True,2025-11-10
+Cleveland,Miami,7.5,0,Away Favorite,0,0.3301223150246291,0.0,True,2025-11-10
+San Antonio,Chicago,4.5,0,Away Favorite,0,0.4174255626276147,0.0,True,2025-11-10
+Milwaukee,Dallas,2.5,0,Away Favorite,0,0.150006999218631,0.0,True,2025-11-10
+Minnesota,Utah,7.5,0,Away Favorite,1,0.5022943707821821,0.0,False,2025-11-10
+New York,Memphis,9.5,1,Home Favorite,1,0.6162210881661491,1.0,True,2025-11-11
+Philadelphia,Boston,1.5,1,Home Favorite,1,0.5173218424579467,1.0,True,2025-11-11
+Toronto,Brooklyn,10.5,0,Away Favorite,1,0.6903805345638013,0.0,False,2025-11-11
+Okla City,Golden State,7.5,0,Away Favorite,1,0.5739229720996106,0.0,False,2025-11-11
+Indiana,Utah,2.5,0,Away Favorite,0,0.3130438274539744,0.0,True,2025-11-11
+Denver,Sacramento,8.5,0,Away Favorite,1,0.6653291665038703,1.0,True,2025-11-11
+New York,Orlando,4.5,1,Home Favorite,0,0.4796784938393286,0.0,True,2025-11-12
+Boston,Memphis,6.5,1,Home Favorite,0,0.3270871525709822,1.0,False,2025-11-12
+Miami,Cleveland,5.5,1,Home Favorite,1,0.7069190562932078,0.0,False,2025-11-12
+Houston,Washington,16.5,1,Home Favorite,1,0.8117627602494436,1.0,True,2025-11-12
+Milwaukee,Charlotte,4.5,0,Away Favorite,1,0.5904206419631192,0.0,False,2025-11-12
+Detroit,Chicago,1.5,0,Away Favorite,1,0.6497523901685271,0.0,False,2025-11-12
+Portland,New Orleans,8.5,0,Away Favorite,1,0.6268004524673273,0.0,False,2025-11-12
+San Antonio,Golden State,4.5,0,Away Favorite,0,0.4963292653574292,1.0,False,2025-11-12
+Dallas,Phoenix,1.5,0,Away Favorite,0,0.3521796965840357,1.0,False,2025-11-12
+Okla City,La Lakers,6.5,0,Away Favorite,0,0.3952889139368503,0.0,True,2025-11-12
+Atlanta,Sacramento,3.5,0,Away Favorite,1,0.7497025765049652,1.0,True,2025-11-12
+Denver,La Clippers,3.5,0,Away Favorite,0,0.3794834367720532,1.0,False,2025-11-12
+New York,Miami,6.5,1,Home Favorite,1,0.593117397474076,1.0,True,2025-11-14
+Orlando,Brooklyn,13.5,1,Home Favorite,1,0.690111640072469,0.0,False,2025-11-14
+Detroit,Philadelphia,4.5,1,Home Favorite,0,0.4778838013213241,1.0,False,2025-11-14
+Houston,Portland,7.5,1,Home Favorite,1,0.6856957267667221,1.0,True,2025-11-14
+Milwaukee,Charlotte,9.5,1,Home Favorite,0,0.4861016452665974,1.0,False,2025-11-14
+Minnesota,Sacramento,11.5,1,Home Favorite,1,0.6787327521115952,1.0,True,2025-11-14
+La Lakers,New Orleans,9.5,0,Away Favorite,0,0.4118261598336664,1.0,False,2025-11-14
+La Clippers,Dallas,2.5,0,Away Favorite,1,0.5016271400218629,1.0,True,2025-11-14
+San Antonio,Golden State,2.5,0,Away Favorite,0,0.1817348055989305,0.0,True,2025-11-14
+Cleveland,Memphis,11.5,1,Home Favorite,0,0.4546727307613309,0.0,True,2025-11-15
+Minnesota,Denver,2.5,1,Home Favorite,1,0.5951514066272796,0.0,False,2025-11-15
+Okla City,Charlotte,15.5,0,Away Favorite,0,0.4027159592962787,0.0,True,2025-11-15
+Toronto,Indiana,6.5,0,Away Favorite,1,0.5198167921954003,1.0,True,2025-11-15
+La Lakers,Milwaukee,1.5,0,Away Favorite,1,0.638414501939329,1.0,True,2025-11-15
+Boston,La Clippers,6.5,1,Home Favorite,0,0.403254331387152,0.0,True,2025-11-16
+Washington,Brooklyn,2.5,1,Home Favorite,0,0.4532489137731131,0.0,True,2025-11-16
+Houston,Orlando,7.5,1,Home Favorite,1,0.5250187794826562,0.0,False,2025-11-16
+San Antonio,Sacramento,8.5,0,Away Favorite,1,0.6053638084173576,0.0,False,2025-11-16
+Golden State,New Orleans,10.5,0,Away Favorite,1,0.7013510529737625,1.0,True,2025-11-16
+Portland,Dallas,4.5,0,Away Favorite,1,0.7448906735548647,0.0,False,2025-11-16
+Atlanta,Phoenix,1.5,0,Away Favorite,0,0.3009840676531312,1.0,False,2025-11-16
+Chicago,Utah,4.5,0,Away Favorite,0,0.4725804319890047,0.0,True,2025-11-16
+Cleveland,Milwaukee,7.5,1,Home Favorite,1,0.5198529981552771,1.0,True,2025-11-17
+Detroit,Indiana,11.5,1,Home Favorite,1,0.5392294983312671,1.0,True,2025-11-17
+Philadelphia,La Clippers,5.5,1,Home Favorite,0,0.3184198182356568,0.0,True,2025-11-17
+Miami,New York,1.5,1,Home Favorite,1,0.8364607518494294,1.0,True,2025-11-17
+Toronto,Charlotte,8.5,1,Home Favorite,1,0.5983044006349245,0.0,False,2025-11-17
+Minnesota,Dallas,14.5,1,Home Favorite,1,0.5742958439959928,1.0,True,2025-11-17
+Denver,Chicago,14.5,1,Home Favorite,1,0.5115986180846246,0.0,False,2025-11-17
+Okla City,New Orleans,17.5,0,Away Favorite,1,0.7664156965899218,0.0,False,2025-11-17
+Atlanta,Charlotte,7.5,1,Home Favorite,1,0.7831083009300671,0.0,False,2025-11-23
+Boston,Orlando,5.5,1,Home Favorite,0,0.4524295263910198,1.0,False,2025-11-23
+Cleveland,La Clippers,8.5,1,Home Favorite,1,0.6593137412553131,1.0,True,2025-11-23
+Toronto,Brooklyn,12.5,1,Home Favorite,0,0.4232151045159467,0.0,True,2025-11-23
+Philadelphia,Miami,1.5,0,Away Favorite,0,0.246102236003917,1.0,False,2025-11-23
+Okla City,Portland,16.5,0,Away Favorite,1,0.5930161015534887,0.0,False,2025-11-23
+Phoenix,San Antonio,2.5,0,Away Favorite,0,0.3046393446990345,0.0,True,2025-11-23
+La Lakers,Utah,9.5,0,Away Favorite,0,0.2659753659771234,0.0,True,2025-11-23
+La Lakers,Utah,12.5,1,Home Favorite,1,0.5519585041096124,1.0,True,2025-11-18
+Portland,Phoenix,2.5,1,Home Favorite,1,0.6636682920603436,0.0,False,2025-11-18
+Golden State,Orlando,3.5,0,Away Favorite,0,0.4002300019516061,0.0,True,2025-11-18
+Boston,Brooklyn,10.5,0,Away Favorite,1,0.5845628771960534,1.0,True,2025-11-18
+Detroit,Atlanta,1.5,0,Away Favorite,0,0.2791400015986126,1.0,False,2025-11-18
+San Antonio,Memphis,6.5,0,Away Favorite,0,0.3969703733303805,0.0,True,2025-11-18
+Orlando,La Clippers,5.5,1,Home Favorite,0,0.4867766059565128,1.0,False,2025-11-20
+Memphis,Sacramento,2.5,1,Home Favorite,1,0.6026553041481632,1.0,True,2025-11-20
+Philadelphia,Milwaukee,2.5,0,Away Favorite,0,0.4170552415172666,1.0,False,2025-11-20
+San Antonio,Atlanta,1.5,0,Away Favorite,0,0.3165118746118884,0.0,True,2025-11-20
+Cleveland,Indiana,13.5,1,Home Favorite,1,0.5354200278425889,0.0,False,2025-11-21
+Boston,Brooklyn,14.5,1,Home Favorite,0,0.2680832053748099,0.0,True,2025-11-21
+Toronto,Washington,13.5,1,Home Favorite,1,0.5659936913439046,1.0,True,2025-11-21
+Chicago,Miami,2.5,1,Home Favorite,1,0.5224245465202728,0.0,False,2025-11-21
+Dallas,New Orleans,3.5,1,Home Favorite,0,0.4734830725886016,0.0,True,2025-11-21
+Houston,Denver,2.5,1,Home Favorite,1,0.5214697116176122,0.0,False,2025-11-21
+Minnesota,Phoenix,4.5,0,Away Favorite,0,0.4816487503097211,0.0,True,2025-11-21
+Okla City,Utah,16.5,0,Away Favorite,0,0.216989763474757,1.0,False,2025-11-21
+Golden State,Portland,8.5,0,Away Favorite,0,0.177134479340501,0.0,True,2025-11-21
+Orlando,New York,1.5,1,Home Favorite,0,0.423446718630028,1.0,False,2025-11-22
+Chicago,Washington,12.5,1,Home Favorite,1,0.5353058750975346,0.0,False,2025-11-22
+Dallas,Memphis,1.5,1,Home Favorite,0,0.4823415750534529,0.0,True,2025-11-22
+Denver,Sacramento,10.5,1,Home Favorite,0,0.4943837601450468,0.0,True,2025-11-22
+La Clippers,Charlotte,1.5,0,Away Favorite,0,0.3150187352161958,1.0,False,2025-11-22
+Atlanta,New Orleans,8.5,0,Away Favorite,0,0.1206166204494664,1.0,False,2025-11-22
+Detroit,Milwaukee,8.5,0,Away Favorite,0,0.3482260123228846,1.0,False,2025-11-22
+Miami,Dallas,8.5,1,Home Favorite,0,0.4869090685983131,,,2025-11-24
+Milwaukee,Portland,1.5,1,Home Favorite,0,0.44525123436038877,,,2025-11-24
+Golden State,Utah,14.5,1,Home Favorite,1,0.5894142891294127,,,2025-11-24
+Detroit,Indiana,10.5,0,Away Favorite,1,0.735328949214879,,,2025-11-24
+Cleveland,Toronto,2.5,0,Away Favorite,0,0.11682281311769055,,,2025-11-24
+New York,Brooklyn,13.5,0,Away Favorite,1,0.5189640412504509,,,2025-11-24
+Denver,Memphis,8.5,0,Away Favorite,0,0.3454726495440368,,,2025-11-24
+Chicago,New Orleans,5.5,0,Away Favorite,0,0.32948931403139203,,,2025-11-24
+Houston,Phoenix,6.5,0,Away Favorite,0,0.13736084698048362,,,2025-11-24
+Minnesota,Sacramento,9.5,0,Away Favorite,0,0.31973140638909725,,,2025-11-24

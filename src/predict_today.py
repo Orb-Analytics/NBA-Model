@@ -120,6 +120,110 @@ def format_prediction_text(pred):
    Model: {pred['model']}"""
 
 
+def save_predictions_to_results(predictions, today_date, results_path):
+    """
+    Save today's predictions to the results CSV file.
+    Appends new predictions and updates existing ones with actual results.
+    
+    Args:
+        predictions: List of prediction dictionaries
+        today_date: Date string (YYYY-MM-DD)
+        results_path: Path to daily_predictions_results.csv
+    """
+    # Load existing results if file exists
+    if os.path.exists(results_path):
+        existing_df = pd.read_csv(results_path)
+        existing_df['date'] = pd.to_datetime(existing_df['date']).dt.strftime('%Y-%m-%d')
+    else:
+        existing_df = pd.DataFrame()
+    
+    # Convert predictions to DataFrame format
+    new_rows = []
+    for pred in predictions:
+        row = {
+            'favorite': pred['favorite'],
+            'underdog': pred['underdog'],
+            'spread': pred['spread'],
+            'fav_at_home': 1 if pred['model'] == 'Home Favorite' else 0,
+            'model': pred['model'],
+            'predicted_cover': pred['predicted_cover'],
+            'cover_probability': pred['cover_probability'],
+            'actual_cover': pred.get('actual_cover', ''),
+            'correct': pred.get('correct', ''),
+            'date': today_date
+        }
+        new_rows.append(row)
+    
+    new_df = pd.DataFrame(new_rows)
+    
+    # Remove any existing predictions for this date (to avoid duplicates on reruns)
+    if len(existing_df) > 0:
+        existing_df = existing_df[existing_df['date'] != today_date]
+    
+    # Combine and save
+    combined_df = pd.concat([existing_df, new_df], ignore_index=True)
+    combined_df.to_csv(results_path, index=False)
+
+
+def update_results_with_scores(data_path, results_path):
+    """
+    Update the results CSV with actual outcomes for games that now have scores.
+    
+    Args:
+        data_path: Path to NBA Training Set CSV (master data with scores)
+        results_path: Path to daily_predictions_results.csv
+    """
+    if not os.path.exists(results_path):
+        return
+    
+    # Load the results file
+    results_df = pd.read_csv(results_path)
+    
+    # Load the master training set with scores
+    master_df = pd.read_csv(data_path)
+    
+    # For each pending prediction, check if we now have a score
+    updates_made = 0
+    for idx, row in results_df.iterrows():
+        # Skip if already has result
+        if pd.notna(row['correct']) and row['correct'] != '':
+            continue
+        
+        # Find the corresponding game in master data
+        game_date = pd.to_datetime(row['date']).strftime('%Y-%m-%d')
+        fav = row['favorite']
+        dog = row['underdog']
+        spread = float(row['spread'])
+        
+        # Find matching game
+        game = master_df[
+            (master_df['Date'] == game_date) &
+            (master_df['Favorite'] == fav) &
+            (master_df['Underdog'] == dog) &
+            (master_df['Spread'] == spread)
+        ]
+        
+        if len(game) == 1 and pd.notna(game.iloc[0]['Favorite Score']):
+            # Game has a score now - calculate actual result
+            fav_score = game.iloc[0]['Favorite Score']
+            dog_score = game.iloc[0]['Underdog Score']
+            
+            if pd.notna(fav_score) and pd.notna(dog_score):
+                fav_margin = fav_score - dog_score
+                actual_cover = 1 if fav_margin > spread else 0
+                correct = 1 if actual_cover == row['predicted_cover'] else 0
+                
+                # Update the results
+                results_df.at[idx, 'actual_cover'] = float(actual_cover)
+                results_df.at[idx, 'correct'] = bool(correct)
+                updates_made += 1
+    
+    # Save updated results
+    if updates_made > 0:
+        results_df.to_csv(results_path, index=False)
+        # print(f"Updated {updates_made} predictions with actual results")
+
+
 def predict_today_games(data_path, today_date=None):
     """
     Predict today's games and return formatted output.
@@ -148,6 +252,13 @@ def predict_today_games(data_path, today_date=None):
         return f"No games scheduled for {today_date}"
     
     predictions = result['predictions']
+    
+    # Save predictions to results file
+    results_path = os.path.join(os.path.dirname(data_path), 'daily_predictions_results.csv')
+    save_predictions_to_results(predictions, today_date, results_path)
+    
+    # Update any pending results that now have scores
+    update_results_with_scores(data_path, results_path)
     
     # Load master data to get odds for today's games
     df_master = pd.read_csv(data_path)
