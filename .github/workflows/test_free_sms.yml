@@ -1,0 +1,70 @@
+name: 📱 Test Free SMS
+
+on:
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  send-sms:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📱 Send Test SMS
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import smtplib
+          from email.mime.text import MIMEText
+
+          # Carrier gateways
+          gateways = {
+              'verizon': 'vtext.com',
+              'att': 'txt.att.net',
+              'tmobile': 'tmomail.net',
+              'sprint': 'messaging.sprintpcs.com'
+          }
+
+          gmail = os.environ.get('GMAIL_ADDRESS')
+          password = os.environ.get('GMAIL_APP_PASSWORD')
+          phone = '2065511390'
+          message = 'test'
+
+          print(f"Attempting to send SMS to +1-{phone}")
+          print(f"Using Gmail: {gmail[:3]}***{gmail[-10:]}")
+
+          # Try all major carriers since we don't know which one
+          for carrier, gateway in gateways.items():
+              sms_address = f"{phone}@{gateway}"
+              print(f"\nTrying {carrier}: {sms_address}")
+              
+              try:
+                  msg = MIMEText(message)
+                  msg['From'] = gmail
+                  msg['To'] = sms_address
+                  msg['Subject'] = ''
+                  
+                  server = smtplib.SMTP('smtp.gmail.com', 587)
+                  server.starttls()
+                  server.login(gmail, password)
+                  server.send_message(msg)
+                  server.quit()
+                  
+                  print(f"✅ Sent via {carrier}")
+              except Exception as e:
+                  print(f"❌ {carrier} failed: {e}")
+
+          print("\n🎯 Test complete! Check your phone.")
+          EOF
+
+      - name: ✅ Done
+        run: echo "SMS test finished - check your phone for 'test' message"
