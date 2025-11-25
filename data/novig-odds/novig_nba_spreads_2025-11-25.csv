@@ -1,0 +1,4 @@
+fav_team,dog_team,fav_line,dog_line,fav_price,dog_price,fav_price_american,dog_price_american,home_favorite,game_time_est,market,market_timestamp
+ORL,PHI,-3.5,3.5,0.503,0.517,-101,-107,0,2025-11-25T20:05:00-05:00,PHI +3.5,2025-11-25T17:43:09.884+00:00
+LAL,LAC,-6.5,6.5,0.483,0.525,+107,-111,0,2025-11-25T23:05:00-05:00,LAL -6.5,2025-11-25T17:33:04.119+00:00
+ATL,WAS,-10.5,10.5,0.499,0.519,+100,-108,0,2025-11-25T19:05:00-05:00,WAS +10.5,2025-11-25T17:43:04.259+00:00
