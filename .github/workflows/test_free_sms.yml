@@ -18,38 +18,46 @@ jobs:
 
       - name: 🔍 Check Secrets
         env:
-          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
         run: |
           echo "Checking if secrets are configured..."
-          if [ -z "$GMAIL_ADDRESS" ]; then
-            echo "❌ GMAIL_ADDRESS secret is not set"
+          if [ -z "$SMTP_USERNAME" ]; then
+            echo "❌ SMTP_USERNAME secret is not set"
           else
-            echo "✅ GMAIL_ADDRESS is set"
+            echo "✅ SMTP_USERNAME is set"
           fi
           
-          if [ -z "$GMAIL_APP_PASSWORD" ]; then
-            echo "❌ GMAIL_APP_PASSWORD secret is not set"
+          if [ -z "$SMTP_PASSWORD" ]; then
+            echo "❌ SMTP_PASSWORD secret is not set"
           else
-            echo "✅ GMAIL_APP_PASSWORD is set"
+            echo "✅ SMTP_PASSWORD is set"
           fi
+          
+          echo "SMTP Server: $SMTP_SERVER"
+          echo "SMTP Port: $SMTP_PORT"
 
       - name: 📱 Send Test SMS (AT&T)
         env:
-          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
         run: |
           python3 << 'EOF'
           import os
           import smtplib
           from email.mime.text import MIMEText
 
-          gmail = os.environ.get('GMAIL_ADDRESS')
-          password = os.environ.get('GMAIL_APP_PASSWORD')
+          smtp_user = os.environ.get('SMTP_USERNAME')
+          smtp_pass = os.environ.get('SMTP_PASSWORD')
+          smtp_server = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
+          smtp_port = int(os.environ.get('SMTP_PORT', '587'))
           
-          if not gmail or not password:
-              print("❌ Missing credentials. Please set GMAIL_ADDRESS and GMAIL_APP_PASSWORD secrets in GitHub repo settings.")
-              print("Go to: Settings → Secrets and variables → Actions → New repository secret")
+          if not smtp_user or not smtp_pass:
+              print("❌ Missing SMTP credentials")
               exit(1)
 
           phone = '2065511390'
@@ -57,22 +65,23 @@ jobs:
           sms_address = f"{phone}@txt.att.net"
 
           print(f"Sending to: {sms_address}")
-          print(f"From: {gmail}")
+          print(f"From: {smtp_user}")
+          print(f"Server: {smtp_server}:{smtp_port}")
           print(f"Message: {message}")
           
           try:
               msg = MIMEText(message)
-              msg['From'] = gmail
+              msg['From'] = smtp_user
               msg['To'] = sms_address
               msg['Subject'] = ''
               
-              print("\nConnecting to Gmail SMTP...")
-              server = smtplib.SMTP('smtp.gmail.com', 587)
-              server.set_debuglevel(1)  # Show detailed output
+              print(f"\nConnecting to {smtp_server}:{smtp_port}...")
+              server = smtplib.SMTP(smtp_server, smtp_port)
+              server.set_debuglevel(1)
               server.starttls()
               
               print("\nLogging in...")
-              server.login(gmail, password)
+              server.login(smtp_user, smtp_pass)
               
               print("\nSending message...")
               server.send_message(msg)
@@ -82,12 +91,6 @@ jobs:
               print("Check your phone for 'test' message")
           except Exception as e:
               print(f"\n❌ Failed: {e}")
-              print("\nTroubleshooting:")
-              print("1. Make sure you created a Gmail App Password (not regular password)")
-              print("2. Go to: https://myaccount.google.com/apppasswords")
-              print("3. Enable 2-Step Verification first if not already on")
-              print("4. Create new app password for 'Mail'")
-              print("5. Add it as GMAIL_APP_PASSWORD secret in GitHub")
               exit(1)
           EOF
 
