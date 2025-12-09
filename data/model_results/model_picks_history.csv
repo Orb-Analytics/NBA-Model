@@ -1319,3 +1319,11 @@ date,game_id,home_team,away_team,favorite_team,underdog_team,spread,model_name,p
 2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Linear,UNDERDOG,New Orleans,9.5,WIN
 2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Random Forest,UNDERDOG,New Orleans,9.5,WIN
 2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Decision Tree,UNDERDOG,New Orleans,9.5,WIN
+2025-12-09,2025-12-09_Orlando_Miami,Orlando,Miami,Orlando,Miami,1.5,Logistic,UNDERDOG,Miami,1.5,PENDING
+2025-12-09,2025-12-09_Orlando_Miami,Orlando,Miami,Orlando,Miami,1.5,Linear,UNDERDOG,Miami,1.5,PENDING
+2025-12-09,2025-12-09_Orlando_Miami,Orlando,Miami,Orlando,Miami,1.5,Random Forest,UNDERDOG,Miami,1.5,PENDING
+2025-12-09,2025-12-09_Orlando_Miami,Orlando,Miami,Orlando,Miami,1.5,Decision Tree,UNDERDOG,Miami,1.5,PENDING
+2025-12-09,2025-12-09_NewYork_Toronto,Toronto,New York,New York,Toronto,4.5,Logistic,NO BET,,,PENDING
+2025-12-09,2025-12-09_NewYork_Toronto,Toronto,New York,New York,Toronto,4.5,Linear,FAVORITE,New York,-4.5,PENDING
+2025-12-09,2025-12-09_NewYork_Toronto,Toronto,New York,New York,Toronto,4.5,Random Forest,FAVORITE,New York,-4.5,PENDING
+2025-12-09,2025-12-09_NewYork_Toronto,Toronto,New York,New York,Toronto,4.5,Decision Tree,UNDERDOG,Toronto,4.5,PENDING
