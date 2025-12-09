@@ -120,10 +120,10 @@ def format_model_records(records: Dict[str, Dict[str, int]]) -> str:
     
     Example output:
     📈 Model Records (Season to Date)
-    - Logistic: 42-35-3
-    - Linear: 39-38-3
-    - Random Forest: 44-33-3
-    - Decision Tree: 37-40-3
+    - Logistic: 157-148-0 (51.5%)
+    - Linear: 163-155-0 (51.3%)
+    - Random Forest: 163-140-0 (53.8%)
+    - Decision Tree: 159-158-0 (50.2%)
     """
     lines = []
     lines.append("📈 Model Records (Season to Date)")
@@ -133,7 +133,11 @@ def format_model_records(records: Dict[str, Dict[str, int]]) -> str:
         losses = record.get('losses', 0)
         pushes = record.get('pushes', 0)
         
-        lines.append(f"- {model_name}: {wins}-{losses}-{pushes}")
+        # Calculate win percentage (excluding pushes)
+        total_decided = wins + losses
+        win_pct = (wins / total_decided * 100) if total_decided > 0 else 0.0
+        
+        lines.append(f"- {model_name}: {wins}-{losses}-{pushes} ({win_pct:.1f}%)")
     
     return "\n".join(lines)
 
