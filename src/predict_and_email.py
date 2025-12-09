@@ -107,23 +107,30 @@ def send_email(subject: str, body: str):
         print("   Required: SMTP_SERVER, SMTP_USERNAME, SMTP_PASSWORD")
         return False
     
+    # Parse recipient emails (handle comma-separated list)
+    if ',' in to_email:
+        recipients = [email.strip() for email in to_email.split(',')]
+    else:
+        recipients = [to_email.strip()]
+    
     # Create message
     msg = MIMEMultipart()
     msg['From'] = smtp_username
-    msg['To'] = to_email
+    msg['To'] = ', '.join(recipients)  # Properly format multiple recipients
     msg['Subject'] = subject
     
     msg.attach(MIMEText(body, 'plain'))
     
     # Send email
     try:
-        print(f"📧 Sending email to {to_email}...")
+        print(f"📧 Sending email to {len(recipients)} recipient(s)...")
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()
         server.login(smtp_username, smtp_password)
-        server.send_message(msg)
+        # Use sendmail with list of recipients
+        server.sendmail(smtp_username, recipients, msg.as_string())
         server.quit()
-        print("✅ Email sent successfully!")
+        print(f"✅ Email sent successfully to: {', '.join(recipients)}")
         return True
     except Exception as e:
         print(f"❌ Failed to send email: {e}")
