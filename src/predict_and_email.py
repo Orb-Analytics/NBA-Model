@@ -100,18 +100,28 @@ def send_email(subject: str, body: str):
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
     smtp_password = os.environ.get('SMTP_PASSWORD')
-    to_email = os.environ.get('TO_EMAIL', smtp_username)
+    to_email = os.environ.get('TO_EMAIL')
     
     if not all([smtp_server, smtp_username, smtp_password]):
         print("❌ Missing SMTP configuration in environment variables")
         print("   Required: SMTP_SERVER, SMTP_USERNAME, SMTP_PASSWORD")
         return False
     
+    # Default to sender if TO_EMAIL not specified
+    if not to_email or to_email.strip() == '':
+        to_email = smtp_username
+        print(f"⚠️  TO_EMAIL not set, defaulting to sender: {smtp_username}")
+    
     # Parse recipient emails (handle comma-separated list)
     if ',' in to_email:
-        recipients = [email.strip() for email in to_email.split(',')]
+        recipients = [email.strip() for email in to_email.split(',') if email.strip()]
     else:
-        recipients = [to_email.strip()]
+        recipients = [to_email.strip()] if to_email.strip() else [smtp_username]
+    
+    # Validate recipients
+    if not recipients or recipients == ['']:
+        print("❌ No valid recipients found")
+        return False
     
     # Create message
     msg = MIMEMultipart()
@@ -123,17 +133,22 @@ def send_email(subject: str, body: str):
     
     # Send email
     try:
-        print(f"📧 Sending email to {len(recipients)} recipient(s)...")
+        print(f"📧 Sending email to {len(recipients)} recipient(s): {', '.join(recipients)}")
         server = smtplib.SMTP(smtp_server, smtp_port)
+        server.set_debuglevel(0)  # Set to 1 for verbose SMTP debugging
         server.starttls()
         server.login(smtp_username, smtp_password)
         # Use sendmail with list of recipients
         server.sendmail(smtp_username, recipients, msg.as_string())
         server.quit()
-        print(f"✅ Email sent successfully to: {', '.join(recipients)}")
+        print(f"✅ Email sent successfully!")
         return True
     except Exception as e:
         print(f"❌ Failed to send email: {e}")
+        print(f"   Debug info:")
+        print(f"   - From: {smtp_username}")
+        print(f"   - To: {recipients}")
+        print(f"   - Server: {smtp_server}:{smtp_port}")
         return False
 
 
