@@ -1,0 +1,87 @@
+🏀 NBA SPREAD PREDICTIONS - 2025-11-23
+======================================================================
+
+Total: 8 games
+
+💪 Atlanta vs Charlotte (Spread: 7.5)
+   Prediction: Favorite will COVER
+   Confidence: 78.3%
+   ✅ FAV Edge: +28.1% | ❌ DOG Edge: -28.8%
+   🎯 BEST BET: Atlanta (+28.1% edge)
+   Model: Home Favorite
+
+💪 Philadelphia vs Miami (Spread: 1.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 24.6%
+   ❌ FAV Edge: -25.6% | ✅ DOG Edge: +24.4%
+   🎯 BEST BET: Miami (+24.4% edge)
+   Model: Away Favorite
+
+💪 La Lakers vs Utah (Spread: 9.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 26.6%
+   ❌ FAV Edge: -25.8% | ✅ DOG Edge: +21.0%
+   🎯 BEST BET: Utah (+21.0% edge)
+   Model: Away Favorite
+
+⚖️ Phoenix vs San Antonio (Spread: 2.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 30.5%
+   ❌ FAV Edge: -20.5% | ✅ DOG Edge: +19.8%
+   🎯 BEST BET: San Antonio (+19.8% edge)
+   Model: Away Favorite
+
+⚖️ Cleveland vs La Clippers (Spread: 8.5)
+   Prediction: Favorite will COVER
+   Confidence: 65.9%
+   ✅ FAV Edge: +15.4% | ❌ DOG Edge: -16.9%
+   🎯 BEST BET: Cleveland (+15.4% edge)
+   Model: Home Favorite
+
+⚖️ Okla City vs Portland (Spread: 16.5)
+   Prediction: Favorite will COVER
+   Confidence: 59.3%
+   ✅ FAV Edge: +12.1% | ❌ DOG Edge: -13.6%
+   🎯 BEST BET: Okla City (+12.1% edge)
+   Model: Away Favorite
+
+⚖️ Toronto vs Brooklyn (Spread: 12.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 42.3%
+   ❌ FAV Edge: -9.1% | ✅ DOG Edge: +7.7%
+   🎯 BEST BET: Brooklyn (+7.7% edge)
+   Model: Home Favorite
+
+⚖️ Boston vs Orlando (Spread: 5.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 45.2%
+   ❌ FAV Edge: -1.3% | ❌ DOG Edge: -0.6%
+   ⛔ NO BET: No positive edge on either side
+   Model: Home Favorite
+
+======================================================================
+
+📊 MODEL RECORD THIS SEASON (through 2025-11-23):
+Overall: 111-93 (54.4%)
+🏠 Home Favorite Model: 49-56 (46.7%)
+✈️  Away Favorite Model: 62-37 (62.6%)
+
+
+📊 CONFIDENCE BREAKDOWN:
+💪 High Confidence (>70% or <30%): 3 games
+⚖️  Medium Confidence (55-70% or 30-45%): 4 games
+⚠️  Low Confidence (45-55%): 1 games
+
+======================================================================
+
+🎲 BETTING RECOMMENDATIONS:
+💪 High Confidence bets are recommended
+⚖️  Medium Confidence bets are optional
+⚠️  Low Confidence bets should be avoided
+
+======================================================================
+
+📈 Model Info:
+Training data: All games before 2025-11-23
+Home Favorite Model: 4 predictions
+Away Favorite Model: 4 predictions

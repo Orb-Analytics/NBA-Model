@@ -1,0 +1,73 @@
+🏀 NBA SPREAD PREDICTIONS - 2025-11-18
+======================================================================
+
+Total: 6 games
+
+💪 Detroit vs Atlanta (Spread: 1.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 27.9%
+   ❌ FAV Edge: -19.7% | ✅ DOG Edge: +18.6%
+   🎯 BEST BET: Atlanta (+18.6% edge)
+   Model: Away Favorite
+
+⚖️ Portland vs Phoenix (Spread: 2.5)
+   Prediction: Favorite will COVER
+   Confidence: 66.4%
+   ✅ FAV Edge: +16.6% | ❌ DOG Edge: -17.8%
+   🎯 BEST BET: Portland (+16.6% edge)
+   Model: Home Favorite
+
+⚖️ San Antonio vs Memphis (Spread: 6.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 39.7%
+   ❌ FAV Edge: -9.1% | ✅ DOG Edge: +8.1%
+   🎯 BEST BET: Memphis (+8.1% edge)
+   Model: Away Favorite
+
+⚖️ Golden State vs Orlando (Spread: 3.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 40.0%
+   ❌ FAV Edge: -8.1% | ✅ DOG Edge: +7.1%
+   🎯 BEST BET: Orlando (+7.1% edge)
+   Model: Away Favorite
+
+⚖️ Boston vs Brooklyn (Spread: 10.5)
+   Prediction: Favorite will COVER
+   Confidence: 58.5%
+   ✅ FAV Edge: +6.1% | ❌ DOG Edge: -7.2%
+   🎯 BEST BET: Boston (+6.1% edge)
+   Model: Away Favorite
+
+⚖️ La Lakers vs Utah (Spread: 12.5)
+   Prediction: Favorite will COVER
+   Confidence: 55.2%
+   ✅ FAV Edge: +2.8% | ❌ DOG Edge: -7.6%
+   🎯 BEST BET: La Lakers (+2.8% edge)
+   Model: Home Favorite
+
+======================================================================
+
+📊 MODEL RECORD THIS SEASON (through 2025-11-18):
+Overall: 111-93 (54.4%)
+🏠 Home Favorite Model: 49-56 (46.7%)
+✈️  Away Favorite Model: 62-37 (62.6%)
+
+
+📊 CONFIDENCE BREAKDOWN:
+💪 High Confidence (>70% or <30%): 1 games
+⚖️  Medium Confidence (55-70% or 30-45%): 5 games
+⚠️  Low Confidence (45-55%): 0 games
+
+======================================================================
+
+🎲 BETTING RECOMMENDATIONS:
+💪 High Confidence bets are recommended
+⚖️  Medium Confidence bets are optional
+⚠️  Low Confidence bets should be avoided
+
+======================================================================
+
+📈 Model Info:
+Training data: All games before 2025-11-18
+Home Favorite Model: 2 predictions
+Away Favorite Model: 4 predictions

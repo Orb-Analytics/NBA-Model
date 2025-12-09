@@ -33,8 +33,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas numpy scikit-learn
 
-      - name: 🎯 Generate Today's Predictions
-        id: predictions
+      - name: 🎯 Generate & Email Today's Predictions
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
         run: |
           if [ -n "${{ github.event.inputs.prediction_date }}" ]; then
             PRED_DATE="${{ github.event.inputs.prediction_date }}"
@@ -42,70 +47,15 @@ jobs:
             PRED_DATE=$(date -u +%Y-%m-%d)
           fi
           
-          echo "Generating predictions for: $PRED_DATE"
+          echo "🔮 Generating and emailing predictions for: $PRED_DATE"
+          echo "📊 Models will use full season history for record tracking"
+          echo ""
           
-          # Run prediction script and capture output
-          python src/predict_today.py "$PRED_DATE" > predictions_output.txt 2>&1
-          EXIT_CODE=$?
-          
-          # Show the output
-          cat predictions_output.txt
-          
-          # Store the date for later steps
-          echo "prediction_date=$PRED_DATE" >> $GITHUB_OUTPUT
-          
-          # Exit with the script's exit code
-          exit $EXIT_CODE
-
-      - name: 📝 Prepare Email Body
-        id: email_body
-        run: |
-          PRED_DATE="${{ steps.predictions.outputs.prediction_date }}"
-          REPO="${{ github.repository }}"
-          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          
-          cat > email_body.txt << EOF
-          NBA Spread Predictions for ${PRED_DATE}
-          
-          Generated using rolling logistic regression with dynamic feature selection.
-          
-          ────────────────────────────────────────────────────────────────────
-          
-          EOF
-          
-          cat predictions_output.txt >> email_body.txt
-          
-          cat >> email_body.txt << EOF
-          
-          ────────────────────────────────────────────────────────────────────
-          
-          Repository: ${REPO}
-          Workflow Run: ${RUN_URL}
-          
-          Good luck! 🍀
-          EOF
-          
-          # Show the email content for debugging
-          echo "Email body content:"
-          cat email_body.txt
-
-      - name: 📧 Send Predictions Email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: ${{ secrets.SMTP_SERVER }}
-          server_port: ${{ secrets.SMTP_PORT }}
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: "🏀 NBA Spread Predictions - ${{ steps.predictions.outputs.prediction_date }}"
-          body: "See attached file for today's NBA spread predictions. Good luck! 🍀"
-          to: lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com
-          from: NBA Predictions Bot <noreply@github.com>
-          attachments: email_body.txt
-          convert_markdown: false
-
-      - name: 💾 Upload predictions as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: predictions-${{ steps.predictions.outputs.prediction_date }}
-          path: predictions_output.txt
-          retention-days: 30
+          # Run prediction script with email sending enabled
+          # This script will:
+          # 1. Load complete model history from data/model_results/model_picks_history.csv
+          # 2. Calculate current season records (W-L-P) for all 4 models
+          # 3. Generate predictions for today's games
+          # 4. Format email showing records + all 4 model picks per game
+          # 5. Send email to configured recipients
+          python src/predict_and_email.py --date "$PRED_DATE"

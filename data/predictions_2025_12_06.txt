@@ -1,0 +1,109 @@
+====================================================================================================
+🏀 NBA SPREAD PREDICTIONS - December 06, 2025
+====================================================================================================
+
+📊 SEASON RECORDS:
+----------------------------------------------------------------------------------------------------
+  Logistic             107-84 (56.0%)
+  Linear               100-91 (52.4%)
+  Random Forest        108-83 (56.5%)
+  Decision Tree        99-92 (51.8%)
+====================================================================================================
+
+📋 Brooklyn (3.5) vs New Orleans
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Brooklyn to COVER         64.2%           N/A
+   Linear               Brooklyn to COVER         73.2%           N/A
+   Random Forest        Brooklyn to COVER         57.9%           N/A
+   Decision Tree        Brooklyn to COVER         70.5%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Brooklyn to COVER (4/4 models)
+
+====================================================================================================
+
+📋 Atlanta (9.5) vs Washington
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Washington to COVER       39.4%           N/A
+   Linear               Washington to COVER       29.2%           N/A
+   Random Forest        Washington to COVER       36.3%           N/A
+   Decision Tree        Atlanta to COVER          63.0%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Washington to COVER (3/4 models)
+
+====================================================================================================
+
+📋 Cleveland (7.5) vs Golden State
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Golden State to COVER     48.5%           N/A
+   Linear               Cleveland to COVER        51.8%           N/A
+   Random Forest        Golden State to COVER     40.9%           N/A
+   Decision Tree        Cleveland to COVER        70.5%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 SPLIT DECISION: 2 models favor Cleveland, 2 favor Golden State
+
+====================================================================================================
+
+📋 Detroit (12.5) vs Milwaukee
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Milwaukee to COVER        47.7%           N/A
+   Linear               Milwaukee to COVER        44.1%           N/A
+   Random Forest        Detroit to COVER          50.3%           N/A
+   Decision Tree        Milwaukee to COVER        33.3%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Milwaukee to COVER (3/4 models)
+
+====================================================================================================
+
+📋 Miami (8.5) vs Sacramento
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Sacramento to COVER       39.2%           N/A
+   Linear               Sacramento to COVER       41.3%           N/A
+   Random Forest        Sacramento to COVER       38.2%           N/A
+   Decision Tree        Sacramento to COVER       33.3%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Sacramento to COVER (4/4 models)
+
+====================================================================================================
+
+📋 Minnesota (9.5) vs La Clippers
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Minnesota to COVER        53.2%           N/A
+   Linear               Minnesota to COVER        52.4%           N/A
+   Random Forest        La Clippers to COVER      34.9%           N/A
+   Decision Tree        La Clippers to COVER      0.0%            N/A
+   -------------------------------------------------------------------------------------
+   🎯 SPLIT DECISION: 2 models favor Minnesota, 2 favor La Clippers
+
+====================================================================================================
+
+📋 Houston (8.5) vs Dallas
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Houston to COVER          51.4%           N/A
+   Linear               Dallas to COVER           49.4%           N/A
+   Random Forest        Houston to COVER          55.8%           N/A
+   Decision Tree        Houston to COVER          61.6%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Houston to COVER (3/4 models)
+
+====================================================================================================

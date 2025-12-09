@@ -1,0 +1,151 @@
+====================================================================================================
+🏀 NBA SPREAD PREDICTIONS - November 24, 2025
+====================================================================================================
+
+📊 SEASON RECORDS:
+----------------------------------------------------------------------------------------------------
+  Logistic             107-84 (56.0%)
+  Linear               100-91 (52.4%)
+  Random Forest        108-83 (56.5%)
+  Decision Tree        99-92 (51.8%)
+====================================================================================================
+
+📋 Detroit (10.5) vs Indiana
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Detroit to COVER          62.3%           N/A
+   Linear               Detroit to COVER          70.1%           N/A
+   Random Forest        Detroit to COVER          67.8%           N/A
+   Decision Tree        Indiana to COVER          39.1%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Detroit to COVER (3/4 models)
+
+====================================================================================================
+
+📋 Cleveland (2.5) vs Toronto
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Toronto to COVER          18.4%           N/A
+   Linear               Toronto to COVER          0.0%            N/A
+   Random Forest        Toronto to COVER          26.5%           N/A
+   Decision Tree        Cleveland to COVER        58.3%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Toronto to COVER (3/4 models)
+
+====================================================================================================
+
+📋 New York (13.5) vs Brooklyn
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Brooklyn to COVER         48.9%           N/A
+   Linear               Brooklyn to COVER         43.7%           N/A
+   Random Forest        Brooklyn to COVER         41.7%           N/A
+   Decision Tree        New York to COVER         91.7%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Brooklyn to COVER (3/4 models)
+
+====================================================================================================
+
+📋 Miami (8.5) vs Dallas
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Dallas to COVER           37.4%           N/A
+   Linear               Dallas to COVER           34.5%           N/A
+   Random Forest        Dallas to COVER           39.8%           N/A
+   Decision Tree        Dallas to COVER           0.0%            N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Dallas to COVER (4/4 models)
+
+====================================================================================================
+
+📋 Denver (8.5) vs Memphis
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Memphis to COVER          39.3%           N/A
+   Linear               Memphis to COVER          28.7%           N/A
+   Random Forest        Memphis to COVER          35.2%           N/A
+   Decision Tree        Memphis to COVER          42.5%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Memphis to COVER (4/4 models)
+
+====================================================================================================
+
+📋 Milwaukee (1.5) vs Portland
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Milwaukee to COVER        53.6%           N/A
+   Linear               Portland to COVER         49.4%           N/A
+   Random Forest        Portland to COVER         45.2%           N/A
+   Decision Tree        Portland to COVER         45.1%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Portland to COVER (3/4 models)
+
+====================================================================================================
+
+📋 Chicago (5.5) vs New Orleans
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             New Orleans to COVER      37.6%           N/A
+   Linear               New Orleans to COVER      16.3%           N/A
+   Random Forest        New Orleans to COVER      40.8%           N/A
+   Decision Tree        New Orleans to COVER      16.2%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: New Orleans to COVER (4/4 models)
+
+====================================================================================================
+
+📋 Houston (6.5) vs Phoenix
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Phoenix to COVER          22.8%           N/A
+   Linear               Phoenix to COVER          4.0%            N/A
+   Random Forest        Phoenix to COVER          36.3%           N/A
+   Decision Tree        Phoenix to COVER          44.0%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Phoenix to COVER (4/4 models)
+
+====================================================================================================
+
+📋 Golden State (14.5) vs Utah
+   Favorite at Home
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Golden State to COVER     58.8%           N/A
+   Linear               Golden State to COVER     52.6%           N/A
+   Random Forest        Golden State to COVER     57.8%           N/A
+   Decision Tree        Utah to COVER             45.1%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Golden State to COVER (3/4 models)
+
+====================================================================================================
+
+📋 Minnesota (9.5) vs Sacramento
+   Favorite on Road
+
+   MODEL                PICK                      PROBABILITY     EDGE
+   -------------------------------------------------------------------------------------
+   Logistic             Sacramento to COVER       40.7%           N/A
+   Linear               Sacramento to COVER       37.7%           N/A
+   Random Forest        Sacramento to COVER       37.5%           N/A
+   Decision Tree        Sacramento to COVER       42.5%           N/A
+   -------------------------------------------------------------------------------------
+   🎯 CONSENSUS: Sacramento to COVER (4/4 models)
+
+====================================================================================================

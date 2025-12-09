@@ -1,0 +1,94 @@
+🏀 NBA SPREAD PREDICTIONS - 2025-11-21
+======================================================================
+
+Total: 9 games
+
+💪 Golden State vs Portland (Spread: 8.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 17.7%
+   ❌ FAV Edge: -31.8% | ✅ DOG Edge: +29.9%
+   🎯 BEST BET: Portland (+29.9% edge)
+   Model: Away Favorite
+
+💪 Okla City vs Utah (Spread: 16.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 21.7%
+   ❌ FAV Edge: -30.7% | ✅ DOG Edge: +25.9%
+   🎯 BEST BET: Utah (+25.9% edge)
+   Model: Away Favorite
+
+💪 Boston vs Brooklyn (Spread: 14.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 26.8%
+   ❌ FAV Edge: -25.6% | ✅ DOG Edge: +24.9%
+   🎯 BEST BET: Brooklyn (+24.9% edge)
+   Model: Home Favorite
+
+⚖️ Toronto vs Washington (Spread: 13.5)
+   Prediction: Favorite will COVER
+   Confidence: 56.6%
+   ✅ FAV Edge: +3.8% | ❌ DOG Edge: -4.9%
+   🎯 BEST BET: Toronto (+3.8% edge)
+   Model: Home Favorite
+
+⚖️ Cleveland vs Indiana (Spread: 13.5)
+   Prediction: Favorite will COVER
+   Confidence: 53.5%
+   ✅ FAV Edge: +1.2% | ❌ DOG Edge: -1.4%
+   🎯 BEST BET: Cleveland (+1.2% edge)
+   Model: Home Favorite
+
+⚖️ Dallas vs New Orleans (Spread: 3.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 47.3%
+   ❌ FAV Edge: -5.0% | ✅ DOG Edge: +0.3%
+   🎯 BEST BET: New Orleans (+0.3% edge)
+   Model: Home Favorite
+
+⚖️ Chicago vs Miami (Spread: 2.5)
+   Prediction: Favorite will COVER
+   Confidence: 52.2%
+   ✅ FAV Edge: +2.2% | ❌ DOG Edge: -3.9%
+   🎯 BEST BET: Chicago (+2.2% edge)
+   Model: Home Favorite
+
+⚖️ Houston vs Denver (Spread: 2.5)
+   Prediction: Favorite will COVER
+   Confidence: 52.1%
+   ✅ FAV Edge: +1.7% | ❌ DOG Edge: -3.8%
+   🎯 BEST BET: Houston (+1.7% edge)
+   Model: Home Favorite
+
+⚖️ Minnesota vs Phoenix (Spread: 4.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 48.2%
+   ❌ FAV Edge: -2.3% | ✅ DOG Edge: +1.1%
+   🎯 BEST BET: Phoenix (+1.1% edge)
+   Model: Away Favorite
+
+======================================================================
+
+📊 MODEL RECORD THIS SEASON (through 2025-11-21):
+Overall: 117-97 (54.7%)
+🏠 Home Favorite Model: 51-58 (46.8%)
+✈️  Away Favorite Model: 66-39 (62.9%)
+
+
+📊 CONFIDENCE BREAKDOWN:
+💪 High Confidence (>70% or <30%): 3 games
+⚖️  Medium Confidence (55-70% or 30-45%): 1 games
+⚠️  Low Confidence (45-55%): 5 games
+
+======================================================================
+
+🎲 BETTING RECOMMENDATIONS:
+💪 High Confidence bets are recommended
+⚖️  Medium Confidence bets are optional
+⚠️  Low Confidence bets should be avoided
+
+======================================================================
+
+📈 Model Info:
+Training data: All games before 2025-11-21
+Home Favorite Model: 6 predictions
+Away Favorite Model: 3 predictions

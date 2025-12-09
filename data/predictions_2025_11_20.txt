@@ -1,0 +1,59 @@
+🏀 NBA SPREAD PREDICTIONS - 2025-11-20
+======================================================================
+
+Total: 4 games
+
+⚖️ San Antonio vs Atlanta (Spread: 1.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 31.7%
+   ❌ FAV Edge: -17.6% | ✅ DOG Edge: +15.7%
+   🎯 BEST BET: Atlanta (+15.7% edge)
+   Model: Away Favorite
+
+⚖️ Memphis vs Sacramento (Spread: 2.5)
+   Prediction: Favorite will COVER
+   Confidence: 60.3%
+   ✅ FAV Edge: +10.0% | ❌ DOG Edge: -10.8%
+   🎯 BEST BET: Memphis (+10.0% edge)
+   Model: Home Favorite
+
+⚖️ Philadelphia vs Milwaukee (Spread: 2.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 41.7%
+   ❌ FAV Edge: -7.8% | ✅ DOG Edge: +6.4%
+   🎯 BEST BET: Milwaukee (+6.4% edge)
+   Model: Away Favorite
+
+⚖️ Orlando vs La Clippers (Spread: 5.5)
+   Prediction: Favorite will NO COVER
+   Confidence: 48.7%
+   ❌ FAV Edge: -2.1% | ✅ DOG Edge: +1.6%
+   🎯 BEST BET: La Clippers (+1.6% edge)
+   Model: Home Favorite
+
+======================================================================
+
+📊 MODEL RECORD THIS SEASON (through 2025-11-20):
+Overall: 115-95 (54.8%)
+🏠 Home Favorite Model: 50-57 (46.7%)
+✈️  Away Favorite Model: 65-38 (63.1%)
+
+
+📊 CONFIDENCE BREAKDOWN:
+💪 High Confidence (>70% or <30%): 0 games
+⚖️  Medium Confidence (55-70% or 30-45%): 3 games
+⚠️  Low Confidence (45-55%): 1 games
+
+======================================================================
+
+🎲 BETTING RECOMMENDATIONS:
+💪 High Confidence bets are recommended
+⚖️  Medium Confidence bets are optional
+⚠️  Low Confidence bets should be avoided
+
+======================================================================
+
+📈 Model Info:
+Training data: All games before 2025-11-20
+Home Favorite Model: 2 predictions
+Away Favorite Model: 2 predictions
