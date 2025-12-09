@@ -107,19 +107,20 @@ def send_email(subject: str, body: str):
         print("   Required: SMTP_SERVER, SMTP_USERNAME, SMTP_PASSWORD")
         return False
     
-    # Default to sender if TO_EMAIL not specified
+    # Default recipient list if TO_EMAIL not specified
     if not to_email or to_email.strip() == '':
-        to_email = smtp_username
-        print(f"⚠️  TO_EMAIL not set, defaulting to sender: {smtp_username}")
-    
-    # Parse recipient emails (handle comma-separated list)
-    if ',' in to_email:
-        recipients = [email.strip() for email in to_email.split(',') if email.strip()]
+        # Hardcoded recipients
+        recipients = ['lpchaitin@gmail.com', 'eborsook@gmail.com', 'benitesa192@gmail.com']
+        print(f"⚠️  TO_EMAIL not set, using default recipients")
     else:
-        recipients = [to_email.strip()] if to_email.strip() else [smtp_username]
+        # Parse recipient emails (handle comma-separated list)
+        if ',' in to_email:
+            recipients = [email.strip() for email in to_email.split(',') if email.strip()]
+        else:
+            recipients = [to_email.strip()] if to_email.strip() else []
     
     # Validate recipients
-    if not recipients or recipients == ['']:
+    if not recipients:
         print("❌ No valid recipients found")
         return False
     
