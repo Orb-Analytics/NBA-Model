@@ -50,10 +50,17 @@ jobs:
           echo "📊 Models will use full season history for record tracking"
           echo ""
           
+          # First, update yesterday's results (convert PENDING to WIN/LOSS)
+          YESTERDAY=$(date -d "$PRED_DATE - 1 day" +%Y-%m-%d)
+          echo "📊 Updating results for yesterday: $YESTERDAY"
+          python src/update_results.py --date "$YESTERDAY" || echo "⚠️ No results to update for $YESTERDAY"
+          
+          echo ""
+          
           # Run prediction script with email sending enabled
           # This script will:
           # 1. Load complete model history from data/model_results/model_picks_history.csv
-          # 2. Calculate current season records (W-L-P) for all 4 models
+          # 2. Calculate current season records (W-L-P) for all 4 models (now including yesterday's updated results)
           # 3. Generate predictions for today's games
           # 4. Format email showing records + all 4 model picks per game
           # 5. Send email to configured recipients

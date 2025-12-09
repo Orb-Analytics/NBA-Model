@@ -1307,15 +1307,15 @@ date,game_id,home_team,away_team,favorite_team,underdog_team,spread,model_name,p
 2025-12-07,2025-12-07_OklaCity_Utah,Utah,Okla City,Okla City,Utah,9.5,Linear,UNDERDOG,Utah,9.5,LOSS
 2025-12-07,2025-12-07_OklaCity_Utah,Utah,Okla City,Okla City,Utah,9.5,Random Forest,UNDERDOG,Utah,9.5,LOSS
 2025-12-07,2025-12-07_OklaCity_Utah,Utah,Okla City,Okla City,Utah,9.5,Decision Tree,UNDERDOG,Utah,9.5,LOSS
-2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Logistic,UNDERDOG,Sacramento,4.5,PENDING
-2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Linear,UNDERDOG,Sacramento,4.5,PENDING
-2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Random Forest,UNDERDOG,Sacramento,4.5,PENDING
-2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Decision Tree,UNDERDOG,Sacramento,4.5,PENDING
-2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Logistic,UNDERDOG,Phoenix,9.5,PENDING
-2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Linear,UNDERDOG,Phoenix,9.5,PENDING
-2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Random Forest,UNDERDOG,Phoenix,9.5,PENDING
-2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Decision Tree,UNDERDOG,Phoenix,9.5,PENDING
-2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Logistic,UNDERDOG,New Orleans,9.5,PENDING
-2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Linear,UNDERDOG,New Orleans,9.5,PENDING
-2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Random Forest,UNDERDOG,New Orleans,9.5,PENDING
-2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Decision Tree,UNDERDOG,New Orleans,9.5,PENDING
+2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Logistic,UNDERDOG,Sacramento,4.5,LOSS
+2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Linear,UNDERDOG,Sacramento,4.5,LOSS
+2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Random Forest,UNDERDOG,Sacramento,4.5,LOSS
+2025-12-08,2025-12-08_Indiana_Sacramento,Indiana,Sacramento,Indiana,Sacramento,4.5,Decision Tree,UNDERDOG,Sacramento,4.5,LOSS
+2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Logistic,UNDERDOG,Phoenix,9.5,WIN
+2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Linear,UNDERDOG,Phoenix,9.5,WIN
+2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Random Forest,UNDERDOG,Phoenix,9.5,WIN
+2025-12-08,2025-12-08_Minnesota_Phoenix,Minnesota,Phoenix,Minnesota,Phoenix,9.5,Decision Tree,UNDERDOG,Phoenix,9.5,WIN
+2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Logistic,UNDERDOG,New Orleans,9.5,WIN
+2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Linear,UNDERDOG,New Orleans,9.5,WIN
+2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Random Forest,UNDERDOG,New Orleans,9.5,WIN
+2025-12-08,2025-12-08_SanAntonio_NewOrleans,New Orleans,San Antonio,San Antonio,New Orleans,9.5,Decision Tree,UNDERDOG,New Orleans,9.5,WIN
