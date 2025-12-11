@@ -102,7 +102,11 @@ def compute_model_pick(
     spread: float
 ) -> Dict[str, Any]:
     """
-    Compute edges and pick for a single model.
+    Compute edges and pick for a single model using STANDARDIZED probabilities.
+    
+    Standardization Formula:
+    - Standardized Prob = (Model Prob × 0.35) + (Implied Prob × 0.65)
+    - Edge = Standardized Prob - Implied Prob
     
     Args:
         prob_fav_cover: Model's probability that favorite covers (0-1)
@@ -113,19 +117,23 @@ def compute_model_pick(
         spread: Spread in favorite terms (e.g., -9.5)
     
     Returns:
-        Dict with prob_fav_cover, prob_dog_cover, fav_edge, dog_edge, 
+        Dict with prob_fav_cover, prob_dog_cover, standardized probs, fav_edge, dog_edge, 
         pick_side, pick_team, pick_line
     """
-    # Calculate dog probability
+    # Calculate dog probability (raw from model)
     prob_dog_cover = 1.0 - prob_fav_cover
     
     # Convert odds to implied probabilities
     implied_fav = american_to_prob(fav_odds)
     implied_dog = american_to_prob(dog_odds)
     
-    # Calculate edges
-    fav_edge = prob_fav_cover - implied_fav
-    dog_edge = prob_dog_cover - implied_dog
+    # STANDARDIZE probabilities: 35% model + 65% market
+    standardized_fav = (prob_fav_cover * 0.35) + (implied_fav * 0.65)
+    standardized_dog = (prob_dog_cover * 0.35) + (implied_dog * 0.65)
+    
+    # Calculate edges using STANDARDIZED probabilities
+    fav_edge = standardized_fav - implied_fav
+    dog_edge = standardized_dog - implied_dog
     
     # Pick logic: select side with highest edge, or NO BET if both negative
     if max(fav_edge, dog_edge) <= 0:
@@ -143,10 +151,12 @@ def compute_model_pick(
             pick_line = spread  # Underdog gets positive spread (e.g., +9.5)
     
     return {
-        "prob_fav_cover": prob_fav_cover,
-        "prob_dog_cover": prob_dog_cover,
-        "fav_edge": fav_edge,
-        "dog_edge": dog_edge,
+        "prob_fav_cover": prob_fav_cover,  # Raw model probability
+        "prob_dog_cover": prob_dog_cover,  # Raw model probability
+        "standardized_fav": standardized_fav,  # Standardized probability
+        "standardized_dog": standardized_dog,  # Standardized probability
+        "fav_edge": fav_edge,  # Edge calculated from standardized prob
+        "dog_edge": dog_edge,  # Edge calculated from standardized prob
         "pick_side": pick_side,
         "pick_team": pick_team,
         "pick_line": pick_line

@@ -45,14 +45,14 @@ def format_model_line(model_name: str, model_data: Dict[str, Any]) -> str:
     pick_line = model_data['pick_line']
     pick_side = model_data['pick_side']
     
-    # Determine which probability to show (the one for the picked side)
+    # Determine which STANDARDIZED probability to show (the one for the picked side)
     if pick_side == "FAVORITE":
-        prob_cover = model_data['prob_fav_cover']
+        prob_cover = model_data['standardized_fav']
     elif pick_side == "UNDERDOG":
-        prob_cover = model_data['prob_dog_cover']
+        prob_cover = model_data['standardized_dog']
     else:
-        # NO BET - show favorite probability
-        prob_cover = model_data['prob_fav_cover']
+        # NO BET - show favorite standardized probability
+        prob_cover = model_data['standardized_fav']
     
     fav_edge = model_data['fav_edge']
     dog_edge = model_data['dog_edge']
