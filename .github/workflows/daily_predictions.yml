@@ -1,4 +1,4 @@
-zname: 🎯 Generate & Email Daily Predictions
+name: 🎯 Generate & Email Daily Predictions
 
 on:
   workflow_run:
