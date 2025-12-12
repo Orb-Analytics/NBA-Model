@@ -25,7 +25,7 @@ def american_to_prob(odds: float) -> float:
         return 100.0 / (odds + 100.0)
 
 
-def build_prediction_record(game_row: pd.Series, model_predictions: Dict[str, float]) -> Dict[str, Any]:
+def build_prediction_record(game_row: pd.Series, model_predictions: Dict[str, float], min_edge: float = 0.0) -> Dict[str, Any]:
     """
     Build standardized prediction record for a single game.
     
@@ -33,6 +33,7 @@ def build_prediction_record(game_row: pd.Series, model_predictions: Dict[str, fl
         game_row: Pandas Series with game data from master dataset
         model_predictions: Dict with keys like 'logistic', 'linear', etc. 
                           Values are prob_fav_cover (favorite-centric probability)
+        min_edge: Minimum edge threshold for making picks (default 0.0)
     
     Returns:
         Prediction record dict following framework data contract
@@ -72,7 +73,8 @@ def build_prediction_record(game_row: pd.Series, model_predictions: Dict[str, fl
             dog_odds=dog_odds,
             favorite_team=favorite_team,
             underdog_team=underdog_team,
-            spread=spread
+            spread=spread,
+            min_edge=min_edge
         )
         models_dict[model_name] = model_dict
     
@@ -99,7 +101,8 @@ def compute_model_pick(
     dog_odds: float,
     favorite_team: str,
     underdog_team: str,
-    spread: float
+    spread: float,
+    min_edge: float = 0.0
 ) -> Dict[str, Any]:
     """
     Compute edges and pick for a single model using STANDARDIZED probabilities.
@@ -115,6 +118,7 @@ def compute_model_pick(
         favorite_team: Name of favorite team
         underdog_team: Name of underdog team
         spread: Spread in favorite terms (e.g., -9.5)
+        min_edge: Minimum edge threshold for making a pick (default 0.0)
     
     Returns:
         Dict with prob_fav_cover, prob_dog_cover, standardized probs, fav_edge, dog_edge, 
@@ -135,8 +139,8 @@ def compute_model_pick(
     fav_edge = standardized_fav - implied_fav
     dog_edge = standardized_dog - implied_dog
     
-    # Pick logic: select side with highest edge, or NO BET if both negative
-    if max(fav_edge, dog_edge) <= 0:
+    # Pick logic: select side with highest edge above min_edge threshold, or NO BET
+    if max(fav_edge, dog_edge) < min_edge:
         pick_side = "NO BET"
         pick_team = None
         pick_line = None

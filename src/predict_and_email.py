@@ -20,13 +20,14 @@ from email_formatter import format_predictions_for_email
 from model_history import get_season_records, record_predictions
 
 
-def generate_predictions(date: str, data_path: str = 'data/NBA Training Set 25-26.csv'):
+def generate_predictions(date: str, data_path: str = 'data/NBA Training Set 25-26.csv', min_edge: float = 0.0):
     """
     Generate predictions for all games on specified date using all 4 models.
     
     Args:
         date: Date string (YYYY-MM-DD)
         data_path: Path to master dataset
+        min_edge: Minimum edge threshold for making picks (default 0.0)
     
     Returns:
         List of prediction record dicts
@@ -76,7 +77,7 @@ def generate_predictions(date: str, data_path: str = 'data/NBA Training Set 25-2
         }
         
         # Build standardized prediction record
-        prediction_record = build_prediction_record(game_row, model_predictions)
+        prediction_record = build_prediction_record(game_row, model_predictions, min_edge=min_edge)
         predictions.append(prediction_record)
         
         print(f"✅ {prediction_record['favorite_team']} ({prediction_record['spread']}) vs {prediction_record['underdog_team']}")
@@ -159,6 +160,7 @@ def main():
     parser.add_argument('--date', type=str, help='Date to predict (YYYY-MM-DD), defaults to today')
     parser.add_argument('--no-email', action='store_true', help='Skip sending email (just print)')
     parser.add_argument('--save-to-file', type=str, help='Save predictions to text file instead of/in addition to email')
+    parser.add_argument('--min-edge', type=float, default=0.0, help='Minimum edge threshold for picks (default: 0.0)')
     
     args = parser.parse_args()
     
@@ -171,7 +173,7 @@ def main():
     date_display = datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y')
     
     # Generate predictions
-    predictions = generate_predictions(date)
+    predictions = generate_predictions(date, min_edge=args.min_edge)
     
     if not predictions:
         print("❌ No predictions generated")
