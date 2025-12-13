@@ -111,7 +111,7 @@ def send_email(subject: str, body: str):
     # Default recipient list if TO_EMAIL not specified
     if not to_email or to_email.strip() == '':
         # Hardcoded recipients
-        recipients = ['lpchaitin@gmail.com', 'eborsook@gmail.com', 'benitesa192@gmail.com', 'henry.devlin@icloud.com']
+        recipients = ['lpchaitin@gmail.com', 'eborsook@gmail.com', 'benitesa192@gmail.com', 'Henrykdevlin@gmail.com']
         print(f"⚠️  TO_EMAIL not set, using default recipients")
     else:
         # Parse recipient emails (handle comma-separated list)

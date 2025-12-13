@@ -39,7 +39,7 @@ def send_test_email():
         return False
     
     # Recipients
-    to_emails = ['lpchaitin@gmail.com', 'eborsook@gmail.com', 'benitesa192@gmail.com', 'henry.devlin@icloud.com']
+    to_emails = ['lpchaitin@gmail.com', 'eborsook@gmail.com', 'benitesa192@gmail.com', 'Henrykdevlin@gmail.com']
     
     # Create message
     msg = MIMEMultipart('alternative')
