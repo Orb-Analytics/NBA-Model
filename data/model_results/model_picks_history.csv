@@ -1327,11 +1327,11 @@ date,game_id,home_team,away_team,favorite_team,underdog_team,spread,model_name,p
 2025-12-09,2025-12-09_NewYork_Toronto,Toronto,New York,New York,Toronto,4.5,Linear,FAVORITE,New York,-4.5,WIN
 2025-12-09,2025-12-09_NewYork_Toronto,Toronto,New York,New York,Toronto,4.5,Random Forest,FAVORITE,New York,-4.5,WIN
 2025-12-09,2025-12-09_NewYork_Toronto,Toronto,New York,New York,Toronto,4.5,Decision Tree,UNDERDOG,Toronto,4.5,LOSS
-2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Logistic,UNDERDOG,Phoenix,14.5,PENDING
-2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Linear,UNDERDOG,Phoenix,14.5,PENDING
-2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Random Forest,UNDERDOG,Phoenix,14.5,PENDING
-2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Decision Tree,FAVORITE,Okla City,-14.5,PENDING
-2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Logistic,FAVORITE,La Lakers,-6.5,PENDING
-2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Linear,FAVORITE,La Lakers,-6.5,PENDING
-2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Random Forest,UNDERDOG,San Antonio,6.5,PENDING
-2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Decision Tree,FAVORITE,La Lakers,-6.5,PENDING
+2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Logistic,UNDERDOG,Phoenix,14.5,WIN
+2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Linear,UNDERDOG,Phoenix,14.5,WIN
+2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Random Forest,UNDERDOG,Phoenix,14.5,WIN
+2025-12-10,2025-12-10_OklaCity_Phoenix,Okla City,Phoenix,Okla City,Phoenix,14.5,Decision Tree,FAVORITE,Okla City,-14.5,LOSS
+2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Logistic,FAVORITE,La Lakers,-6.5,WIN
+2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Linear,FAVORITE,La Lakers,-6.5,WIN
+2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Random Forest,UNDERDOG,San Antonio,6.5,LOSS
+2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Decision Tree,FAVORITE,La Lakers,-6.5,WIN
