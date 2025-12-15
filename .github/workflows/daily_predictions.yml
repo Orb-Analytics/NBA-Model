@@ -65,3 +65,16 @@ jobs:
           # 4. Format email showing records + all 4 model picks per game
           # 5. Send email to configured recipients
           python src/predict_and_email.py --date "$PRED_DATE"
+
+      - name: 💾 Commit updated predictions and results
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/model_results/model_picks_history.csv
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "📊 Update predictions and results for $(date -u +%Y-%m-%d)"
+            git push
+          fi

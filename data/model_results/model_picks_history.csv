@@ -1335,3 +1335,87 @@ date,game_id,home_team,away_team,favorite_team,underdog_team,spread,model_name,p
 2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Linear,FAVORITE,La Lakers,-6.5,WIN
 2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Random Forest,UNDERDOG,San Antonio,6.5,LOSS
 2025-12-10,2025-12-10_LaLakers_SanAntonio,La Lakers,San Antonio,La Lakers,San Antonio,6.5,Decision Tree,FAVORITE,La Lakers,-6.5,WIN
+2025-12-11,2025-12-11_Houston_LaClippers,Houston,La Clippers,Houston,La Clippers,9.5,Logistic,FAVORITE,Houston,-9.5,LOSS
+2025-12-11,2025-12-11_Houston_LaClippers,Houston,La Clippers,Houston,La Clippers,9.5,Linear,FAVORITE,Houston,-9.5,LOSS
+2025-12-11,2025-12-11_Houston_LaClippers,Houston,La Clippers,Houston,La Clippers,9.5,Random Forest,FAVORITE,Houston,-9.5,LOSS
+2025-12-11,2025-12-11_Houston_LaClippers,Houston,La Clippers,Houston,La Clippers,9.5,Decision Tree,FAVORITE,Houston,-9.5,LOSS
+2025-12-11,2025-12-11_Boston_Milwaukee,Milwaukee,Boston,Boston,Milwaukee,9.5,Logistic,FAVORITE,Boston,-9.5,LOSS
+2025-12-11,2025-12-11_Boston_Milwaukee,Milwaukee,Boston,Boston,Milwaukee,9.5,Linear,FAVORITE,Boston,-9.5,LOSS
+2025-12-11,2025-12-11_Boston_Milwaukee,Milwaukee,Boston,Boston,Milwaukee,9.5,Random Forest,FAVORITE,Boston,-9.5,LOSS
+2025-12-11,2025-12-11_Boston_Milwaukee,Milwaukee,Boston,Boston,Milwaukee,9.5,Decision Tree,UNDERDOG,Milwaukee,9.5,WIN
+2025-12-11,2025-12-11_Portland_NewOrleans,New Orleans,Portland,Portland,New Orleans,4.5,Logistic,UNDERDOG,New Orleans,4.5,WIN
+2025-12-11,2025-12-11_Portland_NewOrleans,New Orleans,Portland,Portland,New Orleans,4.5,Linear,UNDERDOG,New Orleans,4.5,WIN
+2025-12-11,2025-12-11_Portland_NewOrleans,New Orleans,Portland,Portland,New Orleans,4.5,Random Forest,UNDERDOG,New Orleans,4.5,WIN
+2025-12-11,2025-12-11_Portland_NewOrleans,New Orleans,Portland,Portland,New Orleans,4.5,Decision Tree,UNDERDOG,New Orleans,4.5,WIN
+2025-12-11,2025-12-11_Denver_Sacramento,Sacramento,Denver,Denver,Sacramento,10.5,Logistic,FAVORITE,Denver,-10.5,WIN
+2025-12-11,2025-12-11_Denver_Sacramento,Sacramento,Denver,Denver,Sacramento,10.5,Linear,FAVORITE,Denver,-10.5,WIN
+2025-12-11,2025-12-11_Denver_Sacramento,Sacramento,Denver,Denver,Sacramento,10.5,Random Forest,FAVORITE,Denver,-10.5,WIN
+2025-12-11,2025-12-11_Denver_Sacramento,Sacramento,Denver,Denver,Sacramento,10.5,Decision Tree,UNDERDOG,Sacramento,10.5,LOSS
+2025-12-12,2025-12-12_Chicago_Charlotte,Charlotte,Chicago,Chicago,Charlotte,2.5,Logistic,FAVORITE,Chicago,-2.5,WIN
+2025-12-12,2025-12-12_Chicago_Charlotte,Charlotte,Chicago,Chicago,Charlotte,2.5,Linear,FAVORITE,Chicago,-2.5,WIN
+2025-12-12,2025-12-12_Chicago_Charlotte,Charlotte,Chicago,Chicago,Charlotte,2.5,Random Forest,UNDERDOG,Charlotte,2.5,LOSS
+2025-12-12,2025-12-12_Chicago_Charlotte,Charlotte,Chicago,Chicago,Charlotte,2.5,Decision Tree,UNDERDOG,Charlotte,2.5,LOSS
+2025-12-12,2025-12-12_Detroit_Atlanta,Detroit,Atlanta,Detroit,Atlanta,7.5,Logistic,UNDERDOG,Atlanta,7.5,LOSS
+2025-12-12,2025-12-12_Detroit_Atlanta,Detroit,Atlanta,Detroit,Atlanta,7.5,Linear,UNDERDOG,Atlanta,7.5,LOSS
+2025-12-12,2025-12-12_Detroit_Atlanta,Detroit,Atlanta,Detroit,Atlanta,7.5,Random Forest,UNDERDOG,Atlanta,7.5,LOSS
+2025-12-12,2025-12-12_Detroit_Atlanta,Detroit,Atlanta,Detroit,Atlanta,7.5,Decision Tree,UNDERDOG,Atlanta,7.5,LOSS
+2025-12-12,2025-12-12_Philadelphia_Indiana,Philadelphia,Indiana,Philadelphia,Indiana,7.5,Logistic,UNDERDOG,Indiana,7.5,LOSS
+2025-12-12,2025-12-12_Philadelphia_Indiana,Philadelphia,Indiana,Philadelphia,Indiana,7.5,Linear,UNDERDOG,Indiana,7.5,LOSS
+2025-12-12,2025-12-12_Philadelphia_Indiana,Philadelphia,Indiana,Philadelphia,Indiana,7.5,Random Forest,UNDERDOG,Indiana,7.5,LOSS
+2025-12-12,2025-12-12_Philadelphia_Indiana,Philadelphia,Indiana,Philadelphia,Indiana,7.5,Decision Tree,UNDERDOG,Indiana,7.5,LOSS
+2025-12-12,2025-12-12_Cleveland_Washington,Washington,Cleveland,Cleveland,Washington,14.5,Logistic,FAVORITE,Cleveland,-14.5,LOSS
+2025-12-12,2025-12-12_Cleveland_Washington,Washington,Cleveland,Cleveland,Washington,14.5,Linear,FAVORITE,Cleveland,-14.5,LOSS
+2025-12-12,2025-12-12_Cleveland_Washington,Washington,Cleveland,Cleveland,Washington,14.5,Random Forest,UNDERDOG,Washington,14.5,WIN
+2025-12-12,2025-12-12_Cleveland_Washington,Washington,Cleveland,Cleveland,Washington,14.5,Decision Tree,UNDERDOG,Washington,14.5,WIN
+2025-12-12,2025-12-12_Memphis_Utah,Memphis,Utah,Memphis,Utah,7.5,Logistic,NO BET,,,NO BET
+2025-12-12,2025-12-12_Memphis_Utah,Memphis,Utah,Memphis,Utah,7.5,Linear,UNDERDOG,Utah,7.5,WIN
+2025-12-12,2025-12-12_Memphis_Utah,Memphis,Utah,Memphis,Utah,7.5,Random Forest,FAVORITE,Memphis,-7.5,LOSS
+2025-12-12,2025-12-12_Memphis_Utah,Memphis,Utah,Memphis,Utah,7.5,Decision Tree,UNDERDOG,Utah,7.5,WIN
+2025-12-12,2025-12-12_Dallas_Brooklyn,Dallas,Brooklyn,Dallas,Brooklyn,7.5,Logistic,UNDERDOG,Brooklyn,7.5,LOSS
+2025-12-12,2025-12-12_Dallas_Brooklyn,Dallas,Brooklyn,Dallas,Brooklyn,7.5,Linear,UNDERDOG,Brooklyn,7.5,LOSS
+2025-12-12,2025-12-12_Dallas_Brooklyn,Dallas,Brooklyn,Dallas,Brooklyn,7.5,Random Forest,UNDERDOG,Brooklyn,7.5,LOSS
+2025-12-12,2025-12-12_Dallas_Brooklyn,Dallas,Brooklyn,Dallas,Brooklyn,7.5,Decision Tree,UNDERDOG,Brooklyn,7.5,LOSS
+2025-12-12,2025-12-12_GoldenState_Minnesota,Minnesota,Golden State,Golden State,Minnesota,1.5,Logistic,UNDERDOG,Minnesota,1.5,LOSS
+2025-12-12,2025-12-12_GoldenState_Minnesota,Minnesota,Golden State,Golden State,Minnesota,1.5,Linear,UNDERDOG,Minnesota,1.5,LOSS
+2025-12-12,2025-12-12_GoldenState_Minnesota,Minnesota,Golden State,Golden State,Minnesota,1.5,Random Forest,NO BET,,,NO BET
+2025-12-12,2025-12-12_GoldenState_Minnesota,Minnesota,Golden State,Golden State,Minnesota,1.5,Decision Tree,UNDERDOG,Minnesota,1.5,LOSS
+2025-12-13,2025-12-13_NewYork_Orlando,Orlando,New York,New York,Orlando,4.5,Logistic,FAVORITE,New York,-4.5,WIN
+2025-12-13,2025-12-13_NewYork_Orlando,Orlando,New York,New York,Orlando,4.5,Linear,FAVORITE,New York,-4.5,WIN
+2025-12-13,2025-12-13_NewYork_Orlando,Orlando,New York,New York,Orlando,4.5,Random Forest,FAVORITE,New York,-4.5,WIN
+2025-12-13,2025-12-13_NewYork_Orlando,Orlando,New York,New York,Orlando,4.5,Decision Tree,FAVORITE,New York,-4.5,WIN
+2025-12-13,2025-12-13_OklaCity_SanAntonio,San Antonio,Okla City,Okla City,San Antonio,10.5,Logistic,NO BET,,,NO BET
+2025-12-13,2025-12-13_OklaCity_SanAntonio,San Antonio,Okla City,Okla City,San Antonio,10.5,Linear,FAVORITE,Okla City,-10.5,LOSS
+2025-12-13,2025-12-13_OklaCity_SanAntonio,San Antonio,Okla City,Okla City,San Antonio,10.5,Random Forest,NO BET,,,NO BET
+2025-12-13,2025-12-13_OklaCity_SanAntonio,San Antonio,Okla City,Okla City,San Antonio,10.5,Decision Tree,FAVORITE,Okla City,-10.5,LOSS
+2025-12-14,2025-12-14_Indiana_Washington,Indiana,Washington,Indiana,Washington,9.5,Logistic,FAVORITE,Indiana,-9.5,LOSS
+2025-12-14,2025-12-14_Indiana_Washington,Indiana,Washington,Indiana,Washington,9.5,Linear,UNDERDOG,Washington,9.5,WIN
+2025-12-14,2025-12-14_Indiana_Washington,Indiana,Washington,Indiana,Washington,9.5,Random Forest,FAVORITE,Indiana,-9.5,LOSS
+2025-12-14,2025-12-14_Indiana_Washington,Indiana,Washington,Indiana,Washington,9.5,Decision Tree,FAVORITE,Indiana,-9.5,LOSS
+2025-12-14,2025-12-14_Cleveland_Charlotte,Cleveland,Charlotte,Cleveland,Charlotte,11.5,Logistic,FAVORITE,Cleveland,-11.5,LOSS
+2025-12-14,2025-12-14_Cleveland_Charlotte,Cleveland,Charlotte,Cleveland,Charlotte,11.5,Linear,FAVORITE,Cleveland,-11.5,LOSS
+2025-12-14,2025-12-14_Cleveland_Charlotte,Cleveland,Charlotte,Cleveland,Charlotte,11.5,Random Forest,NO BET,,,NO BET
+2025-12-14,2025-12-14_Cleveland_Charlotte,Cleveland,Charlotte,Cleveland,Charlotte,11.5,Decision Tree,UNDERDOG,Charlotte,11.5,WIN
+2025-12-14,2025-12-14_Atlanta_Philadelphia,Atlanta,Philadelphia,Atlanta,Philadelphia,5.5,Logistic,NO BET,,,NO BET
+2025-12-14,2025-12-14_Atlanta_Philadelphia,Atlanta,Philadelphia,Atlanta,Philadelphia,5.5,Linear,NO BET,,,NO BET
+2025-12-14,2025-12-14_Atlanta_Philadelphia,Atlanta,Philadelphia,Atlanta,Philadelphia,5.5,Random Forest,NO BET,,,NO BET
+2025-12-14,2025-12-14_Atlanta_Philadelphia,Atlanta,Philadelphia,Atlanta,Philadelphia,5.5,Decision Tree,UNDERDOG,Philadelphia,5.5,WIN
+2025-12-14,2025-12-14_Milwaukee_Brooklyn,Brooklyn,Milwaukee,Milwaukee,Brooklyn,1.5,Logistic,UNDERDOG,Brooklyn,1.5,WIN
+2025-12-14,2025-12-14_Milwaukee_Brooklyn,Brooklyn,Milwaukee,Milwaukee,Brooklyn,1.5,Linear,UNDERDOG,Brooklyn,1.5,WIN
+2025-12-14,2025-12-14_Milwaukee_Brooklyn,Brooklyn,Milwaukee,Milwaukee,Brooklyn,1.5,Random Forest,UNDERDOG,Brooklyn,1.5,WIN
+2025-12-14,2025-12-14_Milwaukee_Brooklyn,Brooklyn,Milwaukee,Milwaukee,Brooklyn,1.5,Decision Tree,UNDERDOG,Brooklyn,1.5,WIN
+2025-12-14,2025-12-14_Minnesota_Sacramento,Minnesota,Sacramento,Minnesota,Sacramento,10.5,Logistic,UNDERDOG,Sacramento,10.5,LOSS
+2025-12-14,2025-12-14_Minnesota_Sacramento,Minnesota,Sacramento,Minnesota,Sacramento,10.5,Linear,UNDERDOG,Sacramento,10.5,LOSS
+2025-12-14,2025-12-14_Minnesota_Sacramento,Minnesota,Sacramento,Minnesota,Sacramento,10.5,Random Forest,UNDERDOG,Sacramento,10.5,LOSS
+2025-12-14,2025-12-14_Minnesota_Sacramento,Minnesota,Sacramento,Minnesota,Sacramento,10.5,Decision Tree,UNDERDOG,Sacramento,10.5,LOSS
+2025-12-14,2025-12-14_Chicago_NewOrleans,Chicago,New Orleans,Chicago,New Orleans,4.5,Logistic,NO BET,,,NO BET
+2025-12-14,2025-12-14_Chicago_NewOrleans,Chicago,New Orleans,Chicago,New Orleans,4.5,Linear,NO BET,,,NO BET
+2025-12-14,2025-12-14_Chicago_NewOrleans,Chicago,New Orleans,Chicago,New Orleans,4.5,Random Forest,FAVORITE,Chicago,-4.5,LOSS
+2025-12-14,2025-12-14_Chicago_NewOrleans,Chicago,New Orleans,Chicago,New Orleans,4.5,Decision Tree,UNDERDOG,New Orleans,4.5,WIN
+2025-12-14,2025-12-14_LaLakers_Phoenix,Phoenix,La Lakers,La Lakers,Phoenix,1.5,Logistic,FAVORITE,La Lakers,-1.5,WIN
+2025-12-14,2025-12-14_LaLakers_Phoenix,Phoenix,La Lakers,La Lakers,Phoenix,1.5,Linear,FAVORITE,La Lakers,-1.5,WIN
+2025-12-14,2025-12-14_LaLakers_Phoenix,Phoenix,La Lakers,La Lakers,Phoenix,1.5,Random Forest,UNDERDOG,Phoenix,1.5,LOSS
+2025-12-14,2025-12-14_LaLakers_Phoenix,Phoenix,La Lakers,La Lakers,Phoenix,1.5,Decision Tree,UNDERDOG,Phoenix,1.5,LOSS
+2025-12-14,2025-12-14_GoldenState_Portland,Portland,Golden State,Golden State,Portland,4.5,Logistic,UNDERDOG,Portland,4.5,WIN
+2025-12-14,2025-12-14_GoldenState_Portland,Portland,Golden State,Golden State,Portland,4.5,Linear,UNDERDOG,Portland,4.5,WIN
+2025-12-14,2025-12-14_GoldenState_Portland,Portland,Golden State,Golden State,Portland,4.5,Random Forest,UNDERDOG,Portland,4.5,WIN
+2025-12-14,2025-12-14_GoldenState_Portland,Portland,Golden State,Golden State,Portland,4.5,Decision Tree,UNDERDOG,Portland,4.5,WIN
