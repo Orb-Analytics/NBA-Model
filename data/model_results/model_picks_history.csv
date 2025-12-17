@@ -1423,3 +1423,11 @@ date,game_id,home_team,away_team,favorite_team,underdog_team,spread,model_name,p
 2025-12-16,2025-12-16_NewYork_Utah,Utah,New York,New York,Utah,2.5,Linear,UNDERDOG,Utah,2.5,PENDING
 2025-12-16,2025-12-16_NewYork_Utah,Utah,New York,New York,Utah,2.5,Random Forest,UNDERDOG,Utah,2.5,PENDING
 2025-12-16,2025-12-16_NewYork_Utah,Utah,New York,New York,Utah,2.5,Decision Tree,UNDERDOG,Utah,2.5,PENDING
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Logistic,FAVORITE,Cleveland,-5.5,PENDING
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Linear,UNDERDOG,Chicago,5.5,PENDING
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Random Forest,UNDERDOG,Chicago,5.5,PENDING
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Decision Tree,UNDERDOG,Chicago,5.5,PENDING
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Logistic,UNDERDOG,Memphis,7.5,PENDING
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Linear,UNDERDOG,Memphis,7.5,PENDING
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Random Forest,UNDERDOG,Memphis,7.5,PENDING
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Decision Tree,FAVORITE,Minnesota,-7.5,PENDING
