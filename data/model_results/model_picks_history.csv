@@ -1423,11 +1423,59 @@ date,game_id,home_team,away_team,favorite_team,underdog_team,spread,model_name,p
 2025-12-16,2025-12-16_NewYork_Utah,Utah,New York,New York,Utah,2.5,Linear,UNDERDOG,Utah,2.5,PENDING
 2025-12-16,2025-12-16_NewYork_Utah,Utah,New York,New York,Utah,2.5,Random Forest,UNDERDOG,Utah,2.5,PENDING
 2025-12-16,2025-12-16_NewYork_Utah,Utah,New York,New York,Utah,2.5,Decision Tree,UNDERDOG,Utah,2.5,PENDING
-2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Logistic,FAVORITE,Cleveland,-5.5,PENDING
-2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Linear,UNDERDOG,Chicago,5.5,PENDING
-2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Random Forest,UNDERDOG,Chicago,5.5,PENDING
-2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Decision Tree,UNDERDOG,Chicago,5.5,PENDING
-2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Logistic,UNDERDOG,Memphis,7.5,PENDING
-2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Linear,UNDERDOG,Memphis,7.5,PENDING
-2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Random Forest,UNDERDOG,Memphis,7.5,PENDING
-2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Decision Tree,FAVORITE,Minnesota,-7.5,PENDING
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Logistic,FAVORITE,Cleveland,-5.5,LOSS
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Linear,UNDERDOG,Chicago,5.5,WIN
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Random Forest,UNDERDOG,Chicago,5.5,WIN
+2025-12-17,2025-12-17_Cleveland_Chicago,Chicago,Cleveland,Cleveland,Chicago,5.5,Decision Tree,UNDERDOG,Chicago,5.5,WIN
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Logistic,UNDERDOG,Memphis,7.5,WIN
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Linear,UNDERDOG,Memphis,7.5,WIN
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Random Forest,UNDERDOG,Memphis,7.5,WIN
+2025-12-17,2025-12-17_Minnesota_Memphis,Minnesota,Memphis,Minnesota,Memphis,7.5,Decision Tree,FAVORITE,Minnesota,-7.5,LOSS
+2025-12-18,2025-12-18_Atlanta_Charlotte,Charlotte,Atlanta,Atlanta,Charlotte,5.5,Logistic,FAVORITE,Atlanta,-5.5,PENDING
+2025-12-18,2025-12-18_Atlanta_Charlotte,Charlotte,Atlanta,Atlanta,Charlotte,5.5,Linear,FAVORITE,Atlanta,-5.5,PENDING
+2025-12-18,2025-12-18_Atlanta_Charlotte,Charlotte,Atlanta,Atlanta,Charlotte,5.5,Random Forest,FAVORITE,Atlanta,-5.5,PENDING
+2025-12-18,2025-12-18_Atlanta_Charlotte,Charlotte,Atlanta,Atlanta,Charlotte,5.5,Decision Tree,FAVORITE,Atlanta,-5.5,PENDING
+2025-12-18,2025-12-18_NewYork_Indiana,Indiana,New York,New York,Indiana,4.5,Logistic,UNDERDOG,Indiana,4.5,PENDING
+2025-12-18,2025-12-18_NewYork_Indiana,Indiana,New York,New York,Indiana,4.5,Linear,UNDERDOG,Indiana,4.5,PENDING
+2025-12-18,2025-12-18_NewYork_Indiana,Indiana,New York,New York,Indiana,4.5,Random Forest,NO BET,,,PENDING
+2025-12-18,2025-12-18_NewYork_Indiana,Indiana,New York,New York,Indiana,4.5,Decision Tree,UNDERDOG,Indiana,4.5,PENDING
+2025-12-18,2025-12-18_Miami_Brooklyn,Brooklyn,Miami,Miami,Brooklyn,7.5,Logistic,UNDERDOG,Brooklyn,7.5,PENDING
+2025-12-18,2025-12-18_Miami_Brooklyn,Brooklyn,Miami,Miami,Brooklyn,7.5,Linear,UNDERDOG,Brooklyn,7.5,PENDING
+2025-12-18,2025-12-18_Miami_Brooklyn,Brooklyn,Miami,Miami,Brooklyn,7.5,Random Forest,UNDERDOG,Brooklyn,7.5,PENDING
+2025-12-18,2025-12-18_Miami_Brooklyn,Brooklyn,Miami,Miami,Brooklyn,7.5,Decision Tree,FAVORITE,Miami,-7.5,PENDING
+2025-12-18,2025-12-18_OklaCity_LaClippers,Okla City,La Clippers,Okla City,La Clippers,17.5,Logistic,FAVORITE,Okla City,-17.5,PENDING
+2025-12-18,2025-12-18_OklaCity_LaClippers,Okla City,La Clippers,Okla City,La Clippers,17.5,Linear,FAVORITE,Okla City,-17.5,PENDING
+2025-12-18,2025-12-18_OklaCity_LaClippers,Okla City,La Clippers,Okla City,La Clippers,17.5,Random Forest,UNDERDOG,La Clippers,17.5,PENDING
+2025-12-18,2025-12-18_OklaCity_LaClippers,Okla City,La Clippers,Okla City,La Clippers,17.5,Decision Tree,UNDERDOG,La Clippers,17.5,PENDING
+2025-12-18,2025-12-18_SanAntonio_Washington,San Antonio,Washington,San Antonio,Washington,15.5,Logistic,UNDERDOG,Washington,15.5,PENDING
+2025-12-18,2025-12-18_SanAntonio_Washington,San Antonio,Washington,San Antonio,Washington,15.5,Linear,UNDERDOG,Washington,15.5,PENDING
+2025-12-18,2025-12-18_SanAntonio_Washington,San Antonio,Washington,San Antonio,Washington,15.5,Random Forest,FAVORITE,San Antonio,-15.5,PENDING
+2025-12-18,2025-12-18_SanAntonio_Washington,San Antonio,Washington,San Antonio,Washington,15.5,Decision Tree,FAVORITE,San Antonio,-15.5,PENDING
+2025-12-18,2025-12-18_Toronto_Milwaukee,Milwaukee,Toronto,Toronto,Milwaukee,4.5,Logistic,FAVORITE,Toronto,-4.5,PENDING
+2025-12-18,2025-12-18_Toronto_Milwaukee,Milwaukee,Toronto,Toronto,Milwaukee,4.5,Linear,FAVORITE,Toronto,-4.5,PENDING
+2025-12-18,2025-12-18_Toronto_Milwaukee,Milwaukee,Toronto,Toronto,Milwaukee,4.5,Random Forest,FAVORITE,Toronto,-4.5,PENDING
+2025-12-18,2025-12-18_Toronto_Milwaukee,Milwaukee,Toronto,Toronto,Milwaukee,4.5,Decision Tree,UNDERDOG,Milwaukee,4.5,PENDING
+2025-12-18,2025-12-18_Houston_NewOrleans,New Orleans,Houston,Houston,New Orleans,9.5,Logistic,UNDERDOG,New Orleans,9.5,PENDING
+2025-12-18,2025-12-18_Houston_NewOrleans,New Orleans,Houston,Houston,New Orleans,9.5,Linear,UNDERDOG,New Orleans,9.5,PENDING
+2025-12-18,2025-12-18_Houston_NewOrleans,New Orleans,Houston,Houston,New Orleans,9.5,Random Forest,UNDERDOG,New Orleans,9.5,PENDING
+2025-12-18,2025-12-18_Houston_NewOrleans,New Orleans,Houston,Houston,New Orleans,9.5,Decision Tree,UNDERDOG,New Orleans,9.5,PENDING
+2025-12-18,2025-12-18_Detroit_Dallas,Dallas,Detroit,Detroit,Dallas,6.5,Logistic,UNDERDOG,Dallas,6.5,PENDING
+2025-12-18,2025-12-18_Detroit_Dallas,Dallas,Detroit,Detroit,Dallas,6.5,Linear,UNDERDOG,Dallas,6.5,PENDING
+2025-12-18,2025-12-18_Detroit_Dallas,Dallas,Detroit,Detroit,Dallas,6.5,Random Forest,UNDERDOG,Dallas,6.5,PENDING
+2025-12-18,2025-12-18_Detroit_Dallas,Dallas,Detroit,Detroit,Dallas,6.5,Decision Tree,FAVORITE,Detroit,-6.5,PENDING
+2025-12-18,2025-12-18_Denver_Orlando,Denver,Orlando,Denver,Orlando,6.5,Logistic,UNDERDOG,Orlando,6.5,PENDING
+2025-12-18,2025-12-18_Denver_Orlando,Denver,Orlando,Denver,Orlando,6.5,Linear,FAVORITE,Denver,-6.5,PENDING
+2025-12-18,2025-12-18_Denver_Orlando,Denver,Orlando,Denver,Orlando,6.5,Random Forest,UNDERDOG,Orlando,6.5,PENDING
+2025-12-18,2025-12-18_Denver_Orlando,Denver,Orlando,Denver,Orlando,6.5,Decision Tree,UNDERDOG,Orlando,6.5,PENDING
+2025-12-18,2025-12-18_GoldenState_Phoenix,Phoenix,Golden State,Golden State,Phoenix,1.5,Logistic,UNDERDOG,Phoenix,1.5,PENDING
+2025-12-18,2025-12-18_GoldenState_Phoenix,Phoenix,Golden State,Golden State,Phoenix,1.5,Linear,UNDERDOG,Phoenix,1.5,PENDING
+2025-12-18,2025-12-18_GoldenState_Phoenix,Phoenix,Golden State,Golden State,Phoenix,1.5,Random Forest,UNDERDOG,Phoenix,1.5,PENDING
+2025-12-18,2025-12-18_GoldenState_Phoenix,Phoenix,Golden State,Golden State,Phoenix,1.5,Decision Tree,UNDERDOG,Phoenix,1.5,PENDING
+2025-12-18,2025-12-18_LaLakers_Utah,Utah,La Lakers,La Lakers,Utah,8.5,Logistic,UNDERDOG,Utah,8.5,PENDING
+2025-12-18,2025-12-18_LaLakers_Utah,Utah,La Lakers,La Lakers,Utah,8.5,Linear,UNDERDOG,Utah,8.5,PENDING
+2025-12-18,2025-12-18_LaLakers_Utah,Utah,La Lakers,La Lakers,Utah,8.5,Random Forest,UNDERDOG,Utah,8.5,PENDING
+2025-12-18,2025-12-18_LaLakers_Utah,Utah,La Lakers,La Lakers,Utah,8.5,Decision Tree,FAVORITE,La Lakers,-8.5,PENDING
+2025-12-18,2025-12-18_Portland_Sacramento,Portland,Sacramento,Portland,Sacramento,8.5,Logistic,FAVORITE,Portland,-8.5,PENDING
+2025-12-18,2025-12-18_Portland_Sacramento,Portland,Sacramento,Portland,Sacramento,8.5,Linear,FAVORITE,Portland,-8.5,PENDING
+2025-12-18,2025-12-18_Portland_Sacramento,Portland,Sacramento,Portland,Sacramento,8.5,Random Forest,UNDERDOG,Sacramento,8.5,PENDING
+2025-12-18,2025-12-18_Portland_Sacramento,Portland,Sacramento,Portland,Sacramento,8.5,Decision Tree,UNDERDOG,Sacramento,8.5,PENDING
