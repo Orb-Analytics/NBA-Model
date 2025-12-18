@@ -46,35 +46,37 @@ jobs:
             PRED_DATE=$(date -u +%Y-%m-%d)
           fi
           
-          echo "🔮 Generating and emailing predictions for: $PRED_DATE"
-          echo "📊 Models will use full season history for record tracking"
+          echo "🔮 Generating and emailing averaged model predictions for: $PRED_DATE"
+          echo "📊 Using standardized & averaged model (35% models + 65% implied)"
           echo ""
           
-          # First, update yesterday's results (convert PENDING to WIN/LOSS)
+          # Run backtest to update history with latest results
+          # This ensures yesterday's results are included in the history
           YESTERDAY=$(date -d "$PRED_DATE - 1 day" +%Y-%m-%d)
-          echo "📊 Updating results for yesterday: $YESTERDAY"
-          python src/update_results.py --date "$YESTERDAY" || echo "⚠️ No results to update for $YESTERDAY"
+          echo "📊 Updating predictions history through: $YESTERDAY"
+          python src/backtest_averaged_simple.py --end-date "$YESTERDAY" || echo "⚠️ Could not update history"
           
           echo ""
           
-          # Run prediction script with email sending enabled
+          # Run averaged model prediction script with email sending enabled
           # This script will:
-          # 1. Load complete model history from data/model_results/model_picks_history.csv
-          # 2. Calculate current season records (W-L-P) for all 4 models (now including yesterday's updated results)
-          # 3. Generate predictions for today's games
-          # 4. Format email showing records + all 4 model picks per game
-          # 5. Send email to configured recipients
-          python src/predict_and_email.py --date "$PRED_DATE"
+          # 1. Show yesterday's pick results
+          # 2. Display current season record
+          # 3. Generate today's predictions using standardized & averaged model
+          # 4. Send email to configured recipients
+          python src/predict_and_email_averaged.py --date "$PRED_DATE"
 
       - name: 💾 Commit updated predictions and results
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add data/model_results/model_picks_history.csv
+          git add data/averaged_model_backtest.csv
+          git add data/averaged_model_predictions_history.csv
+          git add data/unified_model_results.csv
           
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "📊 Update predictions and results for $(date -u +%Y-%m-%d)"
+            git commit -m "📊 Update averaged model predictions and results for $(date -u +%Y-%m-%d)"
             git push
           fi
