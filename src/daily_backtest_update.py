@@ -56,7 +56,17 @@ def main():
         print("\n⚠️  Backtest failed. Stopping.")
         sys.exit(1)
     
-    # Step 3: Verify files were updated
+    # Step 3: Update BACKTEST_RESULTS.md
+    step3 = run_command(
+        "python src/update_backtest_results_md.py",
+        "Step 3: Update BACKTEST_RESULTS.md"
+    )
+    
+    if not step3:
+        print("\n⚠️  Markdown update failed. Stopping.")
+        sys.exit(1)
+    
+    # Step 4: Verify files were updated
     print("\n" + "="*100)
     print("✅ DAILY UPDATE COMPLETE")
     print("="*100)
@@ -64,6 +74,7 @@ def main():
     print("  - data/unified_model_results.csv")
     print("  - data/averaged_model_backtest.csv")
     print("  - data/averaged_model_predictions_history.csv")
+    print("  - BACKTEST_RESULTS.md")
     print("\n🎯 Next Steps:")
     print("  - Commit changes to git")
     print("  - Generate today's predictions")
