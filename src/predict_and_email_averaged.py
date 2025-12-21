@@ -21,17 +21,18 @@ from ensemble_spread_models import EnsembleSpreadPredictor
 from prediction_core import american_to_prob
 
 
-def get_yesterday_results(history_path='data/averaged_model_predictions_history.csv', yesterday_date=None):
-    """Get yesterday's picks and their results."""
-    if not os.path.exists(history_path):
+def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yesterday_date=None):
+    """Get yesterday's picks and their results from the backtest file."""
+    if not os.path.exists(backtest_path):
         return []
     
-    history_df = pd.read_csv(history_path)
+    backtest_df = pd.read_csv(backtest_path)
+    backtest_df['date'] = pd.to_datetime(backtest_df['date']).dt.strftime('%Y-%m-%d')
     
     if yesterday_date:
-        yesterday_picks = history_df[
-            (history_df['date'] == yesterday_date) & 
-            (history_df['pick_side'] != 'NO BET')
+        yesterday_picks = backtest_df[
+            (backtest_df['date'] == yesterday_date) & 
+            (backtest_df['pick_side'] != 'NO BET')
         ].copy()
     else:
         yesterday_picks = pd.DataFrame()
@@ -39,13 +40,13 @@ def get_yesterday_results(history_path='data/averaged_model_predictions_history.
     return yesterday_picks.to_dict('records')
 
 
-def get_season_record(history_path='data/averaged_model_predictions_history.csv'):
-    """Calculate season record from history."""
-    if not os.path.exists(history_path):
+def get_season_record(backtest_path='data/averaged_model_backtest.csv'):
+    """Calculate season record from backtest file (includes all results to date)."""
+    if not os.path.exists(backtest_path):
         return {'wins': 0, 'losses': 0, 'total': 0, 'win_pct': 0.0}
     
-    history_df = pd.read_csv(history_path)
-    picks = history_df[history_df['pick_side'] != 'NO BET'].copy()
+    backtest_df = pd.read_csv(backtest_path)
+    picks = backtest_df[backtest_df['pick_side'] != 'NO BET'].copy()
     
     wins = len(picks[picks['result'] == 'WIN'])
     losses = len(picks[picks['result'] == 'LOSS'])
