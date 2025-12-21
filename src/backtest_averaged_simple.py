@@ -297,8 +297,8 @@ def main():
     parser = argparse.ArgumentParser(description='Backtest Standardized & Averaged Model')
     parser.add_argument('--start-date', type=str, default='2025-10-23',
                        help='Start date (YYYY-MM-DD)')
-    parser.add_argument('--end-date', type=str, default='2025-12-18',
-                       help='End date (YYYY-MM-DD)')
+    parser.add_argument('--end-date', type=str, default=None,
+                       help='End date (YYYY-MM-DD). If not provided, auto-detects latest completed games.')
     parser.add_argument('--min-edge', type=float, default=0.03,
                        help='Minimum edge threshold (default: 0.03 = 3%%)')
     parser.add_argument('--output', type=str, default='data/averaged_model_backtest.csv',

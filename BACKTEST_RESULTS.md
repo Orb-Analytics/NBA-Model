@@ -6,12 +6,12 @@
 
 ## 📊 Overall Performance
 
-**Period:** October 23, 2025 - December 18, 2025  
-**Record:** 109-96 (52.91%)  
-**Total Games:** 375  
-**Games Bet:** 206 (54.9%)  
-**ROI:** +5.87%  
-**Profit:** $+1330.81
+**Period:** October 23, 2025 - December 20, 2025  
+**Record:** 115-99 (53.74%)  
+**Total Games:** 390  
+**Games Bet:** 214 (54.9%)  
+**ROI:** +7.03%  
+**Profit:** $+1655.35
 
 ---
 
@@ -30,7 +30,7 @@
 |-------|--------|----------|-------|
 | **October** | 22-20 | 52.4% | 42 |
 | **November** | 67-57 | 54.0% | 124 |
-| **December** | 20-19 | 50.0% | 40 |
+| **December** | 26-22 | 54.2% | 48 |
 
 ---
 
@@ -38,8 +38,8 @@
 
 | Pick Type | Record | Win Rate |
 |-----------|--------|----------|
-| **Favorites** | 41-43 | 48.8% |
-| **Underdogs** | 68-53 | 55.7% |
+| **Favorites** | 42-43 | 49.4% |
+| **Underdogs** | 73-56 | 56.6% |
 
 ---
 
@@ -47,24 +47,24 @@
 
 | Edge Range | Record | Win Rate | Games |
 |------------|--------|----------|-------|
-| **3-5%** | 35-39 | 46.7% | 75 |
-| **5-8%** | 47-39 | 54.7% | 86 |
-| **8-15%** | 27-18 | 60.0% | 45 |
+| **3-5%** | 40-41 | 49.4% | 81 |
+| **5-8%** | 47-40 | 54.0% | 87 |
+| **8-15%** | 28-18 | 60.9% | 46 |
 
-**Key Insight:** Higher edge correlates with better performance (60.0% at 8-15% edge)
+**Key Insight:** Higher edge correlates with better performance (60.9% at 8-15% edge)
 
 ---
 
 ## 💰 Betting Performance
 
 **Flat Betting ($100 per pick):**
-- Total Wagered: $22,660
-- Profit: $+1330.81
-- ROI: +5.87%
+- Total Wagered: $23,540
+- Profit: $+1655.35
+- ROI: +7.03%
 
 **Risk-Adjusted Metrics:**
-- Pick Rate: 54.9% (filtered 169 games below 3% edge)
-- Average Edge: 6.3%
+- Pick Rate: 54.9% (filtered 176 games below 3% edge)
+- Average Edge: 6.2%
 - Max Edge: 12.7%
 - Min Edge: 3.0% (by design)
 
@@ -86,17 +86,17 @@
 
 ## 🔍 Key Observations
 
-1. **Underdog value:** 55.7% win rate on dogs vs 48.8% on favorites
-2. **Edge matters:** 60.0% win rate on highest-edge picks (8-15%)
-3. **Consistency:** Monthly win rates range from 50.0% to 54.0%
+1. **Underdog value:** 56.6% win rate on dogs vs 49.4% on favorites
+2. **Edge matters:** 60.9% win rate on highest-edge picks (8-15%)
+3. **Consistency:** Monthly win rates range from 52.4% to 54.2%
 4. **Pick rate:** Model is selective, betting only 54.9% of games
 
 ---
 
 ## 📁 Data Files
 
-- `data/unified_model_results.csv` - All 4 model probabilities (392 games through 2025-12-19)
-- `data/averaged_model_backtest.csv` - Full backtest with picks (375 completed games)
+- `data/unified_model_results.csv` - All 4 model probabilities (402 games through 2025-12-20)
+- `data/averaged_model_backtest.csv` - Full backtest with picks (390 completed games)
 - `data/averaged_model_predictions_history.csv` - Permanent archive
 
 ---
