@@ -12,7 +12,6 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 import argparse
 
@@ -572,8 +571,8 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     return "\n".join(lines)
 
 
-def send_email(subject, body, is_html=False):
-    """Send email via SMTP with optional HTML and inline images."""
+def send_email(subject, body):
+    """Send email via SMTP."""
     smtp_server = os.environ.get('SMTP_SERVER')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
@@ -584,32 +583,12 @@ def send_email(subject, body, is_html=False):
         return False
     
     # Create message
-    if is_html:
-        msg = MIMEMultipart('related')
-        msg['From'] = smtp_username
-        msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com'
-        msg['Subject'] = subject
-        
-        # Attach HTML body
-        html_part = MIMEText(body, 'html')
-        msg.attach(html_part)
-        
-        # Attach team logos as inline images
-        logo_dir = '/workspaces/NBA-model/assets/team-logos'
-        for team_abbrev in TEAM_LOGOS.values():
-            logo_path = f'{logo_dir}/{team_abbrev}.png'
-            if os.path.exists(logo_path):
-                with open(logo_path, 'rb') as img:
-                    logo_img = MIMEImage(img.read())
-                    logo_img.add_header('Content-ID', f'<{team_abbrev}>')
-                    logo_img.add_header('Content-Disposition', 'inline', filename=f'{team_abbrev}.png')
-                    msg.attach(logo_img)
-    else:
-        msg = MIMEMultipart()
-        msg['From'] = smtp_username
-        msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com'
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
+    msg = MIMEMultipart()
+    msg['From'] = smtp_username
+    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com'
+    msg['Subject'] = subject
+    
+    msg.attach(MIMEText(body, 'plain'))
     
     # Send
     try:
@@ -667,21 +646,20 @@ def main():
     print(f"   Picks: {len(picks)}")
     print()
     
-    # Format email (use HTML version with logos)
-    email_body_html = format_email_html(predictions, yesterday_results, season_record, today_str)
-    email_body_text = format_email(predictions, yesterday_results, season_record, today_str)
+    # Format email
+    email_body = format_email(predictions, yesterday_results, season_record, today_str)
     
     print("="*100)
-    print("EMAIL PREVIEW (Text version):")
+    print("EMAIL PREVIEW:")
     print("="*100)
-    print(email_body_text)
+    print(email_body)
     print("="*100)
     print()
     
     # Send email
     if not args.no_email:
         subject = f"🏀 NBA Predictions - {today_str}"
-        send_email(subject, email_body_html, is_html=True)
+        send_email(subject, email_body)
     else:
         print("⚠️ Email sending skipped (--no-email flag)")
 
