@@ -224,7 +224,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
             
             lines.append(f"🏀 {pick_line}")
             lines.append(f"   Game: {pick['favorite']} vs {pick['underdog']} (Spread: {pick['favorite']} {-pick['spread']:+.1f})")
-            lines.append(f"   Cover Probability: {pick['cover_prob']:.1%}")
+            lines.append(f"   Orb Cover Probability: {pick['cover_prob']:.1%}")
             lines.append(f"   Edge: {pick['edge']:.1%}")
             lines.append("")
     
