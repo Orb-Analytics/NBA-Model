@@ -107,10 +107,25 @@ def compute_averaged_pick(
 def backtest(
     unified_path: str = 'data/unified_model_results.csv',
     start_date: str = '2025-10-23',
-    end_date: str = '2025-12-18',
+    end_date: str = None,  # Auto-detect if None
     min_edge: float = 0.03
 ) -> pd.DataFrame:
-    """Run the backtest."""
+    """Run the backtest. If end_date is None, uses the latest date in unified results."""
+    
+    # Load unified results
+    df = pd.read_csv(unified_path)
+    df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
+    
+    # Auto-detect end date if not provided
+    if end_date is None:
+        # Use latest date with actual results (not pending)
+        completed_games = df[df['actual_cover'].notna()]
+        if len(completed_games) > 0:
+            end_date = completed_games['date'].max()
+            print(f"🔍 Auto-detected end date: {end_date}")
+        else:
+            end_date = df['date'].max()
+            print(f"⚠️  No completed games, using latest date: {end_date}")
     
     print("=" * 100)
     print("🔬 BACKTESTING STANDARDIZED & AVERAGED MODEL")
@@ -120,10 +135,6 @@ def backtest(
     print(f"📈 Formula: (35% Averaged Models) + (65% Implied Odds)")
     print("=" * 100)
     print()
-    
-    # Load unified results
-    df = pd.read_csv(unified_path)
-    df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
     
     # Filter date range
     mask = (df['date'] >= start_date) & (df['date'] <= end_date)

@@ -13,19 +13,18 @@ from ensemble_spread_models import EnsembleSpreadPredictor
 from prediction_core import american_to_prob
 
 def regenerate_unified_results(
-    master_path='../data/NBA Training Set 25-26.csv',
-    output_path='../data/unified_model_results.csv',
+    master_path='data/NBA Training Set 25-26.csv',
+    output_path='data/unified_model_results.csv',
     start_date='2025-10-22',
-    end_date='2025-12-17'
+    end_date=None  # Auto-detect if None
 ):
     """
     Regenerate unified model results by running all 4 models through each date.
+    If end_date is None, uses the latest date with complete game data.
     """
     print("="*100)
     print("🔄 REGENERATING UNIFIED MODEL RESULTS")
     print("="*100)
-    print(f"Date range: {start_date} to {end_date}")
-    print()
     
     # Load predictor
     print("📂 Loading ensemble predictor...")
@@ -33,6 +32,20 @@ def regenerate_unified_results(
     predictor.load_data(verbose=False)
     master_df = predictor.df.copy()
     master_df['Date'] = pd.to_datetime(master_df['Date'])
+    
+    # Auto-detect end date if not provided (use latest date with results)
+    if end_date is None:
+        # Get latest date that has actual results (Favorite Cover? is not null)
+        dates_with_results = master_df[master_df['Favorite Cover?'].notna()]['Date']
+        if len(dates_with_results) > 0:
+            end_date = dates_with_results.max().strftime('%Y-%m-%d')
+            print(f"🔍 Auto-detected end date: {end_date}")
+        else:
+            print("⚠️  No games with results found")
+            return None
+    
+    print(f"📅 Date range: {start_date} to {end_date}")
+    print()
     
     # Get all dates in range
     all_dates = master_df[

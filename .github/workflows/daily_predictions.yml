@@ -50,11 +50,10 @@ jobs:
           echo "📊 Using standardized & averaged model (35% models + 65% implied)"
           echo ""
           
-          # Run backtest to update history with latest results
-          # This ensures yesterday's results are included in the history
-          YESTERDAY=$(date -d "$PRED_DATE - 1 day" +%Y-%m-%d)
-          echo "📊 Updating predictions history through: $YESTERDAY"
-          python src/backtest_averaged_simple.py --end-date "$YESTERDAY" || echo "⚠️ Could not update history"
+          # Run daily backtest update (auto-detects latest data)
+          # This regenerates unified results and runs backtest with all available games
+          echo "📊 Updating backtest with latest data..."
+          python src/daily_backtest_update.py
           
           echo ""
           
