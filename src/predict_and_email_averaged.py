@@ -12,6 +12,7 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 import argparse
 
@@ -19,6 +20,25 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from ensemble_spread_models import EnsembleSpreadPredictor
 from prediction_core import american_to_prob
+
+
+# Team name to ESPN abbreviation mapping for logos
+TEAM_LOGOS = {
+    'Atlanta': 'atl', 'Boston': 'bos', 'Brooklyn': 'bkn', 'Charlotte': 'cha',
+    'Chicago': 'chi', 'Cleveland': 'cle', 'Dallas': 'dal', 'Denver': 'den',
+    'Detroit': 'det', 'Golden State': 'gs', 'Houston': 'hou', 'Indiana': 'ind',
+    'La Clippers': 'lac', 'La Lakers': 'lal', 'Memphis': 'mem', 'Miami': 'mia',
+    'Milwaukee': 'mil', 'Minnesota': 'min', 'New Orleans': 'no', 'New York': 'ny',
+    'Okla City': 'okc', 'Orlando': 'orl', 'Philadelphia': 'phi', 'Phoenix': 'phx',
+    'Portland': 'por', 'Sacramento': 'sac', 'San Antonio': 'sa', 'Toronto': 'tor',
+    'Utah': 'uta', 'Washington': 'wsh'
+}
+
+
+def get_team_logo_url(team_name, size=40):
+    """Get ESPN logo URL for a team."""
+    abbrev = TEAM_LOGOS.get(team_name, 'nba')
+    return f'https://a.espncdn.com/i/teamlogos/nba/500/{abbrev}.png'
 
 
 def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yesterday_date=None):
@@ -160,6 +180,300 @@ def generate_averaged_predictions(date_str, data_path='data/NBA Training Set 25-
     return predictions
 
 
+def format_email_html(predictions, yesterday_results, season_record, date_str):
+    """Format predictions and results into HTML email with team logos."""
+    
+    html = f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }}
+            .container {{ max-width: 800px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; }}
+            .header {{ text-align: center; border-bottom: 3px solid #1d428a; padding-bottom: 20px; margin-bottom: 20px; }}
+            .record {{ font-size: 24px; font-weight: bold; color: #1d428a; text-align: center; margin: 20px 0; }}
+            .section {{ margin: 30px 0; }}
+            .section-title {{ font-size: 20px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; }}
+            .pick {{ background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #1d428a; }}
+            .pick-header {{ font-size: 18px; font-weight: bold; margin-bottom: 10px; }}
+            .pick-details {{ margin-left: 20px; color: #555; }}
+            .result-win {{ background-color: #e8f5e9; border-left-color: #4caf50; }}
+            .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
+            .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }}
+            .logo {{ width: 30px; height: 30px; vertical-align: middle; margin-right: 8px; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🏀 NBA PREDICTIONS - {date_str}</h1>
+                <p>📊 Standardized & Averaged Model</p>
+            </div>
+            
+            <div class="record">
+                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)
+            </div>
+    """
+    
+    # Yesterday's Results
+    if yesterday_results:
+        wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
+        losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
+        
+        html += """
+            <div class="section">
+                <div class="section-title">📅 YESTERDAY'S RESULTS</div>
+        """
+        
+        for result in yesterday_results:
+            result_class = "result-win" if result['result'] == 'WIN' else "result-loss"
+            emoji = "✅" if result['result'] == 'WIN' else "❌"
+            
+            pick_team = result['pick_team']
+            logo_abbrev = TEAM_LOGOS.get(pick_team, 'nba')
+            
+            if result['pick_side'] == 'FAVORITE':
+                pick_str = f"{pick_team} {-result['spread']:+.1f}"
+            else:
+                pick_str = f"{pick_team} {result['spread']:+.1f}"
+            
+            html += f"""
+                <div class="pick {result_class}">
+                    <div class="pick-header">
+                        {emoji} <img src="cid:{logo_abbrev}" class="logo"> {pick_str}
+                    </div>
+                    <div class="pick-details">
+                        {result['favorite']} vs {result['underdog']}<br>
+                        Edge: {result['edge']:.1%}
+                    </div>
+                </div>
+            """
+        
+        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses}</p></div>"
+    
+    # Today's Picks
+    html += """
+        <div class="section">
+            <div class="section-title">🎯 TODAY'S PICKS</div>
+    """
+    
+    picks = [p for p in predictions if p['pick_side'] != 'NO BET']
+    
+    if not picks:
+        html += "<p>⚪ No picks today - no games meet the 3% edge threshold</p>"
+    else:
+        picks_sorted = sorted(picks, key=lambda x: x['edge'], reverse=True)
+        
+        for pick in picks_sorted:
+            pick_team = pick['pick_team']
+            logo_abbrev = TEAM_LOGOS.get(pick_team, 'nba')
+            
+            if pick['pick_side'] == 'FAVORITE':
+                pick_line = f"{pick_team} {pick['pick_line']:+.1f}"
+                pick_odds = pick['fav_odds']
+            else:
+                pick_line = f"{pick_team} {pick['pick_line']:+.1f}"
+                pick_odds = pick['dog_odds']
+            
+            html += f"""
+                <div class="pick">
+                    <div class="pick-header">
+                        <img src="cid:{logo_abbrev}" class="logo"> {pick_line} ({pick['favorite']} vs {pick['underdog']})
+                    </div>
+                    <div class="pick-details">
+                        Novig Odds: {pick_odds:+d}<br>
+                        Orb Cover Probability: {pick['cover_prob']:.1%}<br>
+                        Edge: {pick['edge']:.1%}
+                    </div>
+                </div>
+            """
+    
+    html += f"""
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <p><strong>Total Games Today:</strong> {len(predictions)}</p>
+                <p><strong>Picks Made:</strong> {len(picks)}</p>
+                <p><strong>No Bets:</strong> {len(predictions) - len(picks)}</p>
+                <p style="margin-top: 20px;">📊 Model: 35% Averaged Models + 65% Implied Odds<br>
+                📈 Minimum Edge: 3.0%</p>
+            </div>
+            
+            <div class="footer">
+                <div class="section-title">ℹ️  MODEL DESCRIPTION</div>
+                <p>Orb Analytics uses an ensemble of four machine learning models (Logistic Regression,
+                Linear Regression, Random Forest, Decision Tree) to predict NBA game outcomes. Each
+                day, the models are retrained on all historical data and dynamically select the top
+                15 most predictive features using Lasso regression.</p>
+                
+                <p>Predictions are standardized by blending 35% model output with 65% market implied
+                probability to balance statistical signals with market efficiency. We only bet when
+                our edge exceeds 3%, ensuring disciplined bankroll management.</p>
+                
+                <p><strong>Season Record: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%) | ROI: +2.59%</strong></p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return html
+
+
+def format_email_html_all_logos(predictions, yesterday_results, season_record, date_str):
+    """Format predictions and results into HTML email with ALL team names replaced by logos."""
+    
+    def team_logo_html(team_name, show_name=True):
+        """Generate HTML for a team logo with optional name."""
+        abbrev = TEAM_LOGOS.get(team_name, 'nba')
+        if show_name:
+            return f'<img src="cid:{abbrev}" class="logo"> {team_name}'
+        else:
+            return f'<img src="cid:{abbrev}" class="logo" title="{team_name}">'
+    
+    html = f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }}
+            .container {{ max-width: 800px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; }}
+            .header {{ text-align: center; border-bottom: 3px solid: #1d428a; padding-bottom: 20px; margin-bottom: 20px; }}
+            .record {{ font-size: 24px; font-weight: bold; color: #1d428a; text-align: center; margin: 20px 0; }}
+            .section {{ margin: 30px 0; }}
+            .section-title {{ font-size: 20px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; }}
+            .pick {{ background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #1d428a; }}
+            .pick-header {{ font-size: 18px; font-weight: bold; margin-bottom: 10px; }}
+            .pick-details {{ margin-left: 20px; color: #555; }}
+            .result-win {{ background-color: #e8f5e9; border-left-color: #4caf50; }}
+            .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
+            .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }}
+            .logo {{ width: 30px; height: 30px; vertical-align: middle; margin: 0 4px; }}
+            .vs {{ color: #999; margin: 0 5px; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🏀 NBA PREDICTIONS - {date_str}</h1>
+                <p>📊 Standardized & Averaged Model</p>
+            </div>
+            
+            <div class="record">
+                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)
+            </div>
+    """
+    
+    # Yesterday's Results
+    if yesterday_results:
+        wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
+        losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
+        
+        html += """
+            <div class="section">
+                <div class="section-title">📅 YESTERDAY'S RESULTS</div>
+        """
+        
+        for result in yesterday_results:
+            result_class = "result-win" if result['result'] == 'WIN' else "result-loss"
+            emoji = "✅" if result['result'] == 'WIN' else "❌"
+            
+            pick_team = result['pick_team']
+            favorite = result['favorite']
+            underdog = result['underdog']
+            
+            if result['pick_side'] == 'FAVORITE':
+                pick_str = f"{team_logo_html(pick_team)} {-result['spread']:+.1f}"
+            else:
+                pick_str = f"{team_logo_html(pick_team)} {result['spread']:+.1f}"
+            
+            matchup_str = f"{team_logo_html(favorite, show_name=False)} <span class='vs'>vs</span> {team_logo_html(underdog, show_name=False)}"
+            
+            html += f"""
+                <div class="pick {result_class}">
+                    <div class="pick-header">
+                        {emoji} {pick_str}
+                    </div>
+                    <div class="pick-details">
+                        {matchup_str}<br>
+                        Edge: {result['edge']:.1%}
+                    </div>
+                </div>
+            """
+        
+        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses}</p></div>"
+    
+    # Today's Picks
+    html += """
+        <div class="section">
+            <div class="section-title">🎯 TODAY'S PICKS</div>
+    """
+    
+    picks = [p for p in predictions if p['pick_side'] != 'NO BET']
+    
+    if not picks:
+        html += "<p>⚪ No picks today - no games meet the 3% edge threshold</p>"
+    else:
+        picks_sorted = sorted(picks, key=lambda x: x['edge'], reverse=True)
+        
+        for pick in picks_sorted:
+            pick_team = pick['pick_team']
+            favorite = pick['favorite']
+            underdog = pick['underdog']
+            
+            if pick['pick_side'] == 'FAVORITE':
+                pick_line = f"{team_logo_html(pick_team)} {pick['pick_line']:+.1f}"
+                pick_odds = pick['fav_odds']
+            else:
+                pick_line = f"{team_logo_html(pick_team)} {pick['pick_line']:+.1f}"
+                pick_odds = pick['dog_odds']
+            
+            matchup_str = f"{team_logo_html(favorite, show_name=False)} <span class='vs'>vs</span> {team_logo_html(underdog, show_name=False)}"
+            
+            html += f"""
+                <div class="pick">
+                    <div class="pick-header">
+                        {pick_line}
+                    </div>
+                    <div class="pick-details">
+                        {matchup_str}<br>
+                        Novig Odds: {pick_odds:+d}<br>
+                        Orb Cover Probability: {pick['cover_prob']:.1%}<br>
+                        Edge: {pick['edge']:.1%}
+                    </div>
+                </div>
+            """
+    
+    html += f"""
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <p><strong>Total Games Today:</strong> {len(predictions)}</p>
+                <p><strong>Picks Made:</strong> {len(picks)}</p>
+                <p><strong>No Bets:</strong> {len(predictions) - len(picks)}</p>
+                <p style="margin-top: 20px;">📊 Model: 35% Averaged Models + 65% Implied Odds<br>
+                📈 Minimum Edge: 3.0%</p>
+            </div>
+            
+            <div class="footer">
+                <div class="section-title">ℹ️  MODEL DESCRIPTION</div>
+                <p>Orb Analytics uses an ensemble of four machine learning models (Logistic Regression,
+                Linear Regression, Random Forest, Decision Tree) to predict NBA game outcomes. Each
+                day, the models are retrained on all historical data and dynamically select the top
+                15 most predictive features using Lasso regression.</p>
+                
+                <p>Predictions are standardized by blending 35% model output with 65% market implied
+                probability to balance statistical signals with market efficiency. We only bet when
+                our edge exceeds 3%, ensuring disciplined bankroll management.</p>
+                
+                <p><strong>Season Record: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%) | ROI: +2.59%</strong></p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return html
+
+
 def format_email(predictions, yesterday_results, season_record, date_str):
     """Format predictions and results into email body."""
     
@@ -258,8 +572,8 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     return "\n".join(lines)
 
 
-def send_email(subject, body):
-    """Send email via SMTP."""
+def send_email(subject, body, is_html=False):
+    """Send email via SMTP with optional HTML and inline images."""
     smtp_server = os.environ.get('SMTP_SERVER')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
@@ -270,12 +584,32 @@ def send_email(subject, body):
         return False
     
     # Create message
-    msg = MIMEMultipart()
-    msg['From'] = smtp_username
-    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com'
-    msg['Subject'] = subject
-    
-    msg.attach(MIMEText(body, 'plain'))
+    if is_html:
+        msg = MIMEMultipart('related')
+        msg['From'] = smtp_username
+        msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com'
+        msg['Subject'] = subject
+        
+        # Attach HTML body
+        html_part = MIMEText(body, 'html')
+        msg.attach(html_part)
+        
+        # Attach team logos as inline images
+        logo_dir = '/workspaces/NBA-model/assets/team-logos'
+        for team_abbrev in TEAM_LOGOS.values():
+            logo_path = f'{logo_dir}/{team_abbrev}.png'
+            if os.path.exists(logo_path):
+                with open(logo_path, 'rb') as img:
+                    logo_img = MIMEImage(img.read())
+                    logo_img.add_header('Content-ID', f'<{team_abbrev}>')
+                    logo_img.add_header('Content-Disposition', 'inline', filename=f'{team_abbrev}.png')
+                    msg.attach(logo_img)
+    else:
+        msg = MIMEMultipart()
+        msg['From'] = smtp_username
+        msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com'
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
     
     # Send
     try:
@@ -333,20 +667,21 @@ def main():
     print(f"   Picks: {len(picks)}")
     print()
     
-    # Format email
-    email_body = format_email(predictions, yesterday_results, season_record, today_str)
+    # Format email (use HTML version with logos)
+    email_body_html = format_email_html(predictions, yesterday_results, season_record, today_str)
+    email_body_text = format_email(predictions, yesterday_results, season_record, today_str)
     
     print("="*100)
-    print("EMAIL PREVIEW:")
+    print("EMAIL PREVIEW (Text version):")
     print("="*100)
-    print(email_body)
+    print(email_body_text)
     print("="*100)
     print()
     
     # Send email
     if not args.no_email:
         subject = f"🏀 NBA Predictions - {today_str}"
-        send_email(subject, email_body)
+        send_email(subject, email_body_html, is_html=True)
     else:
         print("⚠️ Email sending skipped (--no-email flag)")
 
