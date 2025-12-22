@@ -143,28 +143,57 @@ jobs:
           EOF
 
       - name: 📝 Update README
+        env:
+          WINS: ${{ steps.get_record.outputs.wins }}
+          LOSSES: ${{ steps.get_record.outputs.losses }}
+          WIN_PCT: ${{ steps.get_record.outputs.win_pct }}
+          LAST_DATE: ${{ steps.get_record.outputs.last_date }}
+          FAV_W: ${{ steps.get_record.outputs.fav_w }}
+          FAV_L: ${{ steps.get_record.outputs.fav_l }}
+          FAV_PCT: ${{ steps.get_record.outputs.fav_pct }}
+          DOG_W: ${{ steps.get_record.outputs.dog_w }}
+          DOG_L: ${{ steps.get_record.outputs.dog_l }}
+          DOG_PCT: ${{ steps.get_record.outputs.dog_pct }}
+          FAV_HOME_W: ${{ steps.get_record.outputs.fav_home_w }}
+          FAV_HOME_L: ${{ steps.get_record.outputs.fav_home_l }}
+          FAV_HOME_PCT: ${{ steps.get_record.outputs.fav_home_pct }}
+          FAV_AWAY_W: ${{ steps.get_record.outputs.fav_away_w }}
+          FAV_AWAY_L: ${{ steps.get_record.outputs.fav_away_l }}
+          FAV_AWAY_PCT: ${{ steps.get_record.outputs.fav_away_pct }}
+          PFH_W: ${{ steps.get_record.outputs.pfh_w }}
+          PFH_L: ${{ steps.get_record.outputs.pfh_l }}
+          PFH_PCT: ${{ steps.get_record.outputs.pfh_pct }}
+          PFA_W: ${{ steps.get_record.outputs.pfa_w }}
+          PFA_L: ${{ steps.get_record.outputs.pfa_l }}
+          PFA_PCT: ${{ steps.get_record.outputs.pfa_pct }}
+          PDA_W: ${{ steps.get_record.outputs.pda_w }}
+          PDA_L: ${{ steps.get_record.outputs.pda_l }}
+          PDA_PCT: ${{ steps.get_record.outputs.pda_pct }}
+          PDH_W: ${{ steps.get_record.outputs.pdh_w }}
+          PDH_L: ${{ steps.get_record.outputs.pdh_l }}
+          PDH_PCT: ${{ steps.get_record.outputs.pdh_pct }}
         run: |
-          # Create the new performance section with splits
-          cat > /tmp/performance_section.txt << 'PERFEOF'
+          # Create the new performance section with splits using environment variables
+          cat > /tmp/performance_section.txt << EOF
 ## 📊 Current Performance
-**${{ steps.get_record.outputs.wins }}-${{ steps.get_record.outputs.losses }} (${{ steps.get_record.outputs.win_pct }}%)** through ${{ steps.get_record.outputs.last_date }}
+**${WINS}-${LOSSES} (${WIN_PCT}%)** through ${LAST_DATE}
 
 ### 📈 Performance Splits
 
 **By Pick Type:**
-- Picking Favorites: ${{ steps.get_record.outputs.fav_w }}-${{ steps.get_record.outputs.fav_l }} (${{ steps.get_record.outputs.fav_pct }}%)
-- Picking Underdogs: ${{ steps.get_record.outputs.dog_w }}-${{ steps.get_record.outputs.dog_l }} (${{ steps.get_record.outputs.dog_pct }}%)
+- Picking Favorites: ${FAV_W}-${FAV_L} (${FAV_PCT}%)
+- Picking Underdogs: ${DOG_W}-${DOG_L} (${DOG_PCT}%)
 
 **By Home/Away (All Games):**
-- Favorite at Home: ${{ steps.get_record.outputs.fav_home_w }}-${{ steps.get_record.outputs.fav_home_l }} (${{ steps.get_record.outputs.fav_home_pct }}%)
-- Favorite Away: ${{ steps.get_record.outputs.fav_away_w }}-${{ steps.get_record.outputs.fav_away_l }} (${{ steps.get_record.outputs.fav_away_pct }}%)
+- Favorite at Home: ${FAV_HOME_W}-${FAV_HOME_L} (${FAV_HOME_PCT}%)
+- Favorite Away: ${FAV_AWAY_W}-${FAV_AWAY_L} (${FAV_AWAY_PCT}%)
 
 **By Pick + Location:**
-- Picking Favorite at Home: ${{ steps.get_record.outputs.pfh_w }}-${{ steps.get_record.outputs.pfh_l }} (${{ steps.get_record.outputs.pfh_pct }}%)
-- Picking Favorite Away: ${{ steps.get_record.outputs.pfa_w }}-${{ steps.get_record.outputs.pfa_l }} (${{ steps.get_record.outputs.pfa_pct }}%)
-- Picking Underdog Away: ${{ steps.get_record.outputs.pda_w }}-${{ steps.get_record.outputs.pda_l }} (${{ steps.get_record.outputs.pda_pct }}%)
-- Picking Underdog at Home: ${{ steps.get_record.outputs.pdh_w }}-${{ steps.get_record.outputs.pdh_l }} (${{ steps.get_record.outputs.pdh_pct }}%)
-PERFEOF
+- Picking Favorite at Home: ${PFH_W}-${PFH_L} (${PFH_PCT}%)
+- Picking Favorite Away: ${PFA_W}-${PFA_L} (${PFA_PCT}%)
+- Picking Underdog Away: ${PDA_W}-${PDA_L} (${PDA_PCT}%)
+- Picking Underdog at Home: ${PDH_W}-${PDH_L} (${PDH_PCT}%)
+EOF
           
           # Replace the entire Current Performance section in README
           awk '
