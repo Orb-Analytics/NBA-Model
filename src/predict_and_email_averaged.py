@@ -802,7 +802,9 @@ def main():
     
     # Send email
     if not args.no_email:
-        subject = f"🏀 NBA Predictions - {today_str}"
+        # Add timestamp to subject to prevent Gmail threading when sending multiple times
+        timestamp = datetime.now().strftime('%I:%M%p')
+        subject = f"🏀 NBA Predictions - {today_str} [{timestamp}]"
         send_email(subject, email_body)
     else:
         print("⚠️ Email sending skipped (--no-email flag)")
