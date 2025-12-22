@@ -310,8 +310,6 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             </div>
         """
     
-    html += """
-    
     # Yesterday's Results
     if yesterday_results:
         wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
@@ -488,8 +486,6 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
                 </div>
             </div>
         """
-    
-    html += """
     
     # Yesterday's Results
     if yesterday_results:
