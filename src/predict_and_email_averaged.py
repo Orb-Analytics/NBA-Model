@@ -729,7 +729,7 @@ def send_email(subject, body):
     # Create message
     msg = MIMEMultipart()
     msg['From'] = smtp_username
-    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com'
+    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com'
     msg['Subject'] = subject
     
     msg.attach(MIMEText(body, 'plain'))
