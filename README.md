@@ -60,14 +60,7 @@ Daily automation via GitHub Actions:
 2. **After update** - Generate predictions
 3. **Send email** - Distribute picks to subscribers
 
-## 📈 Performance Tracking
-
-- See [MODEL_PERFORMANCE.md](MODEL_PERFORMANCE.md) for detailed metrics
-- Early season: 67-52 (56.3%) through Nov 18
-- Recent: 39-40 (49.4%) from Nov 19-Dec 17
-- Overall: 106-92 (53.5%)
-
-## 📚 Documentation
+##  Documentation
 
 - [FILE_STRUCTURE.md](FILE_STRUCTURE.md) - Repository organization
 - [MODEL_PERFORMANCE.md](MODEL_PERFORMANCE.md) - Performance metrics
