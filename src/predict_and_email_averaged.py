@@ -59,7 +59,7 @@ def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yest
     return yesterday_picks.to_dict('records')
 
 
-def get_season_record(backtest_path='data/averaged_model_backtest.csv'):
+def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_path='data/NBA Training Set 25-26.csv'):
     """Calculate season record from backtest file (includes all results to date)."""
     if not os.path.exists(backtest_path):
         return {'wins': 0, 'losses': 0, 'total': 0, 'win_pct': 0.0}
@@ -77,6 +77,74 @@ def get_season_record(backtest_path='data/averaged_model_backtest.csv'):
         'losses': losses,
         'total': total,
         'win_pct': win_pct
+    }
+
+
+def get_performance_splits(backtest_path='data/averaged_model_backtest.csv', master_path='data/NBA Training Set 25-26.csv'):
+    """Calculate performance splits from backtest file."""
+    if not os.path.exists(backtest_path) or not os.path.exists(master_path):
+        return None
+    
+    # Read both files
+    backtest_df = pd.read_csv(backtest_path)
+    master_df = pd.read_csv(master_path)
+    
+    # Standardize dates
+    backtest_df['date'] = pd.to_datetime(backtest_df['date']).dt.strftime('%Y-%m-%d')
+    master_df['Date'] = pd.to_datetime(master_df['Date']).dt.strftime('%Y-%m-%d')
+    
+    # Create merge keys
+    backtest_df['merge_key'] = (backtest_df['date'] + '|' + 
+                                 backtest_df['favorite'] + '|' + 
+                                 backtest_df['underdog'])
+    master_df['merge_key'] = (master_df['Date'] + '|' + 
+                              master_df['Favorite'] + '|' + 
+                              master_df['Underdog'])
+    
+    # Merge to get home/away info
+    merged_df = backtest_df.merge(
+        master_df[['merge_key', 'Fav. At Home?']], 
+        on='merge_key', 
+        how='left'
+    )
+    
+    # Filter to only picks
+    picks = merged_df[merged_df['pick_side'] != 'NO BET'].copy()
+    
+    # Calculate splits
+    def calc_record(df):
+        if len(df) == 0:
+            return {'wins': 0, 'losses': 0, 'pct': 0.0}
+        wins = len(df[df['result'] == 'WIN'])
+        losses = len(df[df['result'] == 'LOSS'])
+        total = wins + losses
+        pct = (wins / total * 100) if total > 0 else 0.0
+        return {'wins': wins, 'losses': losses, 'pct': pct}
+    
+    # By pick type
+    fav_picks = calc_record(picks[picks['pick_side'] == 'FAVORITE'])
+    dog_picks = calc_record(picks[picks['pick_side'] == 'UNDERDOG'])
+    
+    # By home/away (all games in dataset)
+    all_games = merged_df[merged_df['pick_side'] != 'NO BET']
+    fav_home = calc_record(all_games[all_games['Fav. At Home?'] == 1])
+    fav_away = calc_record(all_games[all_games['Fav. At Home?'] == 0])
+    
+    # By pick + location
+    pfh = calc_record(picks[(picks['pick_side'] == 'FAVORITE') & (picks['Fav. At Home?'] == 1)])
+    pfa = calc_record(picks[(picks['pick_side'] == 'FAVORITE') & (picks['Fav. At Home?'] == 0)])
+    pda = calc_record(picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 0)])
+    pdh = calc_record(picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 1)])
+    
+    return {
+        'fav_picks': fav_picks,
+        'dog_picks': dog_picks,
+        'fav_home': fav_home,
+        'fav_away': fav_away,
+        'pfh': pfh,
+        'pfa': pfa,
+        'pda': pda,
+        'pdh': pdh
     }
 
 
@@ -212,6 +280,37 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)
             </div>
     """
+    
+    # Add performance splits
+    splits = get_performance_splits()
+    if splits:
+        html += f"""
+            <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <div style="font-size: 16px; font-weight: bold; color: #1d428a; margin-bottom: 10px;">📈 PERFORMANCE SPLITS</div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>By Pick Type:</strong><br>
+                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)<br>
+                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>By Home/Away (All Games):</strong><br>
+                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)<br>
+                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)
+                </div>
+                
+                <div>
+                    <strong>By Pick + Location:</strong><br>
+                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)<br>
+                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)<br>
+                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)<br>
+                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)
+                </div>
+            </div>
+        """
+    
+    html += """
     
     # Yesterday's Results
     if yesterday_results:
@@ -361,6 +460,37 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
             </div>
     """
     
+    # Add performance splits
+    splits = get_performance_splits()
+    if splits:
+        html += f"""
+            <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <div style="font-size: 16px; font-weight: bold; color: #1d428a; margin-bottom: 10px;">📈 PERFORMANCE SPLITS</div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>By Pick Type:</strong><br>
+                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)<br>
+                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>By Home/Away (All Games):</strong><br>
+                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)<br>
+                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)
+                </div>
+                
+                <div>
+                    <strong>By Pick + Location:</strong><br>
+                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)<br>
+                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)<br>
+                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)<br>
+                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)
+                </div>
+            </div>
+        """
+    
+    html += """
+    
     # Yesterday's Results
     if yesterday_results:
         wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
@@ -462,8 +592,6 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
                 <p>Predictions are standardized by blending 35% model output with 65% market implied
                 probability to balance statistical signals with market efficiency. We only bet when
                 our edge exceeds 3%, ensuring disciplined bankroll management.</p>
-                
-                <p><strong>Season Record: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%) | ROI: +2.59%</strong></p>
             </div>
         </div>
     </body>
@@ -487,6 +615,27 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     lines.append("📈 SEASON RECORD")
     lines.append(f"   {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)")
     lines.append("")
+    
+    # Add performance splits
+    splits = get_performance_splits()
+    if splits:
+        lines.append("📈 PERFORMANCE SPLITS")
+        lines.append("")
+        lines.append("**By Pick Type:**")
+        lines.append(f"- Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)")
+        lines.append(f"- Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)")
+        lines.append("")
+        lines.append("**By Home/Away (All Games):**")
+        lines.append(f"- Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)")
+        lines.append(f"- Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)")
+        lines.append("")
+        lines.append("**By Pick + Location:**")
+        lines.append(f"- Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)")
+        lines.append(f"- Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)")
+        lines.append(f"- Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)")
+        lines.append(f"- Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)")
+        lines.append("")
+    
     lines.append("="*100)
     
     # Yesterday's Results (if any)
@@ -565,7 +714,6 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     lines.append("probability to balance statistical signals with market efficiency. We only bet when")
     lines.append("our edge exceeds 3%, ensuring disciplined bankroll management.")
     lines.append("")
-    lines.append("Season Record: 115-99 (53.7%) | ROI: +2.59%")
     lines.append("="*100)
     
     return "\n".join(lines)
