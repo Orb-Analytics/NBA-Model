@@ -21,6 +21,31 @@ from ensemble_spread_models import EnsembleSpreadPredictor
 from prediction_core import american_to_prob
 
 
+def calculate_units(odds, result):
+    """Calculate units won/lost for a bet.
+    
+    Args:
+        odds: American odds (e.g., -110, +150)
+        result: 'WIN' or 'LOSS'
+    
+    Returns:
+        float: Units won (positive) or lost (negative)
+    """
+    if pd.isna(odds) or result not in ['WIN', 'LOSS']:
+        return 0.0
+    
+    if result == 'LOSS':
+        return -1.0  # Always lose 1 unit
+    
+    # WIN
+    if odds > 0:
+        # Underdog: profit = stake * (odds / 100)
+        return odds / 100
+    else:
+        # Favorite: profit = stake * (100 / abs(odds))
+        return 100 / abs(odds)
+
+
 # Team name to ESPN abbreviation mapping for logos
 TEAM_LOGOS = {
     'Atlanta': 'atl', 'Boston': 'bos', 'Brooklyn': 'bkn', 'Charlotte': 'cha',
@@ -43,7 +68,7 @@ def get_team_logo_url(team_name, size=40):
 def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yesterday_date=None):
     """Get yesterday's picks and their results from the backtest file."""
     if not os.path.exists(backtest_path):
-        return []
+        return [], 0.0
     
     backtest_df = pd.read_csv(backtest_path)
     backtest_df['date'] = pd.to_datetime(backtest_df['date']).dt.strftime('%Y-%m-%d')
@@ -56,13 +81,27 @@ def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yest
     else:
         yesterday_picks = pd.DataFrame()
     
-    return yesterday_picks.to_dict('records')
+    # Calculate units for yesterday
+    total_units = 0.0
+    records = yesterday_picks.to_dict('records')
+    
+    for record in records:
+        if record['pick_side'] == 'FAVORITE':
+            odds = record.get('fav_odds', -110)
+        else:
+            odds = record.get('dog_odds', -110)
+        
+        units = calculate_units(odds, record.get('result', ''))
+        record['units'] = units
+        total_units += units
+    
+    return records, total_units
 
 
 def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_path='data/NBA Training Set 25-26.csv'):
     """Calculate season record from backtest file (includes all results to date)."""
     if not os.path.exists(backtest_path):
-        return {'wins': 0, 'losses': 0, 'total': 0, 'win_pct': 0.0}
+        return {'wins': 0, 'losses': 0, 'total': 0, 'win_pct': 0.0, 'units': 0.0}
     
     backtest_df = pd.read_csv(backtest_path)
     picks = backtest_df[backtest_df['pick_side'] != 'NO BET'].copy()
@@ -72,11 +111,23 @@ def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_p
     total = wins + losses
     win_pct = (wins / total * 100) if total > 0 else 0.0
     
+    # Calculate total units
+    total_units = 0.0
+    for _, row in picks.iterrows():
+        if row['pick_side'] == 'FAVORITE':
+            odds = row.get('fav_odds', -110)
+        else:
+            odds = row.get('dog_odds', -110)
+        
+        units = calculate_units(odds, row.get('result', ''))
+        total_units += units
+    
     return {
         'wins': wins,
         'losses': losses,
         'total': total,
-        'win_pct': win_pct
+        'win_pct': win_pct,
+        'units': total_units
     }
 
 
@@ -114,12 +165,24 @@ def get_performance_splits(backtest_path='data/averaged_model_backtest.csv', mas
     # Calculate splits
     def calc_record(df):
         if len(df) == 0:
-            return {'wins': 0, 'losses': 0, 'pct': 0.0}
+            return {'wins': 0, 'losses': 0, 'pct': 0.0, 'units': 0.0}
         wins = len(df[df['result'] == 'WIN'])
         losses = len(df[df['result'] == 'LOSS'])
         total = wins + losses
         pct = (wins / total * 100) if total > 0 else 0.0
-        return {'wins': wins, 'losses': losses, 'pct': pct}
+        
+        # Calculate units
+        total_units = 0.0
+        for _, row in df.iterrows():
+            if row['pick_side'] == 'FAVORITE':
+                odds = row.get('fav_odds', -110)
+            else:
+                odds = row.get('dog_odds', -110)
+            
+            units = calculate_units(odds, row.get('result', ''))
+            total_units += units
+        
+        return {'wins': wins, 'losses': losses, 'pct': pct, 'units': total_units}
     
     # By pick type
     fav_picks = calc_record(picks[picks['pick_side'] == 'FAVORITE'])
@@ -277,7 +340,8 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             </div>
             
             <div class="record">
-                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)
+                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
+                💰 Units: {season_record['units']:+.2f}
             </div>
     """
     
@@ -290,22 +354,22 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 
                 <div style="margin-bottom: 10px;">
                     <strong>By Pick Type:</strong><br>
-                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)<br>
-                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)
+                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units<br>
+                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units
                 </div>
                 
                 <div style="margin-bottom: 10px;">
                     <strong>By Home/Away (All Games):</strong><br>
-                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)<br>
-                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)
+                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units<br>
+                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units
                 </div>
                 
                 <div>
                     <strong>By Pick + Location:</strong><br>
-                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)<br>
-                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)<br>
-                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)<br>
-                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)
+                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units<br>
+                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units<br>
+                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units<br>
+                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units
                 </div>
             </div>
         """
@@ -314,6 +378,8 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
     if yesterday_results:
         wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
         losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
+        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
+        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
         
         html += """
             <div class="section">
@@ -332,6 +398,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             else:
                 pick_str = f"{pick_team} {result['spread']:+.1f}"
             
+            units = result.get('units', 0.0)
             html += f"""
                 <div class="pick {result_class}">
                     <div class="pick-header">
@@ -339,12 +406,12 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                     </div>
                     <div class="pick-details">
                         {result['favorite']} vs {result['underdog']}<br>
-                        Edge: {result['edge']:.1%}
+                        Edge: {result['edge']:.1%} | Units: {units:+.2f}
                     </div>
                 </div>
             """
         
-        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses}</p></div>"
+        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
     
     # Today's Picks
     html += """
@@ -454,7 +521,8 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
             </div>
             
             <div class="record">
-                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)
+                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
+                💰 Units: {season_record['units']:+.2f}
             </div>
     """
     
@@ -467,22 +535,22 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
                 
                 <div style="margin-bottom: 10px;">
                     <strong>By Pick Type:</strong><br>
-                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)<br>
-                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)
+                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units<br>
+                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units
                 </div>
                 
                 <div style="margin-bottom: 10px;">
                     <strong>By Home/Away (All Games):</strong><br>
-                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)<br>
-                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)
+                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units<br>
+                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units
                 </div>
                 
                 <div>
                     <strong>By Pick + Location:</strong><br>
-                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)<br>
-                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)<br>
-                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)<br>
-                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)
+                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units<br>
+                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units<br>
+                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units<br>
+                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units
                 </div>
             </div>
         """
@@ -491,6 +559,7 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
     if yesterday_results:
         wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
         losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
+        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
         
         html += """
             <div class="section">
@@ -512,6 +581,7 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
             
             matchup_str = f"{team_logo_html(favorite, show_name=False)} <span class='vs'>vs</span> {team_logo_html(underdog, show_name=False)}"
             
+            units = result.get('units', 0.0)
             html += f"""
                 <div class="pick {result_class}">
                     <div class="pick-header">
@@ -519,12 +589,12 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
                     </div>
                     <div class="pick-details">
                         {matchup_str}<br>
-                        Edge: {result['edge']:.1%}
+                        Edge: {result['edge']:.1%} | Units: {units:+.2f}
                     </div>
                 </div>
             """
         
-        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses}</p></div>"
+        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
     
     # Today's Picks
     html += """
@@ -610,6 +680,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     # Season Record
     lines.append("📈 SEASON RECORD")
     lines.append(f"   {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)")
+    lines.append(f"   💰 Units: {season_record['units']:+.2f}")
     lines.append("")
     
     # Add performance splits
@@ -618,18 +689,18 @@ def format_email(predictions, yesterday_results, season_record, date_str):
         lines.append("📈 PERFORMANCE SPLITS")
         lines.append("")
         lines.append("**By Pick Type:**")
-        lines.append(f"- Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)")
-        lines.append(f"- Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)")
+        lines.append(f"- Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units")
+        lines.append(f"- Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units")
         lines.append("")
         lines.append("**By Home/Away (All Games):**")
-        lines.append(f"- Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)")
-        lines.append(f"- Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)")
+        lines.append(f"- Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units")
+        lines.append(f"- Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units")
         lines.append("")
         lines.append("**By Pick + Location:**")
-        lines.append(f"- Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)")
-        lines.append(f"- Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)")
-        lines.append(f"- Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)")
-        lines.append(f"- Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)")
+        lines.append(f"- Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units")
+        lines.append(f"- Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units")
+        lines.append(f"- Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units")
+        lines.append(f"- Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units")
         lines.append("")
     
     lines.append("="*100)
@@ -642,6 +713,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
         
         wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
         losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
+        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
         
         for result in yesterday_results:
             emoji = "✅" if result['result'] == 'WIN' else "❌" if result['result'] == 'LOSS' else "⏳"
@@ -651,12 +723,13 @@ def format_email(predictions, yesterday_results, season_record, date_str):
             else:
                 pick_str = f"{result['pick_team']} {result['spread']:+.1f}"
             
+            units = result.get('units', 0.0)
             lines.append(f"{emoji} {pick_str}")
             lines.append(f"   {result['favorite']} vs {result['underdog']}")
-            lines.append(f"   Edge: {result['edge']:.1%}")
+            lines.append(f"   Edge: {result['edge']:.1%} | Units: {units:+.2f}")
             lines.append("")
         
-        lines.append(f"Record: {wins}-{losses}")
+        lines.append(f"Record: {wins}-{losses} | Units: {yesterday_units:+.2f}")
         lines.append("="*100)
     
     # Today's Predictions
@@ -774,13 +847,16 @@ def main():
     
     # Get yesterday's results
     print(f"📅 Loading yesterday's results ({yesterday_str})...")
-    yesterday_results = get_yesterday_results(yesterday_date=yesterday_str)
+    yesterday_results, yesterday_units = get_yesterday_results(yesterday_date=yesterday_str)
     print(f"   Found {len(yesterday_results)} picks from yesterday")
+    if yesterday_results:
+        print(f"   Yesterday's Units: {yesterday_units:+.2f}")
     
     # Get season record
     print("📊 Loading season record...")
     season_record = get_season_record()
     print(f"   Season: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)")
+    print(f"   Total Units: {season_record['units']:+.2f}")
     
     # Generate today's predictions
     print(f"🎯 Generating predictions for {today_str}...")

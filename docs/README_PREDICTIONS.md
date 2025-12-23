@@ -62,7 +62,44 @@ This workflow automatically generates NBA spread predictions for today's games a
 🏀 NBA SPREAD PREDICTIONS - 2025-11-05
 ======================================================================
 
-Total: 11 games
+📈 SEASON RECORD
+   45-32 (58.4%)
+   💰 Units: +8.45
+
+📈 PERFORMANCE SPLITS
+
+**By Pick Type:**
+- Picking Favorites: 28-18 (60.9%) | +5.82 units
+- Picking Underdogs: 17-14 (54.8%) | +2.63 units
+
+**By Home/Away (All Games):**
+- Favorite at Home: 32-20 (61.5%) | +7.23 units
+- Favorite Away: 13-12 (52.0%) | +1.22 units
+
+**By Pick + Location:**
+- Picking Favorite at Home: 18-10 (64.3%) | +4.91 units
+- Picking Favorite Away: 10-8 (55.6%) | +0.91 units
+- Picking Underdog Away: 9-7 (56.3%) | +1.55 units
+- Picking Underdog at Home: 8-7 (53.3%) | +1.08 units
+
+======================================================================
+
+📅 YESTERDAY'S RESULTS
+======================================================================
+
+✅ Houston -7.5
+   Houston vs Memphis
+   Edge: 8.2% | Units: +0.91
+
+❌ Indiana +2.5
+   Okla City vs Indiana
+   Edge: 4.5% | Units: -1.00
+
+Record: 1-2 | Units: -1.09
+======================================================================
+
+🎯 TODAY'S PICKS
+======================================================================
 
 💪 Houston vs Memphis (Spread: -7.5)
    Prediction: Favorite will COVER
@@ -169,7 +206,18 @@ The workflow requires these GitHub secrets to be set:
 
 - [ ] Add actual results comparison the next day
 - [ ] Track prediction accuracy over time
-- [ ] Include betting unit recommendations
+- [x] Include betting unit recommendations and tracking
 - [ ] Add injured player adjustments
 - [ ] Include line movement analysis
 - [ ] Send SMS notifications for high confidence bets
+
+## Unit Tracking
+
+The system now tracks betting units for all predictions:
+- **1 unit per bet**: Each pick risks 1 unit
+- **Wins pay based on odds**: 
+  - Favorites (negative odds like -110): Win amount = 100 / |odds|
+  - Underdogs (positive odds like +150): Win amount = odds / 100
+- **Losses lose 1 unit**: Standard flat betting approach
+- **Displayed everywhere**: Season totals, splits, and daily P&L all show units won/lost
+- **Format**: "+2.45 units" for wins, "-1.00 units" for losses
