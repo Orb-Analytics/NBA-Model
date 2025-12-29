@@ -106,15 +106,47 @@ def compute_averaged_pick(
 
 def backtest(
     unified_path: str = 'data/unified_model_results.csv',
+    predictions_history_path: str = 'data/averaged_model_predictions_history.csv',
     start_date: str = '2025-10-23',
     end_date: str = None,  # Auto-detect if None
     min_edge: float = 0.03
 ) -> pd.DataFrame:
-    """Run the backtest. If end_date is None, uses the latest date in unified results."""
+    """
+    Run the backtest. If end_date is None, uses the latest date in unified results.
+    
+    IMPORTANT: Only backtests games that were actually predicted (exist in predictions_history).
+    This prevents phantom picks from appearing when games are added to the dataset after 
+    the daily predictions email has been sent.
+    """
     
     # Load unified results
     df = pd.read_csv(unified_path)
     df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
+    
+    # Load predictions history to filter games that were actually predicted
+    try:
+        predictions_history = pd.read_csv(predictions_history_path)
+        predictions_history['date'] = pd.to_datetime(predictions_history['date']).dt.strftime('%Y-%m-%d')
+        
+        # Create a set of (date, favorite, underdog) tuples that were actually predicted
+        predicted_games = set(
+            zip(predictions_history['date'], 
+                predictions_history['favorite'], 
+                predictions_history['underdog'])
+        )
+        
+        print(f"📋 Loaded {len(predicted_games)} games from prediction history")
+        
+        # Filter unified results to only include games that were actually predicted
+        df['game_key'] = list(zip(df['date'], df['favorite'], df['underdog']))
+        df = df[df['game_key'].isin(predicted_games)].copy()
+        df = df.drop('game_key', axis=1)
+        
+        print(f"✅ Filtered to {len(df)} games that were actually predicted")
+        
+    except FileNotFoundError:
+        print(f"⚠️  Predictions history file not found: {predictions_history_path}")
+        print(f"⚠️  Backtesting ALL games in unified results (may include games not emailed)")
     
     # Auto-detect end date if not provided
     if end_date is None:
@@ -308,8 +340,9 @@ def main():
     
     args = parser.parse_args()
     
-    # Run backtest
+    # Run backtest - now passes predictions_history_path for filtering
     results_df = backtest(
+        predictions_history_path=args.history,
         start_date=args.start_date,
         end_date=args.end_date,
         min_edge=args.min_edge
@@ -319,28 +352,9 @@ def main():
     results_df.to_csv(args.output, index=False)
     print(f"\n💾 Results saved to: {args.output}")
     
-    # Update historical archive (append new predictions only)
-    import os
-    if os.path.exists(args.history):
-        # Load existing history
-        history_df = pd.read_csv(args.history)
-        history_df['date'] = pd.to_datetime(history_df['date']).dt.strftime('%Y-%m-%d')
-        
-        # Find new predictions (not in history)
-        new_predictions = results_df[~results_df['date'].isin(history_df['date'])].copy()
-        
-        if len(new_predictions) > 0:
-            # Append new predictions
-            updated_history = pd.concat([history_df, new_predictions], ignore_index=True)
-            updated_history = updated_history.sort_values('date').reset_index(drop=True)
-            updated_history.to_csv(args.history, index=False)
-            print(f"📚 Added {len(new_predictions)} new predictions to history: {args.history}")
-        else:
-            print(f"📚 No new predictions to add to history")
-    else:
-        # Create new history file
-        results_df.to_csv(args.history, index=False)
-        print(f"📚 Created historical archive: {args.history}")
+    # NOTE: predictions_history is now managed by predict_and_email_averaged.py
+    # This script only READS from predictions_history to filter which games to backtest
+    # This prevents phantom picks (games added to dataset after predictions were sent)
     
     # Analyze
     analyze_results(results_df)

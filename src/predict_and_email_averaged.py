@@ -820,6 +820,54 @@ def send_email(subject, body):
         return False
 
 
+def save_predictions_to_history(predictions, date_str, history_path='data/averaged_model_predictions_history.csv'):
+    """
+    Save today's predictions to history file immediately after generation.
+    
+    This ensures the predictions_history file only contains games that were actually
+    predicted and emailed, preventing phantom picks from appearing in backtests.
+    """
+    if not predictions:
+        print("⚠️  No predictions to save")
+        return
+    
+    # Convert predictions to DataFrame with necessary columns for backtest compatibility
+    new_rows = []
+    for pred in predictions:
+        new_rows.append({
+            'date': date_str,
+            'favorite': pred['favorite'],
+            'underdog': pred['underdog'],
+            'spread': pred['spread'],
+            'fav_odds': pred['fav_odds'],
+            'dog_odds': pred['dog_odds'],
+            'pick_side': pred['pick_side'],
+            'pick_team': pred['pick_team'],
+            'edge': pred['edge'],
+            'fav_edge': pred['fav_edge'],
+            'dog_edge': pred['dog_edge'],
+            # Note: actual_cover and result will be filled in later by backtest
+            'actual_cover': np.nan,
+            'result': 'PENDING'
+        })
+    
+    new_df = pd.DataFrame(new_rows)
+    
+    # Append to history file
+    if os.path.exists(history_path):
+        history_df = pd.read_csv(history_path)
+        # Remove any existing predictions for this date (in case of re-run)
+        history_df = history_df[history_df['date'] != date_str]
+        # Append new predictions
+        updated_df = pd.concat([history_df, new_df], ignore_index=True)
+        updated_df = updated_df.sort_values('date').reset_index(drop=True)
+        updated_df.to_csv(history_path, index=False)
+        print(f"📚 Saved {len(new_df)} predictions to history: {history_path}")
+    else:
+        new_df.to_csv(history_path, index=False)
+        print(f"📚 Created new history file with {len(new_df)} predictions: {history_path}")
+
+
 def main():
     parser = argparse.ArgumentParser(description='Generate and email averaged model predictions')
     parser.add_argument('--date', type=str, default=None,
@@ -865,6 +913,10 @@ def main():
     picks = [p for p in predictions if p['pick_side'] != 'NO BET']
     print(f"   Picks: {len(picks)}")
     print()
+    
+    # Save predictions to history immediately (before backtest runs)
+    # This ensures only games that were actually predicted/emailed are in the history
+    save_predictions_to_history(predictions, today_str)
     
     # Format email
     email_body = format_email(predictions, yesterday_results, season_record, today_str)
