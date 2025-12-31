@@ -123,7 +123,7 @@ def backtest(
     df = pd.read_csv(unified_path)
     df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
     
-    # Load predictions history to filter games that were actually predicted
+    # Load predictions history to use original prediction values
     try:
         predictions_history = pd.read_csv(predictions_history_path)
         predictions_history['date'] = pd.to_datetime(predictions_history['date']).dt.strftime('%Y-%m-%d')
@@ -144,9 +144,29 @@ def backtest(
         
         print(f"✅ Filtered to {len(df)} games that were actually predicted")
         
+        # Merge with predictions_history to preserve original pick values
+        # This prevents model retraining from changing historical picks
+        history_cols = ['date', 'favorite', 'underdog', 'pick_side', 'pick_team', 'edge', 'fav_edge', 'dog_edge']
+        history_picks = predictions_history[history_cols].copy()
+        history_picks = history_picks.rename(columns={
+            'pick_side': 'history_pick_side',
+            'pick_team': 'history_pick_team',
+            'edge': 'history_edge',
+            'fav_edge': 'history_fav_edge',
+            'dog_edge': 'history_dog_edge'
+        })
+        df = df.merge(history_picks, on=['date', 'favorite', 'underdog'], how='left')
+        
+        print(f"✅ Merged with prediction history to preserve original pick values")
+        
     except FileNotFoundError:
         print(f"⚠️  Predictions history file not found: {predictions_history_path}")
         print(f"⚠️  Backtesting ALL games in unified results (may include games not emailed)")
+        df['history_pick_side'] = None
+        df['history_pick_team'] = None
+        df['history_edge'] = None
+        df['history_fav_edge'] = None
+        df['history_dog_edge'] = None
     
     # Auto-detect end date if not provided
     if end_date is None:
@@ -192,17 +212,34 @@ def backtest(
         rf_prob = row.get('rf_fav_prob', np.nan)
         tree_prob = row.get('tree_fav_prob', np.nan)
         
-        # Compute averaged pick
-        pick_info = compute_averaged_pick(
-            logistic_prob, linear_prob, rf_prob, tree_prob,
-            fav_odds, dog_odds, min_edge
-        )
-        
-        # Determine pick team
-        if pick_info['pick_side'] == 'FAVORITE':
-            pick_info['pick_team'] = favorite
-        elif pick_info['pick_side'] == 'UNDERDOG':
-            pick_info['pick_team'] = underdog
+        # Use history values if available (preserves original predictions),
+        # otherwise compute from current model (for backfilling old data)
+        if pd.notna(row.get('history_pick_side')):
+            pick_info = {
+                'pick_side': row['history_pick_side'],
+                'pick_team': row['history_pick_team'],
+                'edge': row['history_edge'],
+                'fav_edge': row['history_fav_edge'],
+                'dog_edge': row['history_dog_edge'],
+                'num_models': row.get('num_models', 4),
+                'averaged_fav_prob': row.get('averaged_fav_prob', np.nan),
+                'averaged_dog_prob': row.get('averaged_dog_prob', np.nan),
+                'standardized_fav': row.get('standardized_fav', np.nan),
+                'standardized_dog': row.get('standardized_dog', np.nan),
+                'cover_prob': row.get('standardized_fav', np.nan) if row['history_pick_side'] == 'FAVORITE' else row.get('standardized_dog', np.nan)
+            }
+        else:
+            # Compute averaged pick from current model outputs
+            pick_info = compute_averaged_pick(
+                logistic_prob, linear_prob, rf_prob, tree_prob,
+                fav_odds, dog_odds, min_edge
+            )
+            
+            # Determine pick team
+            if pick_info['pick_side'] == 'FAVORITE':
+                pick_info['pick_team'] = favorite
+            elif pick_info['pick_side'] == 'UNDERDOG':
+                pick_info['pick_team'] = underdog
         
         # Evaluate result
         if pick_info['pick_side'] == 'NO BET':
