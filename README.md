@@ -12,14 +12,14 @@ Advanced NBA spread prediction system using machine learning with automated dail
 - Picking Underdogs: 80-64 (55.6%)
 
 **By Home/Away (All Games):**
-- Favorite at Home: 50-54 (48.1%)
-- Favorite Away: 79-59 (57.2%)
+- Favorite at Home: 52-54 (49.1%)
+- Favorite Away: 75-58 (56.4%)
 
 **By Pick + Location:**
-- Picking Favorite at Home: 27-26 (50.9%)
-- Picking Favorite Away: 18-22 (45.0%)
-- Picking Underdog Away: 23-28 (45.1%)
-- Picking Underdog at Home: 61-37 (62.2%)
+- Picking Favorite at Home: 28-26 (51.9%)
+- Picking Favorite Away: 19-22 (46.3%)
+- Picking Underdog Away: 24-28 (46.2%)
+- Picking Underdog at Home: 56-36 (60.9%)
 ## 🎯 System Overview
 
 This repository implements an **averaged model system** that combines:
