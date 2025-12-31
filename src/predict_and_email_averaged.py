@@ -298,6 +298,15 @@ def generate_averaged_predictions(date_str, data_path='data/NBA Training Set 25-
             'spread': spread,
             'fav_odds': fav_odds,
             'dog_odds': dog_odds,
+            'logistic_prob': logistic_prob,
+            'linear_prob': linear_prob,
+            'rf_prob': rf_prob,
+            'tree_prob': tree_prob,
+            'num_models': len(valid_probs),
+            'averaged_fav_prob': averaged_fav_prob,
+            'averaged_dog_prob': averaged_dog_prob,
+            'standardized_fav': standardized_fav,
+            'standardized_dog': standardized_dog,
             'pick_side': pick_side,
             'pick_team': pick_team,
             'pick_line': pick_line,
@@ -831,7 +840,8 @@ def save_predictions_to_history(predictions, date_str, history_path='data/averag
         print("⚠️  No predictions to save")
         return
     
-    # Convert predictions to DataFrame with necessary columns for backtest compatibility
+    # Convert predictions to DataFrame with all necessary columns
+    # Model probabilities are already included in the predictions dict
     new_rows = []
     for pred in predictions:
         new_rows.append({
@@ -841,11 +851,20 @@ def save_predictions_to_history(predictions, date_str, history_path='data/averag
             'spread': pred['spread'],
             'fav_odds': pred['fav_odds'],
             'dog_odds': pred['dog_odds'],
+            'logistic_prob': pred.get('logistic_prob', np.nan),
+            'linear_prob': pred.get('linear_prob', np.nan),
+            'rf_prob': pred.get('rf_prob', np.nan),
+            'tree_prob': pred.get('tree_prob', np.nan),
+            'num_models': pred.get('num_models', 0),
+            'averaged_fav_prob': pred.get('averaged_fav_prob', np.nan),
+            'averaged_dog_prob': pred.get('averaged_dog_prob', np.nan),
+            'standardized_fav': pred.get('standardized_fav', np.nan),
+            'standardized_dog': pred.get('standardized_dog', np.nan),
+            'fav_edge': pred['fav_edge'],
+            'dog_edge': pred['dog_edge'],
             'pick_side': pred['pick_side'],
             'pick_team': pred['pick_team'],
             'edge': pred['edge'],
-            'fav_edge': pred['fav_edge'],
-            'dog_edge': pred['dog_edge'],
             # Note: actual_cover and result will be filled in later by backtest
             'actual_cover': np.nan,
             'result': 'PENDING'
