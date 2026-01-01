@@ -59,14 +59,20 @@ jobs:
           # Filter for picks only
           picks = merged[merged['pick_side'] != 'NO BET'].copy()
           
-          # Overall record
-          wins = int((picks['result'] == 'WIN').sum())
-          losses = int((picks['result'] == 'LOSS').sum())
+          # Filter for COMPLETED picks only (exclude PENDING)
+          completed_picks = picks[picks['result'].isin(['WIN', 'LOSS'])].copy()
+          
+          # Overall record (using completed picks only)
+          wins = int((completed_picks['result'] == 'WIN').sum())
+          losses = int((completed_picks['result'] == 'LOSS').sum())
           total = wins + losses
           win_pct = (wins / total) * 100 if total > 0 else 0.0
           
-          # Get the last game date
-          last_date = pd.to_datetime(picks['date']).max().strftime('%B %d, %Y')
+          # Get the last COMPLETED game date (not pending games)
+          last_date = pd.to_datetime(completed_picks['date']).max().strftime('%B %d, %Y')
+          
+          # Use completed_picks for all subsequent calculations
+          picks = completed_picks
           
           # Calculate splits
           def calc_record(df):
