@@ -335,13 +335,6 @@ def get_social_logo_base64(icon_name):
 def format_email_html(predictions, yesterday_results, season_record, date_str):
     """Format predictions and results into HTML email with team logos."""
     
-    # Load social media logos as base64
-    substack_logo = get_social_logo_base64('substack')
-    tiktok_logo = get_social_logo_base64('tiktok')
-    instagram_logo = get_social_logo_base64('instagram')
-    x_logo = get_social_logo_base64('x')
-    youtube_logo = get_social_logo_base64('youtube')
-    
     html = f"""
     <html>
     <head>
@@ -362,7 +355,6 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .social-bar {{ text-align: center; padding: 15px; background-color: #f0f0f0; border-radius: 8px; margin: 20px 0; }}
             .social-link {{ display: inline-block; margin: 0 15px; text-decoration: none; color: #1d428a; font-weight: bold; font-size: 14px; }}
             .social-link:hover {{ opacity: 0.7; }}
-            .social-logo {{ width: 24px; height: 24px; vertical-align: middle; margin-right: 6px; }}
             .ad-section {{ text-align: center; margin: 30px 0; padding: 20px; background-color: #f9f9f9; border-radius: 8px; }}
             .ad-image {{ max-width: 600px; width: 100%; height: auto; display: block; margin: 0 auto; }}
             .ad-image-spacing {{ margin-bottom: 20px; }}
@@ -377,21 +369,11 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             </div>
             
             <div class="social-bar">
-                <a href="https://orbanalytics.substack.com/" class="social-link" target="_blank">
-                    <img src="{substack_logo}" alt="Substack" class="social-logo">Substack
-                </a>
-                <a href="https://www.tiktok.com/@orb.analytics" class="social-link" target="_blank">
-                    <img src="{tiktok_logo}" alt="TikTok" class="social-logo">TikTok
-                </a>
-                <a href="https://www.instagram.com/orb.analytics/" class="social-link" target="_blank">
-                    <img src="{instagram_logo}" alt="Instagram" class="social-logo">Instagram
-                </a>
-                <a href="https://x.com/OrbPicks" class="social-link" target="_blank">
-                    <img src="{x_logo}" alt="X" class="social-logo">X
-                </a>
-                <a href="https://www.youtube.com/@OrbAnalyticsLimited" class="social-link" target="_blank">
-                    <img src="{youtube_logo}" alt="YouTube" class="social-logo">YouTube
-                </a>
+                <a href="https://orbanalytics.substack.com/" class="social-link" target="_blank">Substack</a>
+                <a href="https://www.tiktok.com/@orb.analytics" class="social-link" target="_blank">TikTok</a>
+                <a href="https://www.instagram.com/orb.analytics/" class="social-link" target="_blank">Instagram</a>
+                <a href="https://x.com/OrbPicks" class="social-link" target="_blank">X</a>
+                <a href="https://www.youtube.com/@OrbAnalyticsLimited" class="social-link" target="_blank">YouTube</a>
             </div>
             
             <div class="record">
