@@ -341,6 +341,10 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
             .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }}
             .logo {{ width: 30px; height: 30px; vertical-align: middle; margin-right: 8px; }}
+            .social-bar {{ text-align: center; padding: 15px; background-color: #f0f0f0; border-radius: 8px; margin: 20px 0; }}
+            .social-link {{ display: inline-block; margin: 0 15px; text-decoration: none; color: #1d428a; font-weight: bold; font-size: 14px; }}
+            .social-link:hover {{ opacity: 0.7; }}
+            .social-logo {{ width: 24px; height: 24px; vertical-align: middle; margin-right: 6px; }}
         </style>
     </head>
     <body>
@@ -348,6 +352,24 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             <div class="header">
                 <h1>🏀 NBA PREDICTIONS - {date_str}</h1>
                 <p>📊 Standardized & Averaged Model</p>
+            </div>
+            
+            <div class="social-bar">
+                <a href="https://orbanalytics.substack.com/" class="social-link" target="_blank">
+                    <img src="https://cdn.simpleicons.org/substack/FF6719" alt="Substack" class="social-logo">Substack
+                </a>
+                <a href="https://www.tiktok.com/@orb.analytics" class="social-link" target="_blank">
+                    <img src="https://cdn.simpleicons.org/tiktok/000000" alt="TikTok" class="social-logo">TikTok
+                </a>
+                <a href="https://www.instagram.com/orb.analytics/" class="social-link" target="_blank">
+                    <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" class="social-logo">Instagram
+                </a>
+                <a href="https://x.com/OrbPicks" class="social-link" target="_blank">
+                    <img src="https://cdn.simpleicons.org/x/000000" alt="X" class="social-logo">X
+                </a>
+                <a href="https://www.youtube.com/@OrbAnalyticsLimited" class="social-link" target="_blank">
+                    <img src="https://cdn.simpleicons.org/youtube/FF0000" alt="YouTube" class="social-logo">YouTube
+                </a>
             </div>
             
             <div class="record">
@@ -802,7 +824,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
 
 
 def send_email_html(subject, html_body, predictions=None, yesterday_results=None):
-    """Send HTML email with embedded team logos."""
+    """Send HTML email (logos loaded from ESPN CDN, not attached)."""
     smtp_server = os.environ.get('SMTP_SERVER')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
@@ -812,8 +834,8 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
         print("⚠️ SMTP credentials not configured - email not sent")
         return False
     
-    # Create multipart message
-    msg = MIMEMultipart('related')
+    # Create message (no need for 'related' since logos are from CDN)
+    msg = MIMEMultipart()
     msg['From'] = smtp_username
     msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com'
     msg['Subject'] = subject
@@ -822,33 +844,7 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
     html_part = MIMEText(html_body, 'html')
     msg.attach(html_part)
     
-    # Collect all unique teams to download logos for
-    teams_needed = set()
-    
-    if predictions:
-        for pred in predictions:
-            if pred['pick_side'] != 'NO BET':
-                teams_needed.add(pred['pick_team'])
-    
-    if yesterday_results:
-        for result in yesterday_results:
-            teams_needed.add(result['pick_team'])
-    
-    # Download and attach team logos
-    for team_name in teams_needed:
-        abbrev = TEAM_LOGOS.get(team_name, 'nba')
-        logo_url = f'https://a.espncdn.com/i/teamlogos/nba/500/{abbrev}.png'
-        
-        try:
-            with urllib.request.urlopen(logo_url) as response:
-                logo_data = response.read()
-            
-            image = MIMEImage(logo_data)
-            image.add_header('Content-ID', f'<{abbrev}>')
-            image.add_header('Content-Disposition', 'inline', filename=f'{abbrev}.png')
-            msg.attach(image)
-        except Exception as e:
-            print(f"⚠️  Could not load logo for {team_name} ({abbrev}): {e}")
+    # No need to attach logos - they're loaded directly from ESPN CDN in the HTML
     
     # Send
     try:
@@ -856,7 +852,11 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
             server.starttls()
             server.login(smtp_username, smtp_password)
             server.send_message(msg)
-        print("✅ HTML email sent successfully with embedded logos")
+        print("✅ HTML email sent successfully")
+        return True
+    except Exception as e:
+        print(f"❌ Failed to send email: {e}")
+        return False
         return True
     except Exception as e:
         print(f"❌ Failed to send email: {e}")
