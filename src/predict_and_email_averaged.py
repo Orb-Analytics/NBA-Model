@@ -12,8 +12,10 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 import argparse
+import urllib.request
 
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -331,10 +333,10 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .header {{ text-align: center; border-bottom: 3px solid #1d428a; padding-bottom: 20px; margin-bottom: 20px; }}
             .record {{ font-size: 24px; font-weight: bold; color: #1d428a; text-align: center; margin: 20px 0; }}
             .section {{ margin: 30px 0; }}
-            .section-title {{ font-size: 20px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; }}
-            .pick {{ background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #1d428a; }}
+            .section-title {{ font-size: 20px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
+            .pick {{ background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #1d428a; text-align: center; }}
             .pick-header {{ font-size: 18px; font-weight: bold; margin-bottom: 10px; }}
-            .pick-details {{ margin-left: 20px; color: #555; }}
+            .pick-details {{ color: #555; margin-top: 10px; }}
             .result-win {{ background-color: #e8f5e9; border-left-color: #4caf50; }}
             .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
             .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }}
@@ -401,6 +403,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             
             pick_team = result['pick_team']
             logo_abbrev = TEAM_LOGOS.get(pick_team, 'nba')
+            logo_url = get_team_logo_url(pick_team)
             
             if result['pick_side'] == 'FAVORITE':
                 pick_str = f"{pick_team} {-result['spread']:+.1f}"
@@ -411,7 +414,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             html += f"""
                 <div class="pick {result_class}">
                     <div class="pick-header">
-                        {emoji} <img src="cid:{logo_abbrev}" class="logo"> {pick_str}
+                        {emoji} <img src="{logo_url}" class="logo"> {pick_str}
                     </div>
                     <div class="pick-details">
                         {result['favorite']} vs {result['underdog']}<br>
@@ -438,22 +441,23 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
         for pick in picks_sorted:
             pick_team = pick['pick_team']
             logo_abbrev = TEAM_LOGOS.get(pick_team, 'nba')
+            logo_url = get_team_logo_url(pick_team)
             
             if pick['pick_side'] == 'FAVORITE':
-                pick_line = f"{pick_team} {pick['pick_line']:+.1f}"
+                pick_line = f"{pick_team} {-pick['spread']:+.1f}"
                 pick_odds = pick['fav_odds']
             else:
-                pick_line = f"{pick_team} {pick['pick_line']:+.1f}"
+                pick_line = f"{pick_team} {pick['spread']:+.1f}"
                 pick_odds = pick['dog_odds']
             
             html += f"""
                 <div class="pick">
                     <div class="pick-header">
-                        <img src="cid:{logo_abbrev}" class="logo"> {pick_line} ({pick['favorite']} vs {pick['underdog']})
+                        <img src="{logo_url}" class="logo"> {pick_line} ({pick['favorite']} vs {pick['underdog']})
                     </div>
                     <div class="pick-details">
                         Novig Odds: {pick_odds:+d}<br>
-                        Orb Cover Probability: {pick['cover_prob']:.1%}<br>
+                        Orb Cover Probability: {pick.get('standardized_fav' if pick['pick_side'] == 'FAVORITE' else 'standardized_dog', 0.5):.1%}<br>
                         Edge: {pick['edge']:.1%}
                     </div>
                 </div>
@@ -496,11 +500,11 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
     
     def team_logo_html(team_name, show_name=True):
         """Generate HTML for a team logo with optional name."""
-        abbrev = TEAM_LOGOS.get(team_name, 'nba')
+        logo_url = get_team_logo_url(team_name)
         if show_name:
-            return f'<img src="cid:{abbrev}" class="logo"> {team_name}'
+            return f'<img src="{logo_url}" class="logo"> {team_name}'
         else:
-            return f'<img src="cid:{abbrev}" class="logo" title="{team_name}">'
+            return f'<img src="{logo_url}" class="logo" title="{team_name}">'
     
     html = f"""
     <html>
@@ -797,8 +801,70 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     return "\n".join(lines)
 
 
+def send_email_html(subject, html_body, predictions=None, yesterday_results=None):
+    """Send HTML email with embedded team logos."""
+    smtp_server = os.environ.get('SMTP_SERVER')
+    smtp_port = int(os.environ.get('SMTP_PORT', 587))
+    smtp_username = os.environ.get('SMTP_USERNAME')
+    smtp_password = os.environ.get('SMTP_PASSWORD')
+    
+    if not all([smtp_server, smtp_username, smtp_password]):
+        print("⚠️ SMTP credentials not configured - email not sent")
+        return False
+    
+    # Create multipart message
+    msg = MIMEMultipart('related')
+    msg['From'] = smtp_username
+    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com'
+    msg['Subject'] = subject
+    
+    # Attach HTML body
+    html_part = MIMEText(html_body, 'html')
+    msg.attach(html_part)
+    
+    # Collect all unique teams to download logos for
+    teams_needed = set()
+    
+    if predictions:
+        for pred in predictions:
+            if pred['pick_side'] != 'NO BET':
+                teams_needed.add(pred['pick_team'])
+    
+    if yesterday_results:
+        for result in yesterday_results:
+            teams_needed.add(result['pick_team'])
+    
+    # Download and attach team logos
+    for team_name in teams_needed:
+        abbrev = TEAM_LOGOS.get(team_name, 'nba')
+        logo_url = f'https://a.espncdn.com/i/teamlogos/nba/500/{abbrev}.png'
+        
+        try:
+            with urllib.request.urlopen(logo_url) as response:
+                logo_data = response.read()
+            
+            image = MIMEImage(logo_data)
+            image.add_header('Content-ID', f'<{abbrev}>')
+            image.add_header('Content-Disposition', 'inline', filename=f'{abbrev}.png')
+            msg.attach(image)
+        except Exception as e:
+            print(f"⚠️  Could not load logo for {team_name} ({abbrev}): {e}")
+    
+    # Send
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(smtp_username, smtp_password)
+            server.send_message(msg)
+        print("✅ HTML email sent successfully with embedded logos")
+        return True
+    except Exception as e:
+        print(f"❌ Failed to send email: {e}")
+        return False
+
+
 def send_email(subject, body):
-    """Send email via SMTP."""
+    """Send plain text email via SMTP (legacy function)."""
     smtp_server = os.environ.get('SMTP_SERVER')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
@@ -937,22 +1003,25 @@ def main():
     # This ensures only games that were actually predicted/emailed are in the history
     save_predictions_to_history(predictions, today_str)
     
-    # Format email
-    email_body = format_email(predictions, yesterday_results, season_record, today_str)
+    # Format HTML email with team logos
+    html_body = format_email_html(predictions, yesterday_results, season_record, today_str)
+    
+    # Also generate plain text for console preview
+    text_body = format_email(predictions, yesterday_results, season_record, today_str)
     
     print("="*100)
-    print("EMAIL PREVIEW:")
+    print("EMAIL PREVIEW (Plain Text):")
     print("="*100)
-    print(email_body)
+    print(text_body)
     print("="*100)
     print()
     
-    # Send email
+    # Send HTML email with embedded logos
     if not args.no_email:
         # Add timestamp to subject to prevent Gmail threading when sending multiple times
         timestamp = datetime.now().strftime('%I:%M%p')
         subject = f"🏀 NBA Predictions - {today_str} [{timestamp}]"
-        send_email(subject, email_body)
+        send_email_html(subject, html_body, predictions, yesterday_results)
     else:
         print("⚠️ Email sending skipped (--no-email flag)")
 
