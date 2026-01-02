@@ -1,27 +1,45 @@
 
     <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }
-            .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; }
+            body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 10px; }
+            .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 10px; }
             .header { text-align: center; border-bottom: 3px solid #1d428a; padding-bottom: 20px; margin-bottom: 20px; }
-            .record { font-size: 24px; font-weight: bold; color: #1d428a; text-align: center; margin: 20px 0; }
-            .section { margin: 30px 0; }
-            .section-title { font-size: 20px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
-            .pick { background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #1d428a; text-align: center; }
-            .pick-header { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
-            .pick-details { color: #555; margin-top: 10px; }
+            .record { font-size: 20px; font-weight: bold; color: #1d428a; text-align: center; margin: 20px 0; line-height: 1.6; }
+            .section { margin: 20px 0; }
+            .section-title { font-size: 18px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
+            .pick { background-color: #f9f9f9; padding: 12px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #1d428a; text-align: center; }
+            .pick-header { font-size: 16px; font-weight: bold; margin-bottom: 8px; }
+            .pick-details { color: #555; margin-top: 8px; font-size: 14px; }
             .result-win { background-color: #e8f5e9; border-left-color: #4caf50; }
             .result-loss { background-color: #ffebee; border-left-color: #f44336; }
             .footer { margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }
-            .logo { width: 30px; height: 30px; vertical-align: middle; margin-right: 8px; }
-            .social-bar { text-align: center; padding: 15px; background-color: #f0f0f0; border-radius: 8px; margin: 20px 0; }
-            .social-link { display: inline-block; margin: 0 15px; text-decoration: none; color: #1d428a; font-weight: bold; font-size: 14px; }
+            .logo { width: 25px; height: 25px; vertical-align: middle; margin-right: 6px; }
+            .social-bar { text-align: center; padding: 12px; background-color: #f0f0f0; border-radius: 8px; margin: 20px 0; }
+            .social-link { display: inline-block; margin: 8px 10px; text-decoration: none; color: #1d428a; font-weight: bold; font-size: 13px; }
             .social-link:hover { opacity: 0.7; }
-            .ad-section { text-align: center; margin: 30px 0; padding: 20px; background-color: #f9f9f9; border-radius: 8px; }
+            .ad-section { text-align: center; margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 8px; }
             .ad-image { max-width: 600px; width: 100%; height: auto; display: block; margin: 0 auto; }
-            .ad-image-spacing { margin-bottom: 20px; }
-            .ad-text { font-size: 16px; color: #000000; line-height: 1.6; margin: 20px auto; max-width: 600px; padding: 0 20px; }
+            .ad-image-spacing { margin-bottom: 15px; }
+            .ad-text { font-size: 14px; color: #000000; line-height: 1.6; margin: 15px auto; max-width: 600px; padding: 0 10px; }
+            .split-item { margin: 12px 0; font-size: 14px; line-height: 1.8; }
+            
+            /* Mobile optimizations */
+            @media only screen and (max-width: 600px) {
+                body { padding: 5px; }
+                .container { padding: 15px; }
+                .header h1 { font-size: 20px; margin: 10px 0; }
+                .header p { font-size: 14px; }
+                .header div { font-size: 16px !important; }
+                .record { font-size: 16px; }
+                .section-title { font-size: 16px; }
+                .pick-header { font-size: 15px; }
+                .pick-details { font-size: 13px; }
+                .social-link { display: block; margin: 10px 0; }
+                .split-item { font-size: 13px; line-height: 1.9; }
+                .logo { width: 20px; height: 20px; }
+            }
         </style>
     </head>
     <body>
@@ -41,31 +59,39 @@
             </div>
             
             <div class="record">
-                📈 SEASON RECORD: 127-112 (53.1%)<br>
-                💰 Units: +10.39
+                📈 SEASON RECORD: 127-113 (52.9%)<br>
+                💰 Units: +9.39
             </div>
     
             <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center;">
-                <div style="font-size: 16px; font-weight: bold; color: #1d428a; margin-bottom: 10px;">📈 PERFORMANCE SPLITS</div>
+                <div style="font-size: 16px; font-weight: bold; color: #1d428a; margin-bottom: 15px;">📈 PERFORMANCE SPLITS</div>
                 
-                <div style="margin-bottom: 10px;">
+                <div class="split-item">
                     <strong>By Pick Type:</strong><br>
-                    • Picking Favorites: 47-48 (49.5%) | -3.20 units<br>
-                    • Picking Underdogs: 80-64 (55.6%) | +13.59 units
+                    • Picking Favorites: 47-49 (49.0%)<br>
+                    &nbsp;&nbsp;-4.20 units<br>
+                    • Picking Underdogs: 80-64 (55.6%)<br>
+                    &nbsp;&nbsp;+13.59 units
                 </div>
                 
-                <div style="margin-bottom: 10px;">
+                <div class="split-item">
                     <strong>By Home/Away (All Games):</strong><br>
-                    • Favorite at Home: 52-56 (48.1%) | -5.78 units<br>
-                    • Favorite Away: 75-56 (57.3%) | +16.17 units
+                    • Favorite at Home: 52-57 (47.7%)<br>
+                    &nbsp;&nbsp;-6.78 units<br>
+                    • Favorite Away: 75-56 (57.3%)<br>
+                    &nbsp;&nbsp;+16.17 units
                 </div>
                 
-                <div>
+                <div class="split-item">
                     <strong>By Pick + Location:</strong><br>
-                    • Picking Favorite at Home: 28-27 (50.9%) | -0.55 units<br>
-                    • Picking Favorite Away: 19-21 (47.5%) | -2.64 units<br>
-                    • Picking Underdog Away: 56-35 (61.5%) | +18.81 units<br>
-                    • Picking Underdog at Home: 24-29 (45.3%) | -5.22 units
+                    • Picking Favorite at Home: 28-28 (50.0%)<br>
+                    &nbsp;&nbsp;-1.55 units<br>
+                    • Picking Favorite Away: 19-21 (47.5%)<br>
+                    &nbsp;&nbsp;-2.64 units<br>
+                    • Picking Underdog Away: 56-35 (61.5%)<br>
+                    &nbsp;&nbsp;+18.81 units<br>
+                    • Picking Underdog at Home: 24-29 (45.3%)<br>
+                    &nbsp;&nbsp;-5.22 units
                 </div>
             </div>
         
@@ -108,7 +134,10 @@
     
                 <div class="pick">
                     <div class="pick-header">
-                        <img src="https://a.espncdn.com/i/teamlogos/nba/500/det.png" class="logo"> Detroit -4.5 (Detroit vs Miami)
+                        <img src="https://a.espncdn.com/i/teamlogos/nba/500/det.png" class="logo"> Detroit -4.5
+                    </div>
+                    <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                        (Detroit vs Miami)
                     </div>
                     <div class="pick-details">
                         Novig Odds: -101<br>
@@ -138,7 +167,7 @@
                 probability to balance statistical signals with market efficiency. We only bet when
                 our edge exceeds 3%, ensuring disciplined bankroll management.</p>
                 
-                <p><strong>Season Record: 127-112 (53.1%) | ROI: +2.59%</strong></p>
+                <p><strong>Season Record: 127-113 (52.9%) | ROI: +2.59%</strong></p>
             </div>
         </div>
     </body>

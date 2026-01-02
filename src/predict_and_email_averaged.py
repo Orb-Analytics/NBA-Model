@@ -338,27 +338,45 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
     html = f"""
     <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            body {{ font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }}
-            .container {{ max-width: 800px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; }}
+            body {{ font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 10px; }}
+            .container {{ max-width: 800px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 10px; }}
             .header {{ text-align: center; border-bottom: 3px solid #1d428a; padding-bottom: 20px; margin-bottom: 20px; }}
-            .record {{ font-size: 24px; font-weight: bold; color: #1d428a; text-align: center; margin: 20px 0; }}
-            .section {{ margin: 30px 0; }}
-            .section-title {{ font-size: 20px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
-            .pick {{ background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #1d428a; text-align: center; }}
-            .pick-header {{ font-size: 18px; font-weight: bold; margin-bottom: 10px; }}
-            .pick-details {{ color: #555; margin-top: 10px; }}
+            .record {{ font-size: 20px; font-weight: bold; color: #1d428a; text-align: center; margin: 20px 0; line-height: 1.6; }}
+            .section {{ margin: 20px 0; }}
+            .section-title {{ font-size: 18px; font-weight: bold; color: #1d428a; border-bottom: 2px solid #1d428a; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
+            .pick {{ background-color: #f9f9f9; padding: 12px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #1d428a; text-align: center; }}
+            .pick-header {{ font-size: 16px; font-weight: bold; margin-bottom: 8px; }}
+            .pick-details {{ color: #555; margin-top: 8px; font-size: 14px; }}
             .result-win {{ background-color: #e8f5e9; border-left-color: #4caf50; }}
             .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
             .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }}
-            .logo {{ width: 30px; height: 30px; vertical-align: middle; margin-right: 8px; }}
-            .social-bar {{ text-align: center; padding: 15px; background-color: #f0f0f0; border-radius: 8px; margin: 20px 0; }}
-            .social-link {{ display: inline-block; margin: 0 15px; text-decoration: none; color: #1d428a; font-weight: bold; font-size: 14px; }}
+            .logo {{ width: 25px; height: 25px; vertical-align: middle; margin-right: 6px; }}
+            .social-bar {{ text-align: center; padding: 12px; background-color: #f0f0f0; border-radius: 8px; margin: 20px 0; }}
+            .social-link {{ display: inline-block; margin: 8px 10px; text-decoration: none; color: #1d428a; font-weight: bold; font-size: 13px; }}
             .social-link:hover {{ opacity: 0.7; }}
-            .ad-section {{ text-align: center; margin: 30px 0; padding: 20px; background-color: #f9f9f9; border-radius: 8px; }}
+            .ad-section {{ text-align: center; margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 8px; }}
             .ad-image {{ max-width: 600px; width: 100%; height: auto; display: block; margin: 0 auto; }}
-            .ad-image-spacing {{ margin-bottom: 20px; }}
-            .ad-text {{ font-size: 16px; color: #000000; line-height: 1.6; margin: 20px auto; max-width: 600px; padding: 0 20px; }}
+            .ad-image-spacing {{ margin-bottom: 15px; }}
+            .ad-text {{ font-size: 14px; color: #000000; line-height: 1.6; margin: 15px auto; max-width: 600px; padding: 0 10px; }}
+            .split-item {{ margin: 12px 0; font-size: 14px; line-height: 1.8; }}
+            
+            /* Mobile optimizations */
+            @media only screen and (max-width: 600px) {{
+                body {{ padding: 5px; }}
+                .container {{ padding: 15px; }}
+                .header h1 {{ font-size: 20px; margin: 10px 0; }}
+                .header p {{ font-size: 14px; }}
+                .header div {{ font-size: 16px !important; }}
+                .record {{ font-size: 16px; }}
+                .section-title {{ font-size: 16px; }}
+                .pick-header {{ font-size: 15px; }}
+                .pick-details {{ font-size: 13px; }}
+                .social-link {{ display: block; margin: 10px 0; }}
+                .split-item {{ font-size: 13px; line-height: 1.9; }}
+                .logo {{ width: 20px; height: 20px; }}
+            }}
         </style>
     </head>
     <body>
@@ -388,26 +406,34 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
     if splits:
         html += f"""
             <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center;">
-                <div style="font-size: 16px; font-weight: bold; color: #1d428a; margin-bottom: 10px;">📈 PERFORMANCE SPLITS</div>
+                <div style="font-size: 16px; font-weight: bold; color: #1d428a; margin-bottom: 15px;">📈 PERFORMANCE SPLITS</div>
                 
-                <div style="margin-bottom: 10px;">
+                <div class="split-item">
                     <strong>By Pick Type:</strong><br>
-                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units<br>
-                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units
+                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['fav_picks']['units']:+.2f} units<br>
+                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['dog_picks']['units']:+.2f} units
                 </div>
                 
-                <div style="margin-bottom: 10px;">
+                <div class="split-item">
                     <strong>By Home/Away (All Games):</strong><br>
-                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units<br>
-                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units
+                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['fav_home']['units']:+.2f} units<br>
+                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['fav_away']['units']:+.2f} units
                 </div>
                 
-                <div>
+                <div class="split-item">
                     <strong>By Pick + Location:</strong><br>
-                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units<br>
-                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units<br>
-                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units<br>
-                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units
+                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['pfh']['units']:+.2f} units<br>
+                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['pfa']['units']:+.2f} units<br>
+                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['pda']['units']:+.2f} units<br>
+                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)<br>
+                    &nbsp;&nbsp;{splits['pdh']['units']:+.2f} units
                 </div>
             </div>
         """
@@ -494,7 +520,10 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             html += f"""
                 <div class="pick">
                     <div class="pick-header">
-                        <img src="{logo_url}" class="logo"> {pick_line} ({pick['favorite']} vs {pick['underdog']})
+                        <img src="{logo_url}" class="logo"> {pick_line}
+                    </div>
+                    <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                        ({pick['favorite']} vs {pick['underdog']})
                     </div>
                     <div class="pick-details">
                         Novig Odds: {pick_odds:+d}<br>
