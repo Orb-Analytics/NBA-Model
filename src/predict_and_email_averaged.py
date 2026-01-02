@@ -16,6 +16,7 @@ from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 import argparse
 import urllib.request
+import base64
 
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -65,6 +66,17 @@ def get_team_logo_url(team_name, size=40):
     """Get ESPN logo URL for a team."""
     abbrev = TEAM_LOGOS.get(team_name, 'nba')
     return f'https://a.espncdn.com/i/teamlogos/nba/500/{abbrev}.png'
+
+
+def get_social_logo_base64(icon_name):
+    """Get base64-encoded social media logo."""
+    logo_path = f'social_logos/{icon_name}.svg'
+    if not os.path.exists(logo_path):
+        return ''
+    
+    with open(logo_path, 'rb') as f:
+        logo_data = base64.b64encode(f.read()).decode('utf-8')
+    return f'data:image/svg+xml;base64,{logo_data}'
 
 
 def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yesterday_date=None):
@@ -324,6 +336,22 @@ def generate_averaged_predictions(date_str, data_path='data/NBA Training Set 25-
 def format_email_html(predictions, yesterday_results, season_record, date_str):
     """Format predictions and results into HTML email with team logos."""
     
+    # Get base64-encoded social media logos
+    substack_logo = get_social_logo_base64('substack')
+    tiktok_logo = get_social_logo_base64('tiktok')
+    instagram_logo = get_social_logo_base64('instagram')
+    x_logo = get_social_logo_base64('x')
+    youtube_logo = get_social_logo_base64('youtube')
+    
+    # Get base64-encoded Novig ad images
+    with open('Novig_logos/Novig_ad.png', 'rb') as f:
+        novig_ad_base64 = base64.b64encode(f.read()).decode('utf-8')
+        novig_ad_src = f'data:image/png;base64,{novig_ad_base64}'
+    
+    with open('Novig_logos/Orb_Novig.png', 'rb') as f:
+        orb_novig_base64 = base64.b64encode(f.read()).decode('utf-8')
+        orb_novig_src = f'data:image/png;base64,{orb_novig_base64}'
+    
     html = f"""
     <html>
     <head>
@@ -360,19 +388,19 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             
             <div class="social-bar">
                 <a href="https://orbanalytics.substack.com/" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/substack/FF6719" alt="Substack" class="social-logo">Substack
+                    <img src="{substack_logo}" alt="Substack" class="social-logo">Substack
                 </a>
                 <a href="https://www.tiktok.com/@orb.analytics" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/tiktok/000000" alt="TikTok" class="social-logo">TikTok
+                    <img src="{tiktok_logo}" alt="TikTok" class="social-logo">TikTok
                 </a>
                 <a href="https://www.instagram.com/orb.analytics/" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" class="social-logo">Instagram
+                    <img src="{instagram_logo}" alt="Instagram" class="social-logo">Instagram
                 </a>
                 <a href="https://x.com/OrbPicks" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/x/000000" alt="X" class="social-logo">X
+                    <img src="{x_logo}" alt="X" class="social-logo">X
                 </a>
                 <a href="https://www.youtube.com/@OrbAnalyticsLimited" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/youtube/FF0000" alt="YouTube" class="social-logo">YouTube
+                    <img src="{youtube_logo}" alt="YouTube" class="social-logo">YouTube
                 </a>
             </div>
             
@@ -452,16 +480,16 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
         html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
     
     # Novig Ad Section
-    html += """
+    html += f"""
         <div class="ad-section">
             <a href="https://apps.apple.com/us/app/novig/id6443958997" target="_blank">
-                <img src="cid:novig_ad" class="ad-image ad-image-spacing" alt="Novig - Download Now">
+                <img src="{novig_ad_src}" class="ad-image ad-image-spacing" alt="Novig - Download Now">
             </a>
             <p class="ad-text">
                 Using our code <strong>'ORB'</strong> for 50% of your first purchase up to $25 is another way to support Orb Analytics. 
                 If you are looking for better odds, a new sportsbook, or just feel like helping us out, download the Novig app and use code <strong>'ORB'</strong> today!
             </p>
-            <img src="cid:orb_novig" class="ad-image" alt="Orb Analytics x Novig">
+            <img src="{orb_novig_src}" class="ad-image" alt="Orb Analytics x Novig">
         </div>
     """
     
@@ -842,7 +870,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
 
 
 def send_email_html(subject, html_body, predictions=None, yesterday_results=None):
-    """Send HTML email (logos loaded from ESPN CDN, Novig ads attached)."""
+    """Send HTML email (all images embedded as base64 data URIs)."""
     smtp_server = os.environ.get('SMTP_SERVER')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
@@ -852,35 +880,15 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
         print("⚠️ SMTP credentials not configured - email not sent")
         return False
     
-    # Create multipart message for embedded images
-    msg = MIMEMultipart('related')
+    # Create simple multipart message (no attachments needed)
+    msg = MIMEMultipart()
     msg['From'] = smtp_username
     msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com'
     msg['Subject'] = subject
     
-    # Attach HTML body
+    # Attach HTML body (all images are base64-encoded in the HTML)
     html_part = MIMEText(html_body, 'html')
     msg.attach(html_part)
-    
-    # Attach Novig ad images
-    try:
-        with open('Novig_logos/Novig_ad.png', 'rb') as f:
-            img_data = f.read()
-        image = MIMEImage(img_data)
-        image.add_header('Content-ID', '<novig_ad>')
-        image.add_header('Content-Disposition', 'inline', filename='Novig_ad.png')
-        msg.attach(image)
-        
-        with open('Novig_logos/Orb_Novig.png', 'rb') as f:
-            img_data = f.read()
-        image = MIMEImage(img_data)
-        image.add_header('Content-ID', '<orb_novig>')
-        image.add_header('Content-Disposition', 'inline', filename='Orb_Novig.png')
-        msg.attach(image)
-        
-        print("✅ Novig ad images attached")
-    except Exception as e:
-        print(f"⚠️  Could not attach Novig images: {e}")
     
     # Send
     try:
