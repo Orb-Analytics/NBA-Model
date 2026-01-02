@@ -5,6 +5,7 @@ Generate HTML Email Preview
 
 import sys
 import os
+import base64
 sys.path.insert(0, 'src')
 
 from predict_and_email_averaged import (
@@ -26,6 +27,15 @@ predictions = generate_averaged_predictions(date_str)
 # Generate HTML
 html_body = format_email_html(predictions, yesterday_results, season_record, date_str)
 
+# Convert cid: references to base64 for preview
+with open('Novig_logos/Novig_ad.png', 'rb') as f:
+    novig_ad_data = base64.b64encode(f.read()).decode('utf-8')
+    html_body = html_body.replace('cid:novig_ad', f'data:image/png;base64,{novig_ad_data}')
+
+with open('Novig_logos/Orb_Novig.png', 'rb') as f:
+    orb_novig_data = base64.b64encode(f.read()).decode('utf-8')
+    html_body = html_body.replace('cid:orb_novig', f'data:image/png;base64,{orb_novig_data}')
+
 # Save to file
 with open('email_preview.html', 'w') as f:
     f.write(html_body)
@@ -43,4 +53,5 @@ print("   ✓ Team logos embedded inline (Detroit, New Orleans, San Antonio)")
 print("   ✓ Color-coded results (green for wins, red for losses)")
 print("   ✓ Professional styling with borders and spacing")
 print("   ✓ Performance splits section")
+print("   ✓ Novig ad section with clickable link")
 print("   ✓ Mobile-friendly design")

@@ -345,6 +345,10 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .social-link {{ display: inline-block; margin: 0 15px; text-decoration: none; color: #1d428a; font-weight: bold; font-size: 14px; }}
             .social-link:hover {{ opacity: 0.7; }}
             .social-logo {{ width: 24px; height: 24px; vertical-align: middle; margin-right: 6px; }}
+            .ad-section {{ text-align: center; margin: 30px 0; padding: 20px; background-color: #f9f9f9; border-radius: 8px; }}
+            .ad-image {{ max-width: 600px; width: 100%; height: auto; display: block; margin: 0 auto; }}
+            .ad-image-spacing {{ margin-bottom: 20px; }}
+            .ad-text {{ font-size: 16px; color: #000000; line-height: 1.6; margin: 20px auto; max-width: 600px; padding: 0 20px; }}
         </style>
     </head>
     <body>
@@ -446,6 +450,20 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             """
         
         html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
+    
+    # Novig Ad Section
+    html += """
+        <div class="ad-section">
+            <a href="https://apps.apple.com/us/app/novig/id6443958997" target="_blank">
+                <img src="cid:novig_ad" class="ad-image ad-image-spacing" alt="Novig - Download Now">
+            </a>
+            <p class="ad-text">
+                Using our code <strong>'ORB'</strong> for 50% of your first purchase up to $25 is another way to support Orb Analytics. 
+                If you are looking for better odds, a new sportsbook, or just feel like helping us out, download the Novig app and use code <strong>'ORB'</strong> today!
+            </p>
+            <img src="cid:orb_novig" class="ad-image" alt="Orb Analytics x Novig">
+        </div>
+    """
     
     # Today's Picks
     html += """
@@ -824,7 +842,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
 
 
 def send_email_html(subject, html_body, predictions=None, yesterday_results=None):
-    """Send HTML email (logos loaded from ESPN CDN, not attached)."""
+    """Send HTML email (logos loaded from ESPN CDN, Novig ads attached)."""
     smtp_server = os.environ.get('SMTP_SERVER')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
@@ -834,8 +852,8 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
         print("⚠️ SMTP credentials not configured - email not sent")
         return False
     
-    # Create message (no need for 'related' since logos are from CDN)
-    msg = MIMEMultipart()
+    # Create multipart message for embedded images
+    msg = MIMEMultipart('related')
     msg['From'] = smtp_username
     msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com'
     msg['Subject'] = subject
@@ -844,7 +862,25 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
     html_part = MIMEText(html_body, 'html')
     msg.attach(html_part)
     
-    # No need to attach logos - they're loaded directly from ESPN CDN in the HTML
+    # Attach Novig ad images
+    try:
+        with open('Novig_logos/Novig_ad.png', 'rb') as f:
+            img_data = f.read()
+        image = MIMEImage(img_data)
+        image.add_header('Content-ID', '<novig_ad>')
+        image.add_header('Content-Disposition', 'inline', filename='Novig_ad.png')
+        msg.attach(image)
+        
+        with open('Novig_logos/Orb_Novig.png', 'rb') as f:
+            img_data = f.read()
+        image = MIMEImage(img_data)
+        image.add_header('Content-ID', '<orb_novig>')
+        image.add_header('Content-Disposition', 'inline', filename='Orb_Novig.png')
+        msg.attach(image)
+        
+        print("✅ Novig ad images attached")
+    except Exception as e:
+        print(f"⚠️  Could not attach Novig images: {e}")
     
     # Send
     try:
