@@ -365,6 +365,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
         <div class="container">
             <div class="header">
                 <h1>🏀 NBA PREDICTIONS - {date_str}</h1>
+                <div style="font-size: 20px; color: #6A5ACD; font-weight: bold; margin-top: 10px;">Presented by: Orb Analytics Ltd.</div>
                 <p>📊 Standardized & Averaged Model</p>
             </div>
             
