@@ -383,38 +383,33 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 <p>📊 Standardized & Averaged Model</p>
             </div>
             
-            <!-- Social Media Icons (Table-based for email compatibility) -->
+            <!-- Social Media Icons (from Stripo, converted to standard HTML) -->
             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin: 20px auto; background-color: #f0f0f0; border-radius: 8px; padding: 15px;">
                 <tr>
-                    <td align="center" style="padding: 0 10px;">
-                        <a href="https://orbanalytics.substack.com/" target="_blank">
-                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/substack.svg" alt="Substack" width="28" height="28" style="display:block;border:0;filter: invert(44%) sepia(78%) saturate(3117%) hue-rotate(347deg) brightness(102%) contrast(101%);" />
-                        </a>
-                        <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">Substack</div>
-                    </td>
-                    <td align="center" style="padding: 0 10px;">
-                        <a href="https://www.tiktok.com/@orb.analytics" target="_blank">
-                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/tiktok.svg" alt="TikTok" width="28" height="28" style="display:block;border:0;" />
-                        </a>
-                        <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">TikTok</div>
-                    </td>
-                    <td align="center" style="padding: 0 10px;">
-                        <a href="https://www.instagram.com/orb.analytics/" target="_blank">
-                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/instagram.svg" alt="Instagram" width="28" height="28" style="display:block;border:0;filter: invert(30%) sepia(97%) saturate(2804%) hue-rotate(325deg) brightness(94%) contrast(88%);" />
-                        </a>
-                        <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">Instagram</div>
-                    </td>
-                    <td align="center" style="padding: 0 10px;">
+                    <td align="center" valign="top" style="padding: 0 10px;">
                         <a href="https://x.com/OrbPicks" target="_blank">
-                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/x.svg" alt="X" width="28" height="28" style="display:block;border:0;" />
+                            <img width="32" height="32" title="X" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/x-logo-colored.png" alt="X" style="display:block;border:0;" />
                         </a>
-                        <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">X</div>
                     </td>
-                    <td align="center" style="padding: 0 10px;">
-                        <a href="https://www.youtube.com/@OrbAnalyticsLimited" target="_blank">
-                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/youtube.svg" alt="YouTube" width="28" height="28" style="display:block;border:0;filter: invert(18%) sepia(100%) saturate(7426%) hue-rotate(1deg) brightness(102%) contrast(119%);" />
+                    <td align="center" valign="top" style="padding: 0 10px;">
+                        <a target="_blank" href="https://www.instagram.com/orb.analytics/">
+                            <img width="32" height="32" title="Instagram" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/instagram-logo-colored.png" alt="Instagram" style="display:block;border:0;" />
                         </a>
-                        <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">YouTube</div>
+                    </td>
+                    <td align="center" valign="top" style="padding: 0 10px;">
+                        <a target="_blank" href="https://www.youtube.com/@OrbAnalyticsLimited">
+                            <img title="YouTube" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/youtube-logo-colored.png" alt="YouTube" width="32" height="32" style="display:block;border:0;" />
+                        </a>
+                    </td>
+                    <td align="center" valign="top" style="padding: 0 10px;">
+                        <a href="https://www.tiktok.com/@orb.analytics" target="_blank">
+                            <img alt="TikTok" width="32" height="32" title="TikTok" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/tiktok-logo-colored.png" style="display:block;border:0;" />
+                        </a>
+                    </td>
+                    <td valign="top" align="center" style="padding: 0 10px;">
+                        <a target="_blank" href="https://orbanalytics.substack.com/">
+                            <img height="32" title="Substack" src="https://ezfbzub.stripocdn.email/content/guids/CABINET_10dc2a87fe0abe172c1afd44c80939bfa38f5d39fb2597892ba47e7e002dcfd0/images/substack_192.png" alt="Substack" width="32" style="display:block;border:0;" />
+                        </a>
                     </td>
                 </tr>
             </table>
