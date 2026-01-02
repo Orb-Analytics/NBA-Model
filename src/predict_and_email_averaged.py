@@ -388,31 +388,31 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 <tr>
                     <td align="center" style="padding: 0 10px;">
                         <a href="https://orbanalytics.substack.com/" target="_blank">
-                            <img src="https://raw.githubusercontent.com/Lpchaitin/NBA-model/main/assets/icons/substack.svg" alt="Substack" width="28" height="28" style="display:block;border:0;" />
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/substack.svg" alt="Substack" width="28" height="28" style="display:block;border:0;filter: invert(44%) sepia(78%) saturate(3117%) hue-rotate(347deg) brightness(102%) contrast(101%);" />
                         </a>
                         <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">Substack</div>
                     </td>
                     <td align="center" style="padding: 0 10px;">
                         <a href="https://www.tiktok.com/@orb.analytics" target="_blank">
-                            <img src="https://raw.githubusercontent.com/Lpchaitin/NBA-model/main/assets/icons/tiktok.svg" alt="TikTok" width="28" height="28" style="display:block;border:0;" />
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/tiktok.svg" alt="TikTok" width="28" height="28" style="display:block;border:0;" />
                         </a>
                         <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">TikTok</div>
                     </td>
                     <td align="center" style="padding: 0 10px;">
                         <a href="https://www.instagram.com/orb.analytics/" target="_blank">
-                            <img src="https://raw.githubusercontent.com/Lpchaitin/NBA-model/main/assets/icons/instagram.svg" alt="Instagram" width="28" height="28" style="display:block;border:0;" />
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/instagram.svg" alt="Instagram" width="28" height="28" style="display:block;border:0;filter: invert(30%) sepia(97%) saturate(2804%) hue-rotate(325deg) brightness(94%) contrast(88%);" />
                         </a>
                         <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">Instagram</div>
                     </td>
                     <td align="center" style="padding: 0 10px;">
                         <a href="https://x.com/OrbPicks" target="_blank">
-                            <img src="https://raw.githubusercontent.com/Lpchaitin/NBA-model/main/assets/icons/x.svg" alt="X" width="28" height="28" style="display:block;border:0;" />
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/x.svg" alt="X" width="28" height="28" style="display:block;border:0;" />
                         </a>
                         <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">X</div>
                     </td>
                     <td align="center" style="padding: 0 10px;">
                         <a href="https://www.youtube.com/@OrbAnalyticsLimited" target="_blank">
-                            <img src="https://raw.githubusercontent.com/Lpchaitin/NBA-model/main/assets/icons/youtube.svg" alt="YouTube" width="28" height="28" style="display:block;border:0;" />
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/youtube.svg" alt="YouTube" width="28" height="28" style="display:block;border:0;filter: invert(18%) sepia(100%) saturate(7426%) hue-rotate(1deg) brightness(102%) contrast(119%);" />
                         </a>
                         <div style="font-size: 11px; color: #1d428a; font-weight: bold; margin-top: 4px;">YouTube</div>
                     </td>
