@@ -10,6 +10,7 @@ import numpy as np
 import os
 import sys
 import smtplib
+import base64
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
@@ -321,8 +322,25 @@ def generate_averaged_predictions(date_str, data_path='data/NBA Training Set 25-
     return predictions
 
 
+def get_social_logo_base64(icon_name):
+    """Get base64-encoded social media logo."""
+    logo_path = f'social_logos/{icon_name}.svg'
+    if not os.path.exists(logo_path):
+        return ''
+    with open(logo_path, 'rb') as f:
+        logo_data = base64.b64encode(f.read()).decode('utf-8')
+    return f'data:image/svg+xml;base64,{logo_data}'
+
+
 def format_email_html(predictions, yesterday_results, season_record, date_str):
     """Format predictions and results into HTML email with team logos."""
+    
+    # Load social media logos as base64
+    substack_logo = get_social_logo_base64('substack')
+    tiktok_logo = get_social_logo_base64('tiktok')
+    instagram_logo = get_social_logo_base64('instagram')
+    x_logo = get_social_logo_base64('x')
+    youtube_logo = get_social_logo_base64('youtube')
     
     html = f"""
     <html>
@@ -360,19 +378,19 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             
             <div class="social-bar">
                 <a href="https://orbanalytics.substack.com/" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/substack/FF6719" alt="Substack" class="social-logo">Substack
+                    <img src="{substack_logo}" alt="Substack" class="social-logo">Substack
                 </a>
                 <a href="https://www.tiktok.com/@orb.analytics" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/tiktok/000000" alt="TikTok" class="social-logo">TikTok
+                    <img src="{tiktok_logo}" alt="TikTok" class="social-logo">TikTok
                 </a>
                 <a href="https://www.instagram.com/orb.analytics/" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" class="social-logo">Instagram
+                    <img src="{instagram_logo}" alt="Instagram" class="social-logo">Instagram
                 </a>
                 <a href="https://x.com/OrbPicks" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/x/000000" alt="X" class="social-logo">X
+                    <img src="{x_logo}" alt="X" class="social-logo">X
                 </a>
                 <a href="https://www.youtube.com/@OrbAnalyticsLimited" class="social-link" target="_blank">
-                    <img src="https://cdn.simpleicons.org/youtube/FF0000" alt="YouTube" class="social-logo">YouTube
+                    <img src="{youtube_logo}" alt="YouTube" class="social-logo">YouTube
                 </a>
             </div>
             
