@@ -360,7 +360,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
     splits = get_performance_splits()
     if splits:
         html += f"""
-            <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
+            <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center;">
                 <div style="font-size: 16px; font-weight: bold; color: #1d428a; margin-bottom: 10px;">📈 PERFORMANCE SPLITS</div>
                 
                 <div style="margin-bottom: 10px;">
