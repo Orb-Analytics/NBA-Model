@@ -909,7 +909,7 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
     # Create multipart message for embedded images
     msg = MIMEMultipart('related')
     msg['From'] = smtp_username
-    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com'
+    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com,alexkalta1@gmail.com'
     msg['Subject'] = subject
     
     # Attach HTML body
@@ -967,7 +967,7 @@ def send_email(subject, body):
     # Create message
     msg = MIMEMultipart()
     msg['From'] = smtp_username
-    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com'
+    msg['To'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com,alexkalta1@gmail.com'
     msg['Subject'] = subject
     
     msg.attach(MIMEText(body, 'plain'))
