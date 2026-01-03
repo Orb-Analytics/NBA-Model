@@ -28,16 +28,15 @@ predictions = generate_averaged_predictions(date_str)
 html_body = format_email_html(predictions, yesterday_results, season_record, date_str)
 
 # Convert cid: references to base64 for preview
-# Social media icons
-social_icons = ['substack', 'tiktok', 'instagram', 'x', 'youtube']
-for icon_name in social_icons:
-    try:
-        icon_path = f'assets/icons/{icon_name}.png'
-        with open(icon_path, 'rb') as f:
-            icon_data = base64.b64encode(f.read()).decode('utf-8')
-            html_body = html_body.replace(f'cid:{icon_name}_icon', f'data:image/png;base64,{icon_data}')
-    except Exception as e:
-        print(f"⚠️  Could not load {icon_name} icon: {e}")
+# Orb Analytics logo
+try:
+    with open('Novig_logos/ChatGPT Image Jan 2, 2026, 03_19_19 PM.png', 'rb') as f:
+        orb_logo_data = base64.b64encode(f.read()).decode('utf-8')
+        html_body = html_body.replace('cid:orb_logo', f'data:image/png;base64,{orb_logo_data}')
+except Exception as e:
+    print(f"⚠️  Could not load Orb logo: {e}")
+
+# Social media icons (not needed - they use Stripo CDN)
 
 # Novig ad images
 with open('Novig_logos/Novig_ad.png', 'rb') as f:
@@ -48,8 +47,8 @@ with open('Novig_logos/Orb_Novig.png', 'rb') as f:
     orb_novig_data = base64.b64encode(f.read()).decode('utf-8')
     html_body = html_body.replace('cid:orb_novig', f'data:image/png;base64,{orb_novig_data}')
 
-# Save to file
-with open('email_preview.html', 'w') as f:
+# Save to file with UTF-8 encoding
+with open('email_preview.html', 'w', encoding='utf-8') as f:
     f.write(html_body)
 
 print("✅ HTML email saved to email_preview.html")
