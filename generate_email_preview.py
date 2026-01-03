@@ -30,7 +30,7 @@ html_body = format_email_html(predictions, yesterday_results, season_record, dat
 # Convert cid: references to base64 for preview
 # Orb Analytics logo
 try:
-    with open('Novig_logos/ChatGPT Image Jan 2, 2026, 03_19_19 PM.png', 'rb') as f:
+    with open('Novig_logos/Orb_logo.png', 'rb') as f:
         orb_logo_data = base64.b64encode(f.read()).decode('utf-8')
         html_body = html_body.replace('cid:orb_logo', f'data:image/png;base64,{orb_logo_data}')
 except Exception as e:

@@ -1049,7 +1049,7 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
     
     # Attach Orb Analytics logo
     try:
-        with open('Novig_logos/ChatGPT Image Jan 2, 2026, 03_19_19 PM.png', 'rb') as f:
+        with open('Novig_logos/Orb_logo.png', 'rb') as f:
             img_data = f.read()
         image = MIMEImage(img_data)
         image.add_header('Content-ID', '<orb_logo>')
