@@ -24,6 +24,22 @@ from ensemble_spread_models import EnsembleSpreadPredictor
 from prediction_core import american_to_prob
 
 
+def format_american_odds(odds, default=-110):
+    """Format American odds robustly as '+105' or '-110'.
+
+    The dataset and novig odds can sometimes be parsed as floats (e.g. -110.0).
+    The email templates previously assumed ints.
+    """
+
+    try:
+        if odds is None or (isinstance(odds, float) and pd.isna(odds)):
+            odds = default
+        odds_int = int(round(float(odds)))
+        return f"{odds_int:+d}"
+    except Exception:
+        return f"{int(default):+d}"
+
+
 def calculate_units(odds, result):
     """Calculate units won/lost for a bet.
     
@@ -586,7 +602,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                         <div class="pick-right">
                             <div class="pick-right-inner">
                                 <div class="pick-stats">
-                                    <div class="pick-stat">Odds: {pick_odds:+d}</div>
+                                    <div class="pick-stat">Odds: {format_american_odds(pick_odds)}</div>
                                     <div class="pick-stat">Edge: {result['edge']:.1%}</div>
                                     <div class="pick-stat">Units: {units:+.2f}</div>
                                 </div>
@@ -663,7 +679,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                         <div class="pick-right">
                             <div class="pick-right-inner">
                                 <div class="pick-stats">
-                                    <div class="pick-stat">Odds: {pick_odds:+d}</div>
+                                    <div class="pick-stat">Odds: {format_american_odds(pick_odds)}</div>
                                     <div class="pick-stat">Cover Prob: {cover_prob:.1%}</div>
                                     <div class="pick-stat">Edge: {pick['edge']:.1%}</div>
                                 </div>
@@ -868,7 +884,7 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
                     </div>
                     <div class="pick-details">
                         {matchup_str}<br>
-                        Novig Odds: {pick_odds:+d}<br>
+                        Novig Odds: {format_american_odds(pick_odds)}<br>
                         Orb Cover Probability: {pick['cover_prob']:.1%}<br>
                         Edge: {pick['edge']:.1%}
                     </div>
@@ -994,7 +1010,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
                 pick_odds = pick['dog_odds']
             
             lines.append(f"🏀 {pick_line} ({pick['favorite']} vs {pick['underdog']})")
-            lines.append(f"   Novig Odds: {pick_odds:+d}")
+            lines.append(f"   Novig Odds: {format_american_odds(pick_odds)}")
             lines.append(f"   Orb Cover Probability: {pick['cover_prob']:.1%}")
             lines.append(f"   Edge: {pick['edge']:.1%}")
             lines.append("")
