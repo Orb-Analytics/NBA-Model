@@ -15,9 +15,9 @@ from predict_and_email_averaged import (
     generate_averaged_predictions
 )
 
-# Use Jan 1 data for testing
-date_str = '2026-01-01'
-yesterday_str = '2025-12-31'
+# Use Jan 9 data for testing (has yesterday results)
+date_str = '2026-01-09'
+yesterday_str = '2026-01-08'
 
 # Get data
 yesterday_results, yesterday_units = get_yesterday_results(yesterday_date=yesterday_str)

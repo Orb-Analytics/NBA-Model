@@ -360,13 +360,13 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             body {{ font-family: 'League Gothic', Arial, sans-serif; background-color: #2a2a2a; padding: 10px; }}
             .container {{ max-width: 800px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 10px; }}
             .header {{ text-align: center; border-bottom: 3px solid #9a29e9; padding-bottom: 20px; margin-bottom: 20px; }}
-            .record {{ font-size: 20px; font-weight: bold; color: #9a29e9; text-align: center; margin: 20px 0; line-height: 1.6; }}
+            .record {{ font-size: 20px; font-weight: bold; color: #000000; text-align: center; margin: 20px 0; line-height: 1.6; }}
             .section {{ margin: 20px 0; }}
-            .section-title {{ font-size: 24px; font-weight: bold; color: #9a29e9; border-bottom: 2px solid #9a29e9; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
+            .section-title {{ font-size: 24px; font-weight: bold; color: #000000; border-bottom: 2px solid #9a29e9; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
             .pick {{ background-color: #e5e5e5; padding: 25px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .pick-content {{ display: table; width: 100%; }}
             .pick-left {{ display: table-cell; vertical-align: middle; width: 65%; }}
-            .pick-right {{ display: table-cell; vertical-align: middle; width: 35%; text-align: right; border-left: 2px solid #999; padding-left: 20px; }}
+            .pick-right {{ display: table-cell; vertical-align: middle; width: 35%; text-align: left; border-left: 2px solid #999; padding-left: 20px; }}
             .pick-right-inner {{ display: table; width: 100%; }}
             .pick-stats {{ display: table-cell; vertical-align: middle; text-align: left; padding-right: 15px; }}
             .pick-spread-cell {{ display: table-cell; vertical-align: middle; text-align: right; }}
@@ -374,8 +374,8 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .pick-logo {{ width: 70px; height: 70px; vertical-align: middle; margin-right: 15px; }}
             .pick-team {{ font-size: 40px; font-weight: bold; display: inline-block; vertical-align: middle; }}
             .pick-matchup {{ font-size: 16px; color: #666; margin-top: 5px; font-family: Arial, sans-serif; }}
-            .pick-spread-box {{ background-color: #9a29e9; color: white; padding: 20px; border-radius: 6px; font-size: 28px; font-weight: bold; display: inline-block; min-width: 70px; text-align: center; }}
-            .pick-stat {{ color: #555; font-size: 18px; font-family: Arial, sans-serif; margin-bottom: 5px; }}
+            .pick-spread-box {{ background-color: #9a29e9; color: white; padding: 16px 20px; border-radius: 6px; font-size: 28px; font-weight: bold; display: inline-block; min-width: 70px; text-align: center; }}
+            .pick-stat {{ color: #222; font-size: 18px; font-family: Arial, sans-serif; margin-bottom: 5px; font-weight: 500; }}
             .result-win {{ background-color: #e8f5e9; border-left-color: #4caf50; }}
             .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
             .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }}
@@ -388,13 +388,13 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .splits-section {{ font-family: Arial, sans-serif; }}
             .split-row {{ background-color: #f0f0f0; padding: 20px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .split-content {{ display: table; width: 100%; }}
-            .split-left {{ display: table-cell; vertical-align: middle; width: 35%; font-size: 20px; font-weight: bold; color: #9a29e9; text-align: center; }}
+            .split-left {{ display: table-cell; vertical-align: middle; width: 35%; font-size: 20px; font-weight: bold; color: #000000; text-align: center; }}
             .split-right {{ display: table-cell; vertical-align: middle; width: 65%; text-align: left; border-left: 2px solid #9a29e9; padding-left: 20px; }}
             .split-data {{ font-size: 16px; line-height: 2.0; color: #333; }}
             .game-summary-row {{ background-color: #f0f0f0; padding: 20px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .game-summary-item {{ font-size: 18px; padding: 10px 0; border-bottom: 2px solid #ddd; }}
             .game-summary-item:last-child {{ border-bottom: none; }}
-            .game-summary-label {{ font-weight: bold; color: #9a29e9; }}
+            .game-summary-label {{ font-weight: bold; color: #000000; }}
             .game-summary-value {{ color: #333; margin-left: 10px; }}
             .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; font-family: Arial, sans-serif; }}
             @media only screen and (max-width: 600px) {{
@@ -407,19 +407,19 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 .section-title {{ font-size: 16px; }}
                 .pick-team {{ font-size: 24px; }}
                 .pick-matchup {{ font-size: 14px; }}
-                .pick-spread-box {{ font-size: 20px; padding: 12px 24px; }}
-                .pick-stat {{ font-size: 13px; margin-bottom: 8px; }}
+                .pick-spread-box {{ font-size: 20px; padding: 8px 16px; }}
+                .pick-stat {{ font-size: 15px; margin-bottom: 8px; color: #222; font-weight: 500; }}
                 .pick-emoji {{ font-size: 36px; }}
                 .pick-logo {{ width: 50px; height: 50px; }}
                 .split-item {{ font-size: 13px; line-height: 1.9; }}
                 .logo {{ width: 35px; height: 35px; }}
                 
-                /* Stack split layout on mobile */
-                .split-row {{ padding: 15px; }}
+                /* Stack split layout on mobile with better spacing */
+                .split-row {{ padding: 12px; margin: 8px 0; }}
                 .split-content {{ display: block !important; }}
-                .split-left {{ display: block !important; width: 100% !important; text-align: center; margin-bottom: 10px; font-size: 16px; }}
-                .split-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 10px; }}
-                .split-data {{ font-size: 14px; }}
+                .split-left {{ display: block !important; width: 100% !important; text-align: center; margin-bottom: 8px; font-size: 15px; }}
+                .split-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 8px; }}
+                .split-data {{ font-size: 13px; line-height: 1.6; }}
                 
                 /* Game summary mobile styles */
                 .game-summary-row {{ padding: 15px; }}
@@ -428,12 +428,12 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 /* Stack pick layout on mobile */
                 .pick {{ padding: 15px; }}
                 .pick-content {{ display: block !important; }}
-                .pick-left {{ display: block !important; width: 100% !important; margin-bottom: 15px; text-align: center; }}
-                .pick-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 15px; }}
-                .pick-right-inner {{ display: block !important; text-align: center; }}
-                .pick-stats {{ display: block !important; padding-right: 0 !important; margin-bottom: 10px; text-align: center; }}
-                .pick-spread-cell {{ display: block !important; text-align: center !important; }}
-                .pick-spread-box {{ display: block; width: fit-content; margin: 0 auto; }}
+                .pick-left {{ display: block !important; width: 100% !important; margin-bottom: 15px; text-align: left; }}
+                .pick-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 15px; text-align: left; }}
+                .pick-right-inner {{ display: block !important; text-align: left; }}
+                .pick-stats {{ display: block !important; padding-right: 0 !important; margin-bottom: 10px; text-align: left; }}
+                .pick-spread-cell {{ display: block !important; text-align: left !important; }}
+                .pick-spread-box {{ display: inline-block; width: fit-content; margin: 0; }}
             }}
         </style>
     </head>
@@ -441,7 +441,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
         <div class="container">
             <div class="header">
                 <h1>🏀 NBA PREDICTIONS - {date_str}</h1>
-                <div style="font-size: 20px; color: #9a29e9; font-weight: bold; margin-top: 10px;">Presented by: Orb Analytics Ltd.</div>
+                <div style="font-size: 20px; color: #000000; font-weight: bold; margin-top: 10px;">Presented by: Orb Analytics Ltd.</div>
                 <div style="margin-top: 10px;">
                     <img src="cid:orb_logo" alt="Orb Analytics" style="max-width: 200px; height: auto; display: block; margin: 0 auto;" />
                 </div>
@@ -489,7 +489,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
     if splits:
         html += f"""
             <div class="section splits-section" style="background-color: #e5e5e5; padding: 15px; border-radius: 8px;">
-                <div style="font-size: 18px; font-weight: bold; color: #9a29e9; margin-bottom: 15px; text-align: center;">PERFORMANCE SPLITS</div>
+                <div style="font-size: 18px; font-weight: bold; color: #000000; margin-bottom: 15px; text-align: center;">PERFORMANCE SPLITS</div>
                 
                 <div class="split-row">
                     <div class="split-content">
@@ -587,7 +587,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                                 <div class="pick-team">{pick_team}</div>
                                 <div class="pick-matchup">{location_str} {opponent}</div>
                             </div>
-                            <span class="pick-spread-box" style="margin-left: 15px; vertical-align: middle;">{spread_line}</span>
+                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 15px;">{spread_line}</span>
                         </div>
                         <div class="pick-right">
                             <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
@@ -658,18 +658,12 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                                 <div class="pick-team">{pick_team}</div>
                                 <div class="pick-matchup">{location_str} {opponent}</div>
                             </div>
+                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 15px;">{spread_line}</span>
                         </div>
                         <div class="pick-right">
-                            <div class="pick-right-inner">
-                                <div class="pick-stats">
-                                    <div class="pick-stat">Odds: {format_american_odds(pick_odds)}</div>
-                                    <div class="pick-stat">Cover Prob: {cover_prob:.1%}</div>
-                                    <div class="pick-stat">Edge: {pick['edge']:.1%}</div>
-                                </div>
-                                <div class="pick-spread-cell">
-                                    <span class="pick-spread-box">{spread_line}</span>
-                                </div>
-                            </div>
+                            <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
+                            <div class="pick-stat">Cover Prob: <strong>{cover_prob:.1%}</strong></div>
+                            <div class="pick-stat">Edge: <strong>{pick['edge']:.1%}</strong></div>
                         </div>
                     </div>
                 </div>
