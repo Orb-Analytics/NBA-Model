@@ -23,7 +23,7 @@ Advanced NBA spread prediction system using machine learning with automated dail
 ## 🎯 System Overview
 
 This repository implements an **averaged model system** that combines:
-- 35% ML model predictions (4 models averaged)
+- 35% ML model predictions (3 models averaged: Logistic, Linear, Random Forest)
 - 65% implied odds probabilities
 - 3% minimum edge threshold for picks
 

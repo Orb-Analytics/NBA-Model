@@ -3,8 +3,8 @@
 Backtest the Standardized & Averaged Model
 
 This script:
-1. Loads unified model results (already has all 4 model probabilities)
-2. Averages the 4 model probabilities
+1. Loads unified model results (has model probabilities)
+2. Averages the 3 model probabilities (Logistic, Linear, RF)
 3. Applies standardization: 35% averaged model + 65% implied probability
 4. Calculates edges and makes picks (only when edge >= 3%)
 5. Evaluates against actual outcomes
@@ -30,7 +30,6 @@ def compute_averaged_pick(
     logistic_prob: float,
     linear_prob: float,
     rf_prob: float,
-    tree_prob: float,
     fav_odds: float,
     dog_odds: float,
     min_edge: float = 0.03
@@ -39,7 +38,7 @@ def compute_averaged_pick(
     Compute the averaged & standardized pick.
     
     Formula:
-    - Average all 4 model probabilities
+    - Average 3 model probabilities (Logistic, Linear, RF)
     - Standardized prob = (0.35 * averaged_model_prob) + (0.65 * implied_prob)
     - Edge = standardized_prob - implied_prob
     - Pick only if edge >= min_edge
@@ -47,7 +46,7 @@ def compute_averaged_pick(
     Returns dict with pick info.
     """
     # Count valid models
-    probs = [logistic_prob, linear_prob, rf_prob, tree_prob]
+    probs = [logistic_prob, linear_prob, rf_prob]
     valid_probs = [p for p in probs if not pd.isna(p)]
     
     if len(valid_probs) == 0:
@@ -210,7 +209,6 @@ def backtest(
         logistic_prob = row.get('logistic_fav_prob', np.nan)
         linear_prob = row.get('linear_fav_prob', np.nan)
         rf_prob = row.get('rf_fav_prob', np.nan)
-        tree_prob = row.get('tree_fav_prob', np.nan)
         
         # Use history values if available (preserves original predictions),
         # otherwise compute from current model (for backfilling old data)
@@ -221,7 +219,7 @@ def backtest(
                 'edge': row['history_edge'],
                 'fav_edge': row['history_fav_edge'],
                 'dog_edge': row['history_dog_edge'],
-                'num_models': row.get('num_models', 4),
+                'num_models': row.get('num_models', 3),
                 'averaged_fav_prob': row.get('averaged_fav_prob', np.nan),
                 'averaged_dog_prob': row.get('averaged_dog_prob', np.nan),
                 'standardized_fav': row.get('standardized_fav', np.nan),
@@ -231,7 +229,7 @@ def backtest(
         else:
             # Compute averaged pick from current model outputs
             pick_info = compute_averaged_pick(
-                logistic_prob, linear_prob, rf_prob, tree_prob,
+                logistic_prob, linear_prob, rf_prob,
                 fav_odds, dog_odds, min_edge
             )
             
@@ -263,7 +261,6 @@ def backtest(
             'logistic_prob': logistic_prob,
             'linear_prob': linear_prob,
             'rf_prob': rf_prob,
-            'tree_prob': tree_prob,
             **pick_info,
             'actual_cover': actual_cover,
             'result': result

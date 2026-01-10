@@ -120,24 +120,24 @@ def regenerate_unified_results(
             tree_fav_edge = tree_fav_prob - fav_implied if not pd.isna(tree_fav_prob) else np.nan
             tree_dog_edge = tree_dog_prob - dog_implied if not pd.isna(tree_dog_prob) else np.nan
             
-            # Determine best edge for each model
+            # Determine best edge for each model (pick side with HIGHER edge, not higher absolute value)
             logistic_best_edge = max(abs(logistic_fav_edge), abs(logistic_dog_edge)) if not pd.isna(logistic_fav_edge) else np.nan
-            logistic_best_side = 'FAVORITE' if abs(logistic_fav_edge) > abs(logistic_dog_edge) else 'UNDERDOG'
+            logistic_best_side = 'FAVORITE' if logistic_fav_edge > logistic_dog_edge else 'UNDERDOG'
             logistic_predicted_cover = 1 if logistic_fav_prob > 0.5 else 0
             logistic_correct = logistic_predicted_cover == actual_cover if not pd.isna(actual_cover) else np.nan
             
             linear_best_edge = max(abs(linear_fav_edge), abs(linear_dog_edge)) if not pd.isna(linear_fav_edge) else np.nan
-            linear_best_side = 'FAVORITE' if abs(linear_fav_edge) > abs(linear_dog_edge) else 'UNDERDOG'
+            linear_best_side = 'FAVORITE' if linear_fav_edge > linear_dog_edge else 'UNDERDOG'
             linear_predicted_cover = 1 if linear_fav_prob > 0.5 else 0
             linear_correct = linear_predicted_cover == actual_cover if not pd.isna(actual_cover) else np.nan
             
             rf_best_edge = max(abs(rf_fav_edge), abs(rf_dog_edge)) if not pd.isna(rf_fav_edge) else np.nan
-            rf_best_side = 'FAVORITE' if abs(rf_fav_edge) > abs(rf_dog_edge) else 'UNDERDOG'
+            rf_best_side = 'FAVORITE' if rf_fav_edge > rf_dog_edge else 'UNDERDOG'
             rf_predicted_cover = 1 if rf_fav_prob > 0.5 else 0
             rf_correct = rf_predicted_cover == actual_cover if not pd.isna(actual_cover) else np.nan
             
             tree_best_edge = max(abs(tree_fav_edge), abs(tree_dog_edge)) if not pd.isna(tree_fav_edge) else np.nan
-            tree_best_side = 'FAVORITE' if abs(tree_fav_edge) > abs(tree_dog_edge) else 'UNDERDOG'
+            tree_best_side = 'FAVORITE' if tree_fav_edge > tree_dog_edge else 'UNDERDOG'
             tree_predicted_cover = 1 if tree_fav_prob > 0.5 else 0
             tree_correct = tree_predicted_cover == actual_cover if not pd.isna(actual_cover) else np.nan
             

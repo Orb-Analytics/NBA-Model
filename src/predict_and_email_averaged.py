@@ -267,14 +267,13 @@ def generate_averaged_predictions(date_str, data_path='data/NBA Training Set 25-
         fav_implied = american_to_prob(fav_odds)
         dog_implied = american_to_prob(dog_odds)
         
-        # Extract model probabilities
+        # Extract model probabilities (3 models: Logistic, Linear, RF)
         logistic_prob = pred.get('logistic_probability', np.nan)
         linear_prob = pred.get('linear_probability', np.nan)
         rf_prob = pred.get('random_forest_probability', np.nan)
-        tree_prob = pred.get('decision_tree_probability', np.nan)
         
         # Average valid model probabilities
-        probs = [logistic_prob, linear_prob, rf_prob, tree_prob]
+        probs = [logistic_prob, linear_prob, rf_prob]
         valid_probs = [p for p in probs if not pd.isna(p)]
         
         if len(valid_probs) == 0:
@@ -320,7 +319,6 @@ def generate_averaged_predictions(date_str, data_path='data/NBA Training Set 25-
             'logistic_prob': logistic_prob,
             'linear_prob': linear_prob,
             'rf_prob': rf_prob,
-            'tree_prob': tree_prob,
             'num_models': len(valid_probs),
             'averaged_fav_prob': averaged_fav_prob,
             'averaged_dog_prob': averaged_dog_prob,
@@ -359,16 +357,16 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css2?family=League+Gothic&display=swap" rel="stylesheet">
         <style>
-            body {{ font-family: 'League Gothic', Arial, sans-serif; background-color: #f5f5f5; padding: 10px; }}
-            .container {{ max-width: 800px; margin: 0 auto; background-color: #dfdfdf; padding: 20px; border-radius: 10px; }}
+            body {{ font-family: 'League Gothic', Arial, sans-serif; background-color: #2a2a2a; padding: 10px; }}
+            .container {{ max-width: 800px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 10px; }}
             .header {{ text-align: center; border-bottom: 3px solid #9a29e9; padding-bottom: 20px; margin-bottom: 20px; }}
             .record {{ font-size: 20px; font-weight: bold; color: #9a29e9; text-align: center; margin: 20px 0; line-height: 1.6; }}
             .section {{ margin: 20px 0; }}
-            .section-title {{ font-size: 18px; font-weight: bold; color: #9a29e9; border-bottom: 2px solid #9a29e9; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
-            .pick {{ background-color: #f9f9f9; padding: 25px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
+            .section-title {{ font-size: 24px; font-weight: bold; color: #9a29e9; border-bottom: 2px solid #9a29e9; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
+            .pick {{ background-color: #e5e5e5; padding: 25px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .pick-content {{ display: table; width: 100%; }}
             .pick-left {{ display: table-cell; vertical-align: middle; width: 65%; }}
-            .pick-right {{ display: table-cell; vertical-align: middle; width: 35%; text-align: right; border-left: 2px solid #ddd; padding-left: 20px; }}
+            .pick-right {{ display: table-cell; vertical-align: middle; width: 35%; text-align: right; border-left: 2px solid #999; padding-left: 20px; }}
             .pick-right-inner {{ display: table; width: 100%; }}
             .pick-stats {{ display: table-cell; vertical-align: middle; text-align: left; padding-right: 15px; }}
             .pick-spread-cell {{ display: table-cell; vertical-align: middle; text-align: right; }}
@@ -376,24 +374,24 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .pick-logo {{ width: 70px; height: 70px; vertical-align: middle; margin-right: 15px; }}
             .pick-team {{ font-size: 40px; font-weight: bold; display: inline-block; vertical-align: middle; }}
             .pick-matchup {{ font-size: 16px; color: #666; margin-top: 5px; font-family: Arial, sans-serif; }}
-            .pick-spread-box {{ background-color: #9a29e9; color: white; padding: 10px 20px; border-radius: 6px; font-size: 24px; font-weight: bold; display: inline-block; }}
-            .pick-stat {{ color: #555; font-size: 14px; font-family: Arial, sans-serif; margin-bottom: 5px; }}
+            .pick-spread-box {{ background-color: #9a29e9; color: white; padding: 20px; border-radius: 6px; font-size: 28px; font-weight: bold; display: inline-block; min-width: 70px; text-align: center; }}
+            .pick-stat {{ color: #555; font-size: 18px; font-family: Arial, sans-serif; margin-bottom: 5px; }}
             .result-win {{ background-color: #e8f5e9; border-left-color: #4caf50; }}
             .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
             .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; font-size: 12px; color: #777; }}
             .logo {{ width: 50px; height: 50px; vertical-align: middle; margin-right: 12px; }}
-            .ad-section {{ text-align: center; margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 8px; font-family: Arial, sans-serif; }}
+            .ad-section {{ text-align: center; margin: 20px 0; padding: 15px; background-color: #ffffff; border-radius: 8px; font-family: Arial, sans-serif; }}
             .ad-image {{ max-width: 600px; width: 100%; height: auto; display: block; margin: 0 auto; }}
             .ad-image-spacing {{ margin-bottom: 15px; }}
             .ad-text {{ font-size: 14px; color: #000000; line-height: 1.6; margin: 15px auto; max-width: 600px; padding: 0 10px; }}
             .split-item {{ margin: 12px 0; font-size: 14px; line-height: 1.8; font-family: Arial, sans-serif; }}
             .splits-section {{ font-family: Arial, sans-serif; }}
-            .split-row {{ background-color: white; padding: 20px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
+            .split-row {{ background-color: #f0f0f0; padding: 20px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .split-content {{ display: table; width: 100%; }}
-            .split-left {{ display: table-cell; vertical-align: middle; width: 35%; font-size: 18px; font-weight: bold; color: #9a29e9; }}
-            .split-right {{ display: table-cell; vertical-align: middle; width: 65%; text-align: center; border-left: 2px solid #ddd; padding-left: 20px; }}
+            .split-left {{ display: table-cell; vertical-align: middle; width: 35%; font-size: 20px; font-weight: bold; color: #9a29e9; text-align: center; }}
+            .split-right {{ display: table-cell; vertical-align: middle; width: 65%; text-align: left; border-left: 2px solid #9a29e9; padding-left: 20px; }}
             .split-data {{ font-size: 16px; line-height: 2.0; color: #333; }}
-            .game-summary-row {{ background-color: white; padding: 20px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
+            .game-summary-row {{ background-color: #f0f0f0; padding: 20px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .game-summary-item {{ font-size: 18px; padding: 10px 0; border-bottom: 2px solid #ddd; }}
             .game-summary-item:last-child {{ border-bottom: none; }}
             .game-summary-label {{ font-weight: bold; color: #9a29e9; }}
@@ -447,15 +445,19 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 <div style="margin-top: 10px;">
                     <img src="cid:orb_logo" alt="Orb Analytics" style="max-width: 200px; height: auto; display: block; margin: 0 auto;" />
                 </div>
-                <p>📊 Standardized & Averaged Model</p>
             </div>
             
             <!-- Social Media Icons (from Stripo, converted to standard HTML) -->
             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin: 20px auto; background-color: #f0f0f0; border-radius: 8px; padding: 15px;">
                 <tr>
+                    <td valign="top" align="center" style="padding: 0 10px;">
+                        <a target="_blank" href="https://orbanalytics.substack.com/">
+                            <img height="32" title="Substack" src="https://ezfbzub.stripocdn.email/content/guids/CABINET_10dc2a87fe0abe172c1afd44c80939bfa38f5d39fb2597892ba47e7e002dcfd0/images/substack_192.png" alt="Substack" width="32" style="display:block;border:0;" />
+                        </a>
+                    </td>
                     <td align="center" valign="top" style="padding: 0 10px;">
-                        <a href="https://x.com/OrbPicks" target="_blank">
-                            <img width="32" height="32" title="X" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/x-logo-colored.png" alt="X" style="display:block;border:0;" />
+                        <a href="https://www.tiktok.com/@orb.analytics" target="_blank">
+                            <img alt="TikTok" width="32" height="32" title="TikTok" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/tiktok-logo-colored.png" style="display:block;border:0;" />
                         </a>
                     </td>
                     <td align="center" valign="top" style="padding: 0 10px;">
@@ -469,21 +471,16 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                         </a>
                     </td>
                     <td align="center" valign="top" style="padding: 0 10px;">
-                        <a href="https://www.tiktok.com/@orb.analytics" target="_blank">
-                            <img alt="TikTok" width="32" height="32" title="TikTok" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/tiktok-logo-colored.png" style="display:block;border:0;" />
-                        </a>
-                    </td>
-                    <td valign="top" align="center" style="padding: 0 10px;">
-                        <a target="_blank" href="https://orbanalytics.substack.com/">
-                            <img height="32" title="Substack" src="https://ezfbzub.stripocdn.email/content/guids/CABINET_10dc2a87fe0abe172c1afd44c80939bfa38f5d39fb2597892ba47e7e002dcfd0/images/substack_192.png" alt="Substack" width="32" style="display:block;border:0;" />
+                        <a href="https://x.com/OrbPicks" target="_blank">
+                            <img width="32" height="32" title="X" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/x-logo-colored.png" alt="X" style="display:block;border:0;" />
                         </a>
                     </td>
                 </tr>
             </table>
             
             <div class="record">
-                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
-                💰 Units: {season_record['units']:+.2f}
+                SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
+                Units: {season_record['units']:+.2f}
             </div>
     """
     
@@ -491,20 +488,18 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
     splits = get_performance_splits()
     if splits:
         html += f"""
-            <div class="section splits-section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
-                <div style="font-size: 18px; font-weight: bold; color: #9a29e9; margin-bottom: 15px; text-align: center;">📈 PERFORMANCE SPLITS</div>
+            <div class="section splits-section" style="background-color: #e5e5e5; padding: 15px; border-radius: 8px;">
+                <div style="font-size: 18px; font-weight: bold; color: #9a29e9; margin-bottom: 15px; text-align: center;">PERFORMANCE SPLITS</div>
                 
                 <div class="split-row">
                     <div class="split-content">
-                        <div class="split-left">By Pick Type:</div>
+                        <div class="split-left">Favorites vs<br>Underdogs</div>
                         <div class="split-right">
                             <div class="split-data">
-                                Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)<br>
-                                {splits['fav_picks']['units']:+.2f} units
+                                Picking Favorites: <strong>{splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)</strong> → <strong>{splits['fav_picks']['units']:+.2f} units</strong>
                             </div>
                             <div class="split-data" style="margin-top: 10px;">
-                                Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)<br>
-                                {splits['dog_picks']['units']:+.2f} units
+                                Picking Underdogs: <strong>{splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)</strong> → <strong>{splits['dog_picks']['units']:+.2f} units</strong>
                             </div>
                         </div>
                     </div>
@@ -512,15 +507,13 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 
                 <div class="split-row">
                     <div class="split-content">
-                        <div class="split-left">By Home/Away<br>(All Games):</div>
+                        <div class="split-left">Favorite at Home<br>vs Favorite Away</div>
                         <div class="split-right">
                             <div class="split-data">
-                                Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)<br>
-                                {splits['fav_home']['units']:+.2f} units
+                                Favorite at Home: <strong>{splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)</strong> → <strong>{splits['fav_home']['units']:+.2f} units</strong>
                             </div>
                             <div class="split-data" style="margin-top: 10px;">
-                                Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)<br>
-                                {splits['fav_away']['units']:+.2f} units
+                                Favorite Away: <strong>{splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)</strong> → <strong>{splits['fav_away']['units']:+.2f} units</strong>
                             </div>
                         </div>
                     </div>
@@ -528,23 +521,19 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 
                 <div class="split-row">
                     <div class="split-content">
-                        <div class="split-left">By Pick +<br>Location:</div>
+                        <div class="split-left" style="font-size: 24px;">By Pick +<br>Location:</div>
                         <div class="split-right">
                             <div class="split-data">
-                                Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)<br>
-                                {splits['pfh']['units']:+.2f} units
+                                Picking Favorite at Home: <strong>{splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)</strong> → <strong>{splits['pfh']['units']:+.2f} units</strong>
                             </div>
                             <div class="split-data" style="margin-top: 10px;">
-                                Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)<br>
-                                {splits['pfa']['units']:+.2f} units
+                                Picking Favorite Away: <strong>{splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)</strong> → <strong>{splits['pfa']['units']:+.2f} units</strong>
                             </div>
                             <div class="split-data" style="margin-top: 10px;">
-                                Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)<br>
-                                {splits['pda']['units']:+.2f} units
+                                Picking Underdog Away: <strong>{splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)</strong> → <strong>{splits['pda']['units']:+.2f} units</strong>
                             </div>
                             <div class="split-data" style="margin-top: 10px;">
-                                Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)<br>
-                                {splits['pdh']['units']:+.2f} units
+                                Picking Underdog at Home: <strong>{splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)</strong> → <strong>{splits['pdh']['units']:+.2f} units</strong>
                             </div>
                         </div>
                     </div>
@@ -598,24 +587,18 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                                 <div class="pick-team">{pick_team}</div>
                                 <div class="pick-matchup">{location_str} {opponent}</div>
                             </div>
+                            <span class="pick-spread-box" style="margin-left: 15px; vertical-align: middle;">{spread_line}</span>
                         </div>
                         <div class="pick-right">
-                            <div class="pick-right-inner">
-                                <div class="pick-stats">
-                                    <div class="pick-stat">Odds: {format_american_odds(pick_odds)}</div>
-                                    <div class="pick-stat">Edge: {result['edge']:.1%}</div>
-                                    <div class="pick-stat">Units: {units:+.2f}</div>
-                                </div>
-                                <div class="pick-spread-cell">
-                                    <span class="pick-spread-box">{spread_line}</span>
-                                </div>
-                            </div>
+                            <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
+                            <div class="pick-stat">Edge: <strong>{result['edge']:.1%}</strong></div>
+                            <div class="pick-stat">Units: <strong>{units:+.2f}</strong></div>
                         </div>
                     </div>
                 </div>
             """
         
-        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
+        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px; font-size: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
     
     # Novig Ad Section
     html += """
@@ -711,8 +694,8 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             </div>
             
             <div style="text-align: center; margin: 20px 0; font-family: Arial, sans-serif;">
-                <p style="margin-top: 20px;">📊 Model: 35% Averaged Models + 65% Implied Odds<br>
-                📈 Minimum Edge: 3.0%</p>
+                <p style="margin-top: 20px;">Model: 35% Averaged Models + 65% Implied Odds<br>
+                Minimum Edge: 3.0%</p>
             </div>
             
             <div class="footer">
@@ -771,11 +754,10 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
         <div class="container">
             <div class="header">
                 <h1>🏀 NBA PREDICTIONS - {date_str}</h1>
-                <p>📊 Standardized & Averaged Model</p>
             </div>
             
             <div class="record">
-                📈 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
+                SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
                 💰 Units: {season_record['units']:+.2f}
             </div>
     """
@@ -785,7 +767,7 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
     if splits:
         html += f"""
             <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
-                <div style="font-size: 16px; font-weight: bold; color: #9a29e9; margin-bottom: 10px;">📈 PERFORMANCE SPLITS</div>
+                <div style="font-size: 16px; font-weight: bold; color: #9a29e9; margin-bottom: 10px;">PERFORMANCE SPLITS</div>
                 
                 <div style="margin-bottom: 10px;">
                     <strong>By Pick Type:</strong><br>
@@ -898,8 +880,8 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
                 <p><strong>Total Games Today:</strong> {len(predictions)}</p>
                 <p><strong>Picks Made:</strong> {len(picks)}</p>
                 <p><strong>No Bets:</strong> {len(predictions) - len(picks)}</p>
-                <p style="margin-top: 20px;">📊 Model: 35% Averaged Models + 65% Implied Odds<br>
-                📈 Minimum Edge: 3.0%</p>
+                <p style="margin-top: 20px;">Model: 35% Averaged Models + 65% Implied Odds<br>
+                Minimum Edge: 3.0%</p>
             </div>
             
             <div class="footer">
@@ -927,20 +909,19 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     lines = []
     lines.append("="*100)
     lines.append(f"🏀 NBA PREDICTIONS - {date_str}")
-    lines.append("📊 Standardized & Averaged Model")
     lines.append("="*100)
     lines.append("")
     
     # Season Record
-    lines.append("📈 SEASON RECORD")
+    lines.append("SEASON RECORD")
     lines.append(f"   {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)")
-    lines.append(f"   💰 Units: {season_record['units']:+.2f}")
+    lines.append(f"   Units: {season_record['units']:+.2f}")
     lines.append("")
     
     # Add performance splits
     splits = get_performance_splits()
     if splits:
-        lines.append("📈 PERFORMANCE SPLITS")
+        lines.append("PERFORMANCE SPLITS")
         lines.append("")
         lines.append("**By Pick Type:**")
         lines.append(f"- Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units")
@@ -1021,8 +1002,8 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     lines.append(f"Picks Made: {len(picks)}")
     lines.append(f"No Bets: {len(predictions) - len(picks)}")
     lines.append("")
-    lines.append("📊 Model: 35% Averaged Models + 65% Implied Odds")
-    lines.append("📈 Minimum Edge: 3.0%")
+    lines.append("Model: 35% Averaged Models + 65% Implied Odds")
+    lines.append("Minimum Edge: 3.0%")
     lines.append("")
     lines.append("="*100)
     lines.append("ℹ️  MODEL DESCRIPTION")
@@ -1169,7 +1150,6 @@ def save_predictions_to_history(predictions, date_str, history_path='data/averag
             'logistic_prob': pred.get('logistic_prob', np.nan),
             'linear_prob': pred.get('linear_prob', np.nan),
             'rf_prob': pred.get('rf_prob', np.nan),
-            'tree_prob': pred.get('tree_prob', np.nan),
             'num_models': pred.get('num_models', 0),
             'averaged_fav_prob': pred.get('averaged_fav_prob', np.nan),
             'averaged_dog_prob': pred.get('averaged_dog_prob', np.nan),
