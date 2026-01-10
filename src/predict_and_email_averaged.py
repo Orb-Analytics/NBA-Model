@@ -700,8 +700,8 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             
             <div class="footer">
                 <div class="section-title">ℹ️  MODEL DESCRIPTION</div>
-                <p>Orb Analytics uses an ensemble of four machine learning models (Logistic Regression,
-                Linear Regression, Random Forest, Decision Tree) to predict NBA game outcomes. Each
+                <p>Orb Analytics uses an ensemble of three machine learning models (Logistic Regression,
+                Linear Regression, Random Forest) to predict NBA game outcomes. Each
                 day, the models are retrained on all historical data and dynamically select the top
                 15 most predictive features using Lasso regression.</p>
                 
@@ -886,8 +886,8 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
             
             <div class="footer">
                 <div class="section-title">ℹ️  MODEL DESCRIPTION</div>
-                <p>Orb Analytics uses an ensemble of four machine learning models (Logistic Regression,
-                Linear Regression, Random Forest, Decision Tree) to predict NBA game outcomes. Each
+                <p>Orb Analytics uses an ensemble of three machine learning models (Logistic Regression,
+                Linear Regression, Random Forest) to predict NBA game outcomes. Each
                 day, the models are retrained on all historical data and dynamically select the top
                 15 most predictive features using Lasso regression.</p>
                 
@@ -1009,8 +1009,8 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     lines.append("ℹ️  MODEL DESCRIPTION")
     lines.append("="*100)
     lines.append("")
-    lines.append("Orb Analytics uses an ensemble of four machine learning models (Logistic Regression,")
-    lines.append("Linear Regression, Random Forest, Decision Tree) to predict NBA game outcomes. Each")
+    lines.append("Orb Analytics uses an ensemble of three machine learning models (Logistic Regression,")
+    lines.append("Linear Regression, and Random Forest) to predict NBA game outcomes. Each")
     lines.append("day, the models are retrained on all historical data and dynamically select the top")
     lines.append("15 most predictive features using Lasso regression.")
     lines.append("")

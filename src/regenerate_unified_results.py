@@ -98,17 +98,15 @@ def regenerate_unified_results(
             fav_implied = american_to_prob(fav_odds)
             dog_implied = american_to_prob(dog_odds)
             
-            # Extract model probabilities
+            # Extract model probabilities (3 models only)
             logistic_fav_prob = pred.get('logistic_probability', np.nan)
             linear_fav_prob = pred.get('linear_probability', np.nan)
             rf_fav_prob = pred.get('random_forest_probability', np.nan)
-            tree_fav_prob = pred.get('decision_tree_probability', np.nan)
             
             # Calculate dog probabilities
             logistic_dog_prob = 1 - logistic_fav_prob if not pd.isna(logistic_fav_prob) else np.nan
             linear_dog_prob = 1 - linear_fav_prob if not pd.isna(linear_fav_prob) else np.nan
             rf_dog_prob = 1 - rf_fav_prob if not pd.isna(rf_fav_prob) else np.nan
-            tree_dog_prob = 1 - tree_fav_prob if not pd.isna(tree_fav_prob) else np.nan
             
             # Calculate edges
             logistic_fav_edge = logistic_fav_prob - fav_implied if not pd.isna(logistic_fav_prob) else np.nan
@@ -117,8 +115,6 @@ def regenerate_unified_results(
             linear_dog_edge = linear_dog_prob - dog_implied if not pd.isna(linear_dog_prob) else np.nan
             rf_fav_edge = rf_fav_prob - fav_implied if not pd.isna(rf_fav_prob) else np.nan
             rf_dog_edge = rf_dog_prob - dog_implied if not pd.isna(rf_dog_prob) else np.nan
-            tree_fav_edge = tree_fav_prob - fav_implied if not pd.isna(tree_fav_prob) else np.nan
-            tree_dog_edge = tree_dog_prob - dog_implied if not pd.isna(tree_dog_prob) else np.nan
             
             # Determine best edge for each model (pick side with HIGHER edge, not higher absolute value)
             logistic_best_edge = max(abs(logistic_fav_edge), abs(logistic_dog_edge)) if not pd.isna(logistic_fav_edge) else np.nan
@@ -135,11 +131,6 @@ def regenerate_unified_results(
             rf_best_side = 'FAVORITE' if rf_fav_edge > rf_dog_edge else 'UNDERDOG'
             rf_predicted_cover = 1 if rf_fav_prob > 0.5 else 0
             rf_correct = rf_predicted_cover == actual_cover if not pd.isna(actual_cover) else np.nan
-            
-            tree_best_edge = max(abs(tree_fav_edge), abs(tree_dog_edge)) if not pd.isna(tree_fav_edge) else np.nan
-            tree_best_side = 'FAVORITE' if tree_fav_edge > tree_dog_edge else 'UNDERDOG'
-            tree_predicted_cover = 1 if tree_fav_prob > 0.5 else 0
-            tree_correct = tree_predicted_cover == actual_cover if not pd.isna(actual_cover) else np.nan
             
             # Store result
             result = {
@@ -183,16 +174,6 @@ def regenerate_unified_results(
                 'rf_best_side': rf_best_side,
                 'rf_predicted_cover': rf_predicted_cover,
                 'rf_correct': rf_correct,
-                
-                # Decision Tree
-                'tree_fav_prob': tree_fav_prob,
-                'tree_dog_prob': tree_dog_prob,
-                'tree_fav_edge': tree_fav_edge,
-                'tree_dog_edge': tree_dog_edge,
-                'tree_best_edge': tree_best_edge,
-                'tree_best_side': tree_best_side,
-                'tree_predicted_cover': tree_predicted_cover,
-                'tree_correct': tree_correct,
             }
             
             all_results.append(result)

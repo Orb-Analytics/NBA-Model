@@ -1,7 +1,7 @@
 """
-NBA Spread Prediction - Ensemble Models
+NBA Spread Prediction - Ensemble Models (3 Models)
 Author: Orb Analytics (Liam Chaitin)
-Purpose: Train multiple models (Linear, Random Forest, Decision Tree) alongside Logistic Regression
+Purpose: Train 3 models (Logistic, Linear, Random Forest) for spread prediction
          Uses same framework: separate feature sets for home vs away favorites
 """
 
@@ -9,7 +9,6 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression, LinearRegression, Lasso
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
@@ -31,20 +30,18 @@ class EnsembleSpreadPredictor:
         self.data_path = data_path
         self.df = None
         
-        # Models for Home Favorite scenario
+        # Models for Home Favorite scenario (3 models: Logistic, Linear, RF)
         self.home_models = {
             'logistic': LogisticRegression(penalty='l1', C=0.1, solver='liblinear', max_iter=1000, random_state=42),
             'linear': LinearRegression(),
-            'random_forest': RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42),
-            'decision_tree': DecisionTreeClassifier(max_depth=5, random_state=42)
+            'random_forest': RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
         }
         
-        # Models for Away Favorite scenario
+        # Models for Away Favorite scenario (3 models: Logistic, Linear, RF)
         self.away_models = {
             'logistic': LogisticRegression(penalty='l1', C=0.1, solver='liblinear', max_iter=1000, random_state=42),
             'linear': LinearRegression(),
-            'random_forest': RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42),
-            'decision_tree': DecisionTreeClassifier(max_depth=5, random_state=42)
+            'random_forest': RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
         }
         
         self.home_scalers = {}
@@ -284,8 +281,8 @@ class EnsembleSpreadPredictor:
                 if not game_actual.empty and pd.notna(game_actual.iloc[0]['Favorite Cover?']):
                     actual_cover = int(game_actual.iloc[0]['Favorite Cover?'])
                     
-                    # Store results for each model
-                    for model_name in ['logistic', 'linear', 'random_forest', 'decision_tree']:
+                    # Store results for each model (3 models only)
+                    for model_name in ['logistic', 'linear', 'random_forest']:
                         result = {
                             'date': date_str,
                             'favorite': pred['favorite'],
@@ -307,7 +304,7 @@ class EnsembleSpreadPredictor:
             print("📊 MODEL COMPARISON")
             print("="*80)
             
-            for model_name in ['logistic', 'linear', 'random_forest', 'decision_tree']:
+            for model_name in ['logistic', 'linear', 'random_forest']:
                 model_results = results_df[results_df['model_name'] == model_name]
                 if len(model_results) > 0:
                     accuracy = model_results['correct'].mean() * 100
@@ -337,7 +334,7 @@ def backtest_individual_model(model_name, start_date='2025-10-22', end_date='202
     Backtest a single model type.
     
     Args:
-        model_name: 'logistic', 'linear', 'random_forest', or 'decision_tree'
+        model_name: 'logistic', 'linear', or 'random_forest'
         start_date: Start date for backtesting
         end_date: End date for backtesting
     """
@@ -442,16 +439,16 @@ def main():
     if len(sys.argv) > 1:
         # Backtest specific model
         model_name = sys.argv[1].lower()
-        if model_name in ['logistic', 'linear', 'random_forest', 'decision_tree']:
+        if model_name in ['logistic', 'linear', 'random_forest']:
             backtest_individual_model(model_name)
         else:
             print(f"❌ Invalid model name: {model_name}")
-            print("Valid options: logistic, linear, random_forest, decision_tree")
+            print("Valid options: logistic, linear, random_forest")
     else:
-        # Backtest all models
+        # Backtest all models (3 models only)
         all_results = []
         
-        for model_name in ['logistic', 'linear', 'random_forest', 'decision_tree']:
+        for model_name in ['logistic', 'linear', 'random_forest']:
             results_df = backtest_individual_model(model_name)
             all_results.append(results_df)
         
