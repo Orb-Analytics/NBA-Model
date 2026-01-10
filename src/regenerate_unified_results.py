@@ -19,7 +19,7 @@ def regenerate_unified_results(
     end_date=None  # Auto-detect if None
 ):
     """
-    Regenerate unified model results by running all 4 models through each date.
+    Regenerate unified model results by running all 3 models through each date.
     If end_date is None, uses the latest date with complete game data.
     """
     print("="*100)

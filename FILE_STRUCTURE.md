@@ -34,11 +34,10 @@ NBA-model/
 │   │   ├── fix_computed_columns.py     # Fix calculations
 │   │   └── validate_data.py            # Data validation
 │   │
-│   ├── 🤖 ML Models (7 scripts)
+│   ├── 🤖 ML Models (6 scripts)
 │   │   ├── logistic_spread_model.py    # Logistic regression
 │   │   ├── linear_spread_model.py      # Linear regression
 │   │   ├── random_forest_spread_model.py  # Random forest
-│   │   ├── decision_tree_spread_model.py  # Decision tree
 │   │   ├── ensemble_spread_models.py   # Ensemble predictor
 │   │   ├── prediction_core.py          # Core utilities
 │   │   └── daily_spread_predictions.py # Feature definitions

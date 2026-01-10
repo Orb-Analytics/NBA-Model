@@ -31,7 +31,6 @@ This repository implements an **averaged model system** that combines:
 - **Logistic Regression** - Binary classification
 - **Linear Regression** - Continuous predictions
 - **Random Forest** - Ensemble tree-based
-- **Decision Tree** - Single tree classifier
 
 ## 🚀 Quick Start
 

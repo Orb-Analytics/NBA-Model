@@ -19,7 +19,7 @@
 
 **Formula:** `(35% × Averaged Models) + (65% × Implied Odds)`  
 **Edge Threshold:** 3.0% minimum  
-**Models Used:** Logistic, Linear, Random Forest, Decision Tree  
+**Models Used:** Logistic, Linear, Random Forest (3 models averaged)  
 **Feature Selection:** Dynamic (15 features per scenario, re-selected daily)
 
 ---
