@@ -15,9 +15,9 @@ from predict_and_email_averaged import (
     generate_averaged_predictions
 )
 
-# Use Jan 9 data for testing (has yesterday results)
-date_str = '2026-01-09'
-yesterday_str = '2026-01-08'
+# Use Jan 12 data for testing (has yesterday results)
+date_str = '2026-01-12'
+yesterday_str = '2026-01-11'
 
 # Get data
 yesterday_results, yesterday_units = get_yesterday_results(yesterday_date=yesterday_str)
@@ -39,7 +39,7 @@ except Exception as e:
 # Social media icons (not needed - they use Stripo CDN)
 
 # Novig ad images
-with open('Novig_logos/Novig_ad.png', 'rb') as f:
+with open('Novig_logos/Updated_Novig_map.png', 'rb') as f:
     novig_ad_data = base64.b64encode(f.read()).decode('utf-8')
     html_body = html_body.replace('cid:novig_ad', f'data:image/png;base64,{novig_ad_data}')
 

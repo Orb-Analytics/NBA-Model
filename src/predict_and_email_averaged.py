@@ -365,8 +365,8 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .section-title {{ font-size: 24px; font-weight: bold; color: #000000; border-bottom: 2px solid #9a29e9; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
             .pick {{ background-color: #e5e5e5; padding: 25px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .pick-content {{ display: table; width: 100%; }}
-            .pick-left {{ display: table-cell; vertical-align: middle; width: 65%; }}
-            .pick-right {{ display: table-cell; vertical-align: middle; width: 35%; text-align: left; border-left: 2px solid #999; padding-left: 20px; }}
+            .pick-left {{ display: table-cell; vertical-align: middle; width: 70%; }}
+            .pick-right {{ display: table-cell; vertical-align: middle; width: 30%; text-align: left; border-left: 2px solid #999; padding-left: 20px; }}
             .pick-right-inner {{ display: table; width: 100%; }}
             .pick-stats {{ display: table-cell; vertical-align: middle; text-align: left; padding-right: 15px; }}
             .pick-spread-cell {{ display: table-cell; vertical-align: middle; text-align: right; }}
@@ -445,173 +445,48 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 <div style="margin-top: 10px;">
                     <img src="cid:orb_logo" alt="Orb Analytics" style="max-width: 200px; height: auto; display: block; margin: 0 auto;" />
                 </div>
+                
+                <!-- Follow us text -->
+                <div style="text-align: center; margin-top: 20px; font-size: 20px; font-weight: bold; color: #000000;">
+                    Follow us on social media!
+                </div>
+                
+                <!-- Social Media Icons (from Stripo, converted to standard HTML) -->
+                <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin: 15px auto 0; background-color: #f0f0f0; border-radius: 8px; padding: 15px;">
+                    <tr>
+                        <td valign="top" align="center" style="padding: 0 10px;">
+                            <a target="_blank" href="https://orbanalytics.substack.com/">
+                                <img height="32" title="Substack" src="https://ezfbzub.stripocdn.email/content/guids/CABINET_10dc2a87fe0abe172c1afd44c80939bfa38f5d39fb2597892ba47e7e002dcfd0/images/substack_192.png" alt="Substack" width="32" style="display:block;border:0;" />
+                            </a>
+                        </td>
+                        <td align="center" valign="top" style="padding: 0 10px;">
+                            <a href="https://www.tiktok.com/@orb.analytics" target="_blank">
+                                <img alt="TikTok" width="32" height="32" title="TikTok" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/tiktok-logo-colored.png" style="display:block;border:0;" />
+                            </a>
+                        </td>
+                        <td align="center" valign="top" style="padding: 0 10px;">
+                            <a target="_blank" href="https://www.instagram.com/orb.analytics/">
+                                <img width="32" height="32" title="Instagram" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/instagram-logo-colored.png" alt="Instagram" style="display:block;border:0;" />
+                            </a>
+                        </td>
+                        <td align="center" valign="top" style="padding: 0 10px;">
+                            <a target="_blank" href="https://www.youtube.com/@OrbAnalyticsLimited">
+                                <img title="YouTube" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/youtube-logo-colored.png" alt="YouTube" width="32" height="32" style="display:block;border:0;" />
+                            </a>
+                        </td>
+                        <td align="center" valign="top" style="padding: 0 10px;">
+                            <a href="https://x.com/OrbPicks" target="_blank">
+                                <img width="32" height="32" title="X" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/x-logo-colored.png" alt="X" style="display:block;border:0;" />
+                            </a>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            
-            <!-- Social Media Icons (from Stripo, converted to standard HTML) -->
-            <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin: 20px auto; background-color: #f0f0f0; border-radius: 8px; padding: 15px;">
-                <tr>
-                    <td valign="top" align="center" style="padding: 0 10px;">
-                        <a target="_blank" href="https://orbanalytics.substack.com/">
-                            <img height="32" title="Substack" src="https://ezfbzub.stripocdn.email/content/guids/CABINET_10dc2a87fe0abe172c1afd44c80939bfa38f5d39fb2597892ba47e7e002dcfd0/images/substack_192.png" alt="Substack" width="32" style="display:block;border:0;" />
-                        </a>
-                    </td>
-                    <td align="center" valign="top" style="padding: 0 10px;">
-                        <a href="https://www.tiktok.com/@orb.analytics" target="_blank">
-                            <img alt="TikTok" width="32" height="32" title="TikTok" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/tiktok-logo-colored.png" style="display:block;border:0;" />
-                        </a>
-                    </td>
-                    <td align="center" valign="top" style="padding: 0 10px;">
-                        <a target="_blank" href="https://www.instagram.com/orb.analytics/">
-                            <img width="32" height="32" title="Instagram" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/instagram-logo-colored.png" alt="Instagram" style="display:block;border:0;" />
-                        </a>
-                    </td>
-                    <td align="center" valign="top" style="padding: 0 10px;">
-                        <a target="_blank" href="https://www.youtube.com/@OrbAnalyticsLimited">
-                            <img title="YouTube" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/youtube-logo-colored.png" alt="YouTube" width="32" height="32" style="display:block;border:0;" />
-                        </a>
-                    </td>
-                    <td align="center" valign="top" style="padding: 0 10px;">
-                        <a href="https://x.com/OrbPicks" target="_blank">
-                            <img width="32" height="32" title="X" src="https://ezfbzub.stripocdn.email/content/assets/img/social-icons/logo-colored/x-logo-colored.png" alt="X" style="display:block;border:0;" />
-                        </a>
-                    </td>
-                </tr>
-            </table>
             
             <div class="record">
                 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
                 Units: {season_record['units']:+.2f}
             </div>
-    """
-    
-    # Add performance splits
-    splits = get_performance_splits()
-    if splits:
-        html += f"""
-            <div class="section splits-section" style="background-color: #e5e5e5; padding: 15px; border-radius: 8px;">
-                <div style="font-size: 18px; font-weight: bold; color: #000000; margin-bottom: 15px; text-align: center;">PERFORMANCE SPLITS</div>
-                
-                <div class="split-row">
-                    <div class="split-content">
-                        <div class="split-left">Favorites vs<br>Underdogs</div>
-                        <div class="split-right">
-                            <div class="split-data">
-                                Picking Favorites: <strong>{splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)</strong> → <strong>{splits['fav_picks']['units']:+.2f} units</strong>
-                            </div>
-                            <div class="split-data" style="margin-top: 10px;">
-                                Picking Underdogs: <strong>{splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)</strong> → <strong>{splits['dog_picks']['units']:+.2f} units</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="split-row">
-                    <div class="split-content">
-                        <div class="split-left">Favorite at Home<br>vs Favorite Away</div>
-                        <div class="split-right">
-                            <div class="split-data">
-                                Favorite at Home: <strong>{splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)</strong> → <strong>{splits['fav_home']['units']:+.2f} units</strong>
-                            </div>
-                            <div class="split-data" style="margin-top: 10px;">
-                                Favorite Away: <strong>{splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)</strong> → <strong>{splits['fav_away']['units']:+.2f} units</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="split-row">
-                    <div class="split-content">
-                        <div class="split-left" style="font-size: 24px;">By Pick +<br>Location:</div>
-                        <div class="split-right">
-                            <div class="split-data">
-                                Picking Favorite at Home: <strong>{splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)</strong> → <strong>{splits['pfh']['units']:+.2f} units</strong>
-                            </div>
-                            <div class="split-data" style="margin-top: 10px;">
-                                Picking Favorite Away: <strong>{splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)</strong> → <strong>{splits['pfa']['units']:+.2f} units</strong>
-                            </div>
-                            <div class="split-data" style="margin-top: 10px;">
-                                Picking Underdog Away: <strong>{splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)</strong> → <strong>{splits['pda']['units']:+.2f} units</strong>
-                            </div>
-                            <div class="split-data" style="margin-top: 10px;">
-                                Picking Underdog at Home: <strong>{splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)</strong> → <strong>{splits['pdh']['units']:+.2f} units</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        """
-    
-    # Yesterday's Results
-    if yesterday_results:
-        wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
-        losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
-        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
-        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
-        
-        html += """
-            <div class="section">
-                <div class="section-title">📅 YESTERDAY'S RESULTS</div>
-        """
-        
-        for result in yesterday_results:
-            result_class = "result-win" if result['result'] == 'WIN' else "result-loss"
-            emoji = "✅" if result['result'] == 'WIN' else "❌"
-            
-            pick_team = result['pick_team']
-            favorite = result['favorite']
-            underdog = result['underdog']
-            logo_url = get_team_logo_url(pick_team)
-            
-            # Determine opponent and home/away
-            if result['pick_side'] == 'FAVORITE':
-                opponent = underdog
-                is_home = result.get('fav_at_home', 1) == 1
-                spread_line = f"{-result['spread']:+.1f}"
-                pick_odds = result.get('fav_odds', -110)
-            else:
-                opponent = favorite
-                is_home = result.get('fav_at_home', 1) == 0
-                spread_line = f"{result['spread']:+.1f}"
-                pick_odds = result.get('dog_odds', -110)
-            
-            location_str = "vs" if is_home else "@"
-            units = result.get('units', 0.0)
-            
-            html += f"""
-                <div class="pick {result_class}">
-                    <div class="pick-content">
-                        <div class="pick-left">
-                            <span class="pick-emoji">{emoji}</span>
-                            <img src="{logo_url}" class="pick-logo">
-                            <div style="display: inline-block; vertical-align: middle;">
-                                <div class="pick-team">{pick_team}</div>
-                                <div class="pick-matchup">{location_str} {opponent}</div>
-                            </div>
-                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 15px;">{spread_line}</span>
-                        </div>
-                        <div class="pick-right">
-                            <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
-                            <div class="pick-stat">Edge: <strong>{result['edge']:.1%}</strong></div>
-                            <div class="pick-stat">Units: <strong>{units:+.2f}</strong></div>
-                        </div>
-                    </div>
-                </div>
-            """
-        
-        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px; font-size: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
-    
-    # Novig Ad Section
-    html += """
-        <div class="ad-section">
-            <a href="https://apps.apple.com/us/app/novig/id6443958997" target="_blank">
-                <img src="cid:novig_ad" class="ad-image ad-image-spacing" alt="Novig - Download Now">
-            </a>
-            <p class="ad-text">
-                Using our code <strong>'ORB'</strong> for 50% of your first purchase up to $25 is another way to support Orb Analytics. 
-                If you are looking for better odds, a new sportsbook, or just feel like helping us out, download the Novig app and use code <strong>'ORB'</strong> today!
-            </p>
-            <img src="cid:orb_novig" class="ad-image" alt="Orb Analytics x Novig">
-        </div>
     """
     
     # Today's Picks
@@ -691,7 +566,139 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 <p style="margin-top: 20px;">Model: 35% Averaged Models + 65% Implied Odds<br>
                 Minimum Edge: 3.0%</p>
             </div>
+    """
+    
+    # Yesterday's Results
+    if yesterday_results:
+        wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
+        losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
+        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
+        
+        html += """
+            <div class="section">
+                <div class="section-title">📅 YESTERDAY'S RESULTS</div>
+        """
+        
+        for result in yesterday_results:
+            result_class = "result-win" if result['result'] == 'WIN' else "result-loss"
+            emoji = "✅" if result['result'] == 'WIN' else "❌"
             
+            pick_team = result['pick_team']
+            favorite = result['favorite']
+            underdog = result['underdog']
+            logo_url = get_team_logo_url(pick_team)
+            
+            # Determine opponent and home/away
+            if result['pick_side'] == 'FAVORITE':
+                opponent = underdog
+                is_home = result.get('fav_at_home', 1) == 1
+                spread_line = f"{-result['spread']:+.1f}"
+                pick_odds = result.get('fav_odds', -110)
+            else:
+                opponent = favorite
+                is_home = result.get('fav_at_home', 1) == 0
+                spread_line = f"{result['spread']:+.1f}"
+                pick_odds = result.get('dog_odds', -110)
+            
+            location_str = "vs" if is_home else "@"
+            units = result.get('units', 0.0)
+            
+            html += f"""
+                <div class="pick {result_class}">
+                    <div class="pick-content">
+                        <div class="pick-left">
+                            <span class="pick-emoji">{emoji}</span>
+                            <img src="{logo_url}" class="pick-logo">
+                            <div style="display: inline-block; vertical-align: middle;">
+                                <div class="pick-team">{pick_team}</div>
+                                <div class="pick-matchup">{location_str} {opponent}</div>
+                            </div>
+                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 15px;">{spread_line}</span>
+                        </div>
+                        <div class="pick-right">
+                            <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
+                            <div class="pick-stat">Edge: <strong>{result['edge']:.1%}</strong></div>
+                            <div class="pick-stat">Units: <strong>{units:+.2f}</strong></div>
+                        </div>
+                    </div>
+                </div>
+            """
+        
+        html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px; font-size: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
+    
+    # Novig Ad Section
+    html += """
+        <div class="ad-section">
+            <a href="https://apps.apple.com/us/app/novig/id6443958997" target="_blank">
+                <img src="cid:novig_ad" class="ad-image ad-image-spacing" alt="Novig - Download Now">
+            </a>
+            <p class="ad-text">
+                🚀 Sign up today & use code <strong>'ORB'</strong> for $50 in bonuses when you spend $5<br><br>
+                🔥 Play Smarter with Novig – America's #1 Sports Prediction Market 🔥<br><br>
+                ✅ Better Odds – Play against real users, with no house cut (VIG)
+            </p>
+            <img src="cid:orb_novig" class="ad-image" alt="Orb Analytics x Novig">
+        </div>
+    """
+    
+    # Add performance splits
+    splits = get_performance_splits()
+    if splits:
+        html += f"""
+            <div class="section splits-section" style="background-color: #e5e5e5; padding: 15px; border-radius: 8px;">
+                <div style="font-size: 18px; font-weight: bold; color: #000000; margin-bottom: 15px; text-align: center;">PERFORMANCE SPLITS</div>
+                
+                <div class="split-row">
+                    <div class="split-content">
+                        <div class="split-left">Favorites vs<br>Underdogs</div>
+                        <div class="split-right">
+                            <div class="split-data">
+                                Picking Favorites: <strong>{splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%)</strong> → <strong>{splits['fav_picks']['units']:+.2f} units</strong>
+                            </div>
+                            <div class="split-data" style="margin-top: 10px;">
+                                Picking Underdogs: <strong>{splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%)</strong> → <strong>{splits['dog_picks']['units']:+.2f} units</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="split-row">
+                    <div class="split-content">
+                        <div class="split-left">Favorite at Home<br>vs Favorite Away</div>
+                        <div class="split-right">
+                            <div class="split-data">
+                                Favorite at Home: <strong>{splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%)</strong> → <strong>{splits['fav_home']['units']:+.2f} units</strong>
+                            </div>
+                            <div class="split-data" style="margin-top: 10px;">
+                                Favorite Away: <strong>{splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%)</strong> → <strong>{splits['fav_away']['units']:+.2f} units</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="split-row">
+                    <div class="split-content">
+                        <div class="split-left" style="font-size: 24px;">By Pick +<br>Location:</div>
+                        <div class="split-right">
+                            <div class="split-data">
+                                Picking Favorite at Home: <strong>{splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%)</strong> → <strong>{splits['pfh']['units']:+.2f} units</strong>
+                            </div>
+                            <div class="split-data" style="margin-top: 10px;">
+                                Picking Favorite Away: <strong>{splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%)</strong> → <strong>{splits['pfa']['units']:+.2f} units</strong>
+                            </div>
+                            <div class="split-data" style="margin-top: 10px;">
+                                Picking Underdog Away: <strong>{splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%)</strong> → <strong>{splits['pda']['units']:+.2f} units</strong>
+                            </div>
+                            <div class="split-data" style="margin-top: 10px;">
+                                Picking Underdog at Home: <strong>{splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%)</strong> → <strong>{splits['pdh']['units']:+.2f} units</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        """
+    
+    html += f"""
             <div class="footer">
                 <div class="section-title">ℹ️  MODEL DESCRIPTION</div>
                 <p>Orb Analytics uses an ensemble of three machine learning models (Logistic Regression,
@@ -1052,11 +1059,11 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
     
     # Attach Novig ad images
     try:
-        with open('Novig_logos/Novig_ad.png', 'rb') as f:
+        with open('Novig_logos/Updated_Novig_map.png', 'rb') as f:
             img_data = f.read()
         image = MIMEImage(img_data)
         image.add_header('Content-ID', '<novig_ad>')
-        image.add_header('Content-Disposition', 'inline', filename='Novig_ad.png')
+        image.add_header('Content-Disposition', 'inline', filename='Updated_Novig_map.png')
         msg.attach(image)
         
         with open('Novig_logos/Orb_Novig.png', 'rb') as f:
