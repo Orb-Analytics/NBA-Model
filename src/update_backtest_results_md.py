@@ -21,16 +21,18 @@ def update_backtest_results_md():
     
     # Calculate overall stats
     picks = df[df['pick_side'] != 'NO BET']
+    completed_picks = picks[picks['result'].isin(['WIN', 'LOSS'])]
     total_games = len(df)
     total_picks = len(picks)
     no_bets = total_games - total_picks
     
-    wins = (picks['result'] == 'WIN').sum()
-    losses = (picks['result'] == 'LOSS').sum()
-    win_rate = (wins / total_picks * 100) if total_picks > 0 else 0
+    wins = (completed_picks['result'] == 'WIN').sum()
+    losses = (completed_picks['result'] == 'LOSS').sum()
+    completed_count = len(completed_picks)
+    win_rate = (wins / completed_count * 100) if completed_count > 0 else 0
     
     profit = wins * 109.09 - losses * 110  # Standard -110 odds
-    roi = (profit / (total_picks * 110) * 100) if total_picks > 0 else 0
+    roi = (profit / (completed_count * 110) * 100) if completed_count > 0 else 0
     
     start_date = df['date'].min().strftime('%B %d, %Y')
     end_date = df['date'].max().strftime('%B %d, %Y')

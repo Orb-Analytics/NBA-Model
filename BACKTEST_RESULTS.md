@@ -1,17 +1,17 @@
 # 🏀 NBA Model Performance Tracker
 
-**Last Updated:** December 31, 2025
+**Last Updated:** January 13, 2026
 
 ---
 
 ## 📊 Overall Performance
 
-**Period:** October 23, 2025 - December 29, 2025  
-**Record:** 127-112 (53.14%)  
-**Total Games:** 457  
-**Games Bet:** 239 (52.3%)  
-**ROI:** +5.84%  
-**Profit:** $+1534.43
+**Period:** October 23, 2025 - January 12, 2026  
+**Record:** 146-130 (52.90%)  
+**Total Games:** 568  
+**Games Bet:** 279 (49.1%)  
+**ROI:** +5.36%  
+**Profit:** $+1627.14
 
 ---
 
@@ -19,7 +19,7 @@
 
 **Formula:** `(35% × Averaged Models) + (65% × Implied Odds)`  
 **Edge Threshold:** 3.0% minimum  
-**Models Used:** Logistic, Linear, Random Forest (3 models averaged)  
+**Models Used:** Logistic Regression, Linear Regression, Random Forest  
 **Feature Selection:** Dynamic (15 features per scenario, re-selected daily)
 
 ---
@@ -28,9 +28,10 @@
 
 | Month | Record | Win Rate | Games |
 |-------|--------|----------|-------|
-| **October** | 22-20 | 52.4% | 42 |
-| **November** | 67-54 | 55.4% | 121 |
-| **December** | 38-38 | 50.0% | 76 |
+| **October** | 25-21 | 54.3% | 46 |
+| **November** | 56-54 | 50.9% | 110 |
+| **December** | 43-32 | 55.1% | 78 |
+| **January** | 22-23 | 48.9% | 45 |
 
 ---
 
@@ -38,8 +39,8 @@
 
 | Pick Type | Record | Win Rate |
 |-----------|--------|----------|
-| **Favorites** | 47-48 | 49.5% |
-| **Underdogs** | 80-64 | 55.6% |
+| **Favorites** | 47-53 | 46.1% |
+| **Underdogs** | 99-77 | 55.9% |
 
 ---
 
@@ -47,25 +48,25 @@
 
 | Edge Range | Record | Win Rate | Games |
 |------------|--------|----------|-------|
-| **3-5%** | 50-53 | 48.5% | 103 |
-| **5-8%** | 50-39 | 56.2% | 89 |
-| **8-15%** | 27-20 | 57.4% | 47 |
+| **3-5%** | 66-63 | 50.0% | 132 |
+| **5-8%** | 56-52 | 51.9% | 108 |
+| **8-15%** | 24-15 | 61.5% | 39 |
 
-**Key Insight:** Higher edge correlates with better performance (57.4% at 8-15% edge)
+**Key Insight:** Higher edge correlates with better performance (61.5% at 8-15% edge)
 
 ---
 
 ## 💰 Betting Performance
 
 **Flat Betting ($100 per pick):**
-- Total Wagered: $26,290
-- Profit: $+1534.43
-- ROI: +5.84%
+- Total Wagered: $30,690
+- Profit: $+1627.14
+- ROI: +5.36%
 
 **Risk-Adjusted Metrics:**
-- Pick Rate: 52.3% (filtered 218 games below 3% edge)
-- Average Edge: 6.1%
-- Max Edge: 12.7%
+- Pick Rate: 49.1% (filtered 289 games below 3% edge)
+- Average Edge: 5.6%
+- Max Edge: 12.8%
 - Min Edge: 3.0% (by design)
 
 ---
@@ -80,26 +81,26 @@
 **Conservative Approach:**
 - 3% edge threshold filters weak picks
 - 35/65 model/market split prevents overconfidence
-- 47.7% of games filtered as "NO BET"
+- 50.9% of games filtered as "NO BET"
 
 ---
 
 ## 🔍 Key Observations
 
-1. **Underdog value:** 55.6% win rate on dogs vs 49.5% on favorites
-2. **Edge matters:** 57.4% win rate on highest-edge picks (8-15%)
-3. **Consistency:** Monthly win rates range from 50.0% to 55.4%
-4. **Pick rate:** Model is selective, betting only 52.3% of games
+1. **Underdog value:** 55.9% win rate on dogs vs 46.1% on favorites
+2. **Edge matters:** 61.5% win rate on highest-edge picks (8-15%)
+3. **Consistency:** Monthly win rates range from 48.9% to 55.1%
+4. **Pick rate:** Model is selective, betting only 49.1% of games
 
 ---
 
 ## 📁 Data Files
 
-- `data/unified_model_results.csv` - All 4 model probabilities (474 games through 2025-12-29)
-- `data/averaged_model_backtest.csv` - Full backtest with picks (457 completed games)
+- `data/unified_model_results.csv` - All 4 model probabilities (580 games through 2026-01-12)
+- `data/averaged_model_backtest.csv` - Full backtest with picks (568 completed games)
 - `data/averaged_model_predictions_history.csv` - Permanent archive
 
 ---
 
-*Last Generated: December 31, 2025*  
+*Last Generated: January 13, 2026*  
 *Auto-updated daily by GitHub Actions*
