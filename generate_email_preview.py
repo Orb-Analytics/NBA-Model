@@ -15,9 +15,9 @@ from predict_and_email_averaged import (
     generate_averaged_predictions
 )
 
-# Use Jan 12 data for testing (has yesterday results)
-date_str = '2026-01-12'
-yesterday_str = '2026-01-11'
+# Use Jan 13 data for today
+date_str = '2026-01-13'
+yesterday_str = '2026-01-12'
 
 # Get data
 yesterday_results, yesterday_units = get_yesterday_results(yesterday_date=yesterday_str)
@@ -42,10 +42,6 @@ except Exception as e:
 with open('Novig_logos/Updated_Novig_map.png', 'rb') as f:
     novig_ad_data = base64.b64encode(f.read()).decode('utf-8')
     html_body = html_body.replace('cid:novig_ad', f'data:image/png;base64,{novig_ad_data}')
-
-with open('Novig_logos/Orb_Novig.png', 'rb') as f:
-    orb_novig_data = base64.b64encode(f.read()).decode('utf-8')
-    html_body = html_body.replace('cid:orb_novig', f'data:image/png;base64,{orb_novig_data}')
 
 # Save to file with UTF-8 encoding
 with open('email_preview.html', 'w', encoding='utf-8') as f:

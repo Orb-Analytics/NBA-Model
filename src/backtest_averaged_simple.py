@@ -26,6 +26,31 @@ def american_to_prob(odds: float) -> float:
         return abs(odds) / (abs(odds) + 100)
 
 
+def calculate_units(odds, result):
+    """Calculate units won/lost for a bet.
+    
+    Args:
+        odds: American odds (e.g., -110, +150)
+        result: 'WIN' or 'LOSS'
+    
+    Returns:
+        float: Units won (positive) or lost (negative)
+    """
+    if pd.isna(odds) or result not in ['WIN', 'LOSS']:
+        return 0.0
+    
+    if result == 'LOSS':
+        return -1.0  # Always lose 1 unit
+    
+    # WIN
+    if odds > 0:
+        # Underdog: profit = stake * (odds / 100)
+        return odds / 100
+    else:
+        # Favorite: profit = stake * (100 / abs(odds))
+        return 100 / abs(odds)
+
+
 def compute_averaged_pick(
     logistic_prob: float,
     linear_prob: float,
@@ -308,14 +333,29 @@ def analyze_results(df: pd.DataFrame):
     
     # Betting performance
     if wins + losses > 0:
+        # Calculate actual units based on real odds
+        total_units = 0.0
+        for _, row in picks.iterrows():
+            if row['result'] in ['WIN', 'LOSS']:
+                # Determine which odds to use
+                if row['pick_side'] == 'FAVORITE':
+                    odds = row.get('fav_odds', -110)
+                else:
+                    odds = row.get('dog_odds', -110)
+                
+                units = calculate_units(odds, row['result'])
+                total_units += units
+        
         # Flat betting ($100 per pick)
-        profit_flat = (wins * 90.91) - (losses * 100)  # Assuming -110 juice
-        roi_flat = (profit_flat / ((wins + losses) * 100)) * 100
+        total_wagered = (wins + losses) * 100
+        profit_flat = total_units * 100  # Convert units to dollars
+        roi_flat = (profit_flat / total_wagered) * 100
         
         print(f"\n💰 BETTING PERFORMANCE (Flat $100)")
-        print(f"   Total Wagered: ${(wins + losses) * 100:,.2f}")
+        print(f"   Total Wagered: ${total_wagered:,.2f}")
         print(f"   Profit/Loss: ${profit_flat:,.2f}")
         print(f"   ROI: {roi_flat:.2f}%")
+        print(f"   Units: {total_units:+.2f}")
     
     # Breakdown by side
     fav_picks = picks[picks['pick_side'] == 'FAVORITE']

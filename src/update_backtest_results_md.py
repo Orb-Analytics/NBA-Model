@@ -7,6 +7,31 @@ import pandas as pd
 from datetime import datetime
 import os
 
+def calculate_units(odds, result):
+    """Calculate units won/lost for a bet.
+    
+    Args:
+        odds: American odds (e.g., -110, +150)
+        result: 'WIN' or 'LOSS'
+    
+    Returns:
+        float: Units won (positive) or lost (negative)
+    """
+    if pd.isna(odds) or result not in ['WIN', 'LOSS']:
+        return 0.0
+    
+    if result == 'LOSS':
+        return -1.0  # Always lose 1 unit
+    
+    # WIN
+    if odds > 0:
+        # Underdog: profit = stake * (odds / 100)
+        return odds / 100
+    else:
+        # Favorite: profit = stake * (100 / abs(odds))
+        return 100 / abs(odds)
+
+
 def update_backtest_results_md():
     """Update BACKTEST_RESULTS.md with current backtest data."""
     
@@ -31,8 +56,20 @@ def update_backtest_results_md():
     completed_count = len(completed_picks)
     win_rate = (wins / completed_count * 100) if completed_count > 0 else 0
     
-    profit = wins * 109.09 - losses * 110  # Standard -110 odds
-    roi = (profit / (completed_count * 110) * 100) if completed_count > 0 else 0
+    # Calculate actual units based on real odds
+    total_units = 0.0
+    for _, row in completed_picks.iterrows():
+        # Determine which odds to use
+        if row['pick_side'] == 'FAVORITE':
+            odds = row.get('fav_odds', -110)
+        else:
+            odds = row.get('dog_odds', -110)
+        
+        units = calculate_units(odds, row['result'])
+        total_units += units
+    
+    profit = total_units * 100  # Convert units to dollars ($100 per unit)
+    roi = (profit / (completed_count * 100) * 100) if completed_count > 0 else 0
     
     start_date = df['date'].min().strftime('%B %d, %Y')
     end_date = df['date'].max().strftime('%B %d, %Y')

@@ -120,19 +120,21 @@ def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yest
 def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_path='data/NBA Training Set 25-26.csv'):
     """Calculate season record from backtest file (includes all results to date)."""
     if not os.path.exists(backtest_path):
-        return {'wins': 0, 'losses': 0, 'total': 0, 'win_pct': 0.0, 'units': 0.0}
+        return {'wins': 0, 'losses': 0, 'total': 0, 'win_pct': 0.0, 'units': 0.0, 'roi': 0.0}
     
     backtest_df = pd.read_csv(backtest_path)
     picks = backtest_df[backtest_df['pick_side'] != 'NO BET'].copy()
+    # Filter to completed picks only (exclude PENDING)
+    completed_picks = picks[picks['result'].isin(['WIN', 'LOSS'])]
     
-    wins = len(picks[picks['result'] == 'WIN'])
-    losses = len(picks[picks['result'] == 'LOSS'])
+    wins = len(completed_picks[completed_picks['result'] == 'WIN'])
+    losses = len(completed_picks[completed_picks['result'] == 'LOSS'])
     total = wins + losses
     win_pct = (wins / total * 100) if total > 0 else 0.0
     
     # Calculate total units
     total_units = 0.0
-    for _, row in picks.iterrows():
+    for _, row in completed_picks.iterrows():
         if row['pick_side'] == 'FAVORITE':
             odds = row.get('fav_odds', -110)
         else:
@@ -141,12 +143,16 @@ def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_p
         units = calculate_units(odds, row.get('result', ''))
         total_units += units
     
+    # Calculate ROI
+    roi = (total_units / total * 100) if total > 0 else 0.0
+    
     return {
         'wins': wins,
         'losses': losses,
         'total': total,
         'win_pct': win_pct,
-        'units': total_units
+        'units': total_units,
+        'roi': roi
     }
 
 
@@ -374,7 +380,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .pick-logo {{ width: 70px; height: 70px; vertical-align: middle; margin-right: 15px; }}
             .pick-team {{ font-size: 40px; font-weight: bold; display: inline-block; vertical-align: middle; }}
             .pick-matchup {{ font-size: 16px; color: #666; margin-top: 5px; font-family: Arial, sans-serif; }}
-            .pick-spread-box {{ background-color: #9a29e9; color: white; padding: 16px 20px; border-radius: 6px; font-size: 28px; font-weight: bold; display: inline-block; min-width: 70px; text-align: center; }}
+            .pick-spread-box {{ background-color: #9a29e9; color: white; padding: 10px 14px; border-radius: 6px; font-size: 24px; font-weight: bold; display: inline-block; min-width: 55px; text-align: center; }}
             .pick-stat {{ color: #222; font-size: 18px; font-family: Arial, sans-serif; margin-bottom: 5px; font-weight: 500; }}
             .result-win {{ background-color: #e8f5e9; border-left-color: #4caf50; }}
             .result-loss {{ background-color: #ffebee; border-left-color: #f44336; }}
@@ -407,7 +413,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 .section-title {{ font-size: 16px; }}
                 .pick-team {{ font-size: 24px; }}
                 .pick-matchup {{ font-size: 14px; }}
-                .pick-spread-box {{ font-size: 20px; padding: 8px 16px; }}
+                .pick-spread-box {{ font-size: 18px; padding: 6px 12px; }}
                 .pick-stat {{ font-size: 15px; margin-bottom: 8px; color: #222; font-weight: 500; }}
                 .pick-emoji {{ font-size: 36px; }}
                 .pick-logo {{ width: 50px; height: 50px; }}
@@ -485,7 +491,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             
             <div class="record">
                 SEASON RECORD: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)<br>
-                Units: {season_record['units']:+.2f}
+                Units: {season_record['units']:+.2f} | ROI: {season_record['roi']:+.2f}%
             </div>
     """
     
@@ -533,7 +539,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                                 <div class="pick-team">{pick_team}</div>
                                 <div class="pick-matchup">{location_str} {opponent}</div>
                             </div>
-                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 15px;">{spread_line}</span>
+                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 10px;">{spread_line}</span>
                         </div>
                         <div class="pick-right">
                             <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
@@ -613,7 +619,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                                 <div class="pick-team">{pick_team}</div>
                                 <div class="pick-matchup">{location_str} {opponent}</div>
                             </div>
-                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 15px;">{spread_line}</span>
+                            <span class="pick-spread-box" style="vertical-align: middle; margin-left: 10px;">{spread_line}</span>
                         </div>
                         <div class="pick-right">
                             <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
@@ -637,7 +643,6 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 🔥 Play Smarter with Novig – America's #1 Sports Prediction Market 🔥<br><br>
                 ✅ Better Odds – Play against real users, with no house cut (VIG)
             </p>
-            <img src="cid:orb_novig" class="ad-image" alt="Orb Analytics x Novig">
         </div>
     """
     
@@ -710,7 +715,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 probability to balance statistical signals with market efficiency. We only bet when
                 our edge exceeds 3%, ensuring disciplined bankroll management.</p>
                 
-                <p><strong>Season Record: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%) | ROI: +2.59%</strong></p>
+                <p><strong>Season Record: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%) | ROI: {season_record['roi']:+.2f}%</strong></p>
             </div>
         </div>
     </body>
@@ -1064,13 +1069,6 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
         image = MIMEImage(img_data)
         image.add_header('Content-ID', '<novig_ad>')
         image.add_header('Content-Disposition', 'inline', filename='Updated_Novig_map.png')
-        msg.attach(image)
-        
-        with open('Novig_logos/Orb_Novig.png', 'rb') as f:
-            img_data = f.read()
-        image = MIMEImage(img_data)
-        image.add_header('Content-ID', '<orb_novig>')
-        image.add_header('Content-Disposition', 'inline', filename='Orb_Novig.png')
         msg.attach(image)
         
         print("✅ Novig ad images attached")

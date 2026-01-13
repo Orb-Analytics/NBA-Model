@@ -8,10 +8,10 @@
 
 **Period:** October 23, 2025 - January 12, 2026  
 **Record:** 146-130 (52.90%)  
-**Total Games:** 568  
-**Games Bet:** 279 (49.1%)  
-**ROI:** +5.36%  
-**Profit:** $+1627.14
+**Total Games:** 563  
+**Games Bet:** 276 (49.0%)  
+**ROI:** +3.99%  
+**Profit:** $+1100.42
 
 ---
 
@@ -30,7 +30,7 @@
 |-------|--------|----------|-------|
 | **October** | 25-21 | 54.3% | 46 |
 | **November** | 56-54 | 50.9% | 110 |
-| **December** | 43-32 | 55.1% | 78 |
+| **December** | 43-32 | 57.3% | 75 |
 | **January** | 22-23 | 48.9% | 45 |
 
 ---
@@ -39,8 +39,8 @@
 
 | Pick Type | Record | Win Rate |
 |-----------|--------|----------|
-| **Favorites** | 47-53 | 46.1% |
-| **Underdogs** | 99-77 | 55.9% |
+| **Favorites** | 47-53 | 47.0% |
+| **Underdogs** | 99-77 | 56.2% |
 
 ---
 
@@ -48,7 +48,7 @@
 
 | Edge Range | Record | Win Rate | Games |
 |------------|--------|----------|-------|
-| **3-5%** | 66-63 | 50.0% | 132 |
+| **3-5%** | 66-63 | 51.2% | 129 |
 | **5-8%** | 56-52 | 51.9% | 108 |
 | **8-15%** | 24-15 | 61.5% | 39 |
 
@@ -59,13 +59,13 @@
 ## 💰 Betting Performance
 
 **Flat Betting ($100 per pick):**
-- Total Wagered: $30,690
-- Profit: $+1627.14
-- ROI: +5.36%
+- Total Wagered: $30,360
+- Profit: $+1100.42
+- ROI: +3.99%
 
 **Risk-Adjusted Metrics:**
-- Pick Rate: 49.1% (filtered 289 games below 3% edge)
-- Average Edge: 5.6%
+- Pick Rate: 49.0% (filtered 287 games below 3% edge)
+- Average Edge: 5.7%
 - Max Edge: 12.8%
 - Min Edge: 3.0% (by design)
 
@@ -81,23 +81,23 @@
 **Conservative Approach:**
 - 3% edge threshold filters weak picks
 - 35/65 model/market split prevents overconfidence
-- 50.9% of games filtered as "NO BET"
+- 51.0% of games filtered as "NO BET"
 
 ---
 
 ## 🔍 Key Observations
 
-1. **Underdog value:** 55.9% win rate on dogs vs 46.1% on favorites
+1. **Underdog value:** 56.2% win rate on dogs vs 47.0% on favorites
 2. **Edge matters:** 61.5% win rate on highest-edge picks (8-15%)
-3. **Consistency:** Monthly win rates range from 48.9% to 55.1%
-4. **Pick rate:** Model is selective, betting only 49.1% of games
+3. **Consistency:** Monthly win rates range from 48.9% to 57.3%
+4. **Pick rate:** Model is selective, betting only 49.0% of games
 
 ---
 
 ## 📁 Data Files
 
-- `data/unified_model_results.csv` - All 4 model probabilities (580 games through 2026-01-12)
-- `data/averaged_model_backtest.csv` - Full backtest with picks (568 completed games)
+- `data/unified_model_results.csv` - All 4 model probabilities (575 games through 2026-01-12)
+- `data/averaged_model_backtest.csv` - Full backtest with picks (563 completed games)
 - `data/averaged_model_predictions_history.csv` - Permanent archive
 
 ---
