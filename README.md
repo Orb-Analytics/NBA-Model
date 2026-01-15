@@ -3,22 +3,22 @@
 Advanced NBA spread prediction system using machine learning with automated daily predictions.
 
 ## 📊 Current Performance
-**147-130 (53.1%)** through January 13, 2026
+**148-131 (53.0%)** through January 14, 2026
 
 ### 📈 Performance Splits
 
 **By Pick Type:**
-- Picking Favorites: 47-53 (47.0%)
-- Picking Underdogs: 100-77 (56.5%)
+- Picking Favorites: 47-54 (46.5%)
+- Picking Underdogs: 101-77 (56.7%)
 
 **By Home/Away (All Games):**
-- Favorite at Home: 48-62 (43.6%)
-- Favorite Away: 99-68 (59.3%)
+- Favorite at Home: 49-62 (44.1%)
+- Favorite Away: 99-69 (58.9%)
 
 **By Pick + Location:**
 - Picking Favorite at Home: 24-29 (45.3%)
-- Picking Favorite Away: 23-24 (48.9%)
-- Picking Underdog Away: 24-33 (42.1%)
+- Picking Favorite Away: 23-25 (47.9%)
+- Picking Underdog Away: 25-33 (43.1%)
 - Picking Underdog at Home: 76-44 (63.3%)
 ## 🎯 System Overview
 
