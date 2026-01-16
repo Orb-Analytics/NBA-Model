@@ -426,8 +426,9 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 .split-row {{ padding: 12px; margin: 8px 0; }}
                 .split-content {{ display: block !important; }}
                 .split-left {{ display: block !important; width: 100% !important; text-align: center; margin-bottom: 8px; font-size: 15px; }}
-                .split-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 8px; }}
+                .split-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 8px; text-align: center; }}
                 .split-data {{ font-size: 13px; line-height: 1.6; white-space: normal; overflow-wrap: break-word; }}
+                .split-data strong {{ display: block; margin-top: 5px; }}
                 
                 /* Game summary mobile styles */
                 .game-summary-row {{ padding: 15px; }}
@@ -436,12 +437,12 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 /* Stack pick layout on mobile */
                 .pick {{ padding: 15px; }}
                 .pick-content {{ display: block !important; }}
-                .pick-left {{ display: block !important; width: 100% !important; margin-bottom: 10px; text-align: left; white-space: normal !important; }}
-                .pick-middle {{ display: block !important; width: 100% !important; text-align: left; margin-bottom: 15px; padding: 0; }}
-                .pick-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 15px; text-align: left; }}
-                .pick-right-inner {{ display: block !important; text-align: left; }}
-                .pick-stats {{ display: block !important; padding-right: 0 !important; margin-bottom: 10px; text-align: left; }}
-                .pick-spread-cell {{ display: block !important; text-align: left !important; }}
+                .pick-left {{ display: block !important; width: 100% !important; margin-bottom: 10px; text-align: center; white-space: normal !important; }}
+                .pick-middle {{ display: block !important; width: 100% !important; text-align: center; margin-bottom: 15px; padding: 0; }}
+                .pick-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 15px; text-align: center; }}
+                .pick-right-inner {{ display: block !important; text-align: center; }}
+                .pick-stats {{ display: block !important; padding-right: 0 !important; margin-bottom: 10px; text-align: center; }}
+                .pick-spread-cell {{ display: block !important; text-align: center !important; }}
                 .pick-spread-box {{ display: inline-block; width: fit-content; margin: 0; }}
             }}
         </style>
