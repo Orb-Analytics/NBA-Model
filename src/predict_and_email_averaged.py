@@ -428,7 +428,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 .split-left {{ display: block !important; width: 100% !important; text-align: center; margin-bottom: 8px; font-size: 15px; }}
                 .split-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 8px; text-align: center; }}
                 .split-data {{ font-size: 13px; line-height: 1.6; white-space: normal; overflow-wrap: break-word; }}
-                .split-data strong {{ display: block; margin-top: 5px; }}
+                .split-data strong {{ display: block; margin-top: 5px; white-space: nowrap; }}
                 
                 /* Game summary mobile styles */
                 .game-summary-row {{ padding: 15px; }}
@@ -1037,8 +1037,12 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     return "\n".join(lines)
 
 
-def send_email_html(subject, html_body, predictions=None, yesterday_results=None):
-    """Send HTML email (logos loaded from ESPN CDN, Novig ads attached)."""
+def send_email_html(subject, html_body, predictions=None, yesterday_results=None, test_mode=False):
+    """Send HTML email (logos loaded from ESPN CDN, Novig ads attached).
+    
+    Args:
+        test_mode: If True, only send to lpchaitin@gmail.com. If False, send to all recipients.
+    """
     smtp_server = os.environ.get('SMTP_SERVER')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
     smtp_username = os.environ.get('SMTP_USERNAME')
@@ -1048,11 +1052,19 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
         print("⚠️ SMTP credentials not configured - email not sent")
         return False
     
+    # Determine recipients based on mode
+    if test_mode:
+        recipients = 'lpchaitin@gmail.com'
+        print("🧪 TEST MODE: Sending only to lpchaitin@gmail.com")
+    else:
+        recipients = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com,alexkalta1@gmail.com,pablozilly@icloud.com'
+        print("📧 PRODUCTION MODE: Sending to all recipients")
+    
     # Create multipart message for embedded images
     msg = MIMEMultipart('related')
     msg['From'] = smtp_username
     msg['To'] = smtp_username  # Show sender in To field
-    msg['Bcc'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com,alexkalta1@gmail.com,pablozilly@icloud.com'
+    msg['Bcc'] = recipients
     msg['Subject'] = subject
     
     # Attach HTML body
@@ -1198,6 +1210,8 @@ def main():
                        help='Date to predict (YYYY-MM-DD, default: today)')
     parser.add_argument('--no-email', action='store_true',
                        help='Skip sending email')
+    parser.add_argument('--test-mode', action='store_true',
+                       help='Send email only to lpchaitin@gmail.com (for testing)')
     
     args = parser.parse_args()
     
