@@ -42,6 +42,19 @@ def main():
     # 7️⃣ Validate data integrity
     run_script("src/validate_data.py")
 
+    # 8️⃣ Verify score consistency (prevent home/away score mismatches)
+    print("🔍 Verifying score consistency...")
+    result = subprocess.run(["python", "src/verify_scores_match_home_away.py"], 
+                          capture_output=True, text=True)
+    if result.returncode != 0:
+        print("⚠️  Score mismatches detected!")
+        print(result.stdout)
+        print("Attempting to auto-fix...")
+        subprocess.run(["python", "src/fix_all_score_mismatches.py"], check=True)
+        print("✅ Scores fixed!")
+    else:
+        print("✅ All scores consistent")
+
     print(f"\n🎯 Daily NBA Data Pipeline Complete — {today}\n")
 
     # 8️⃣ Commit + Push

@@ -22,6 +22,7 @@ errors_to_fix = [
     ('2026-01-02', 'Washington', 'Brooklyn'),
     ('2026-01-02', 'Phoenix', 'Sacramento'),
     ('2026-01-03', 'San Antonio', 'Portland'),
+    ('2026-01-15', 'San Antonio', 'Milwaukee'),  # San Antonio should be home (won 119-101)
 ]
 
 print("Fixing home/away errors...")
@@ -48,6 +49,8 @@ for date_str, current_away, current_home in errors_to_fix:
     # Get current values
     old_away = df.loc[idx, 'Away']
     old_home = df.loc[idx, 'Home']
+    old_away_score = df.loc[idx, 'Away Score']
+    old_home_score = df.loc[idx, 'Home Score']
     old_fav_at_home = df.loc[idx, 'Fav. At Home?']
     favorite = df.loc[idx, 'Favorite']
     underdog = df.loc[idx, 'Underdog']
@@ -56,15 +59,49 @@ for date_str, current_away, current_home in errors_to_fix:
     df.loc[idx, 'Away'] = old_home
     df.loc[idx, 'Home'] = old_away
     
+    # Swap Away Score and Home Score
+    df.loc[idx, 'Away Score'] = old_home_score
+    df.loc[idx, 'Home Score'] = old_away_score
+    
     # Update Fav. At Home? flag
     # If Favorite is now Home, set to 1, otherwise 0
     new_fav_at_home = 1 if df.loc[idx, 'Home'] == favorite else 0
     df.loc[idx, 'Fav. At Home?'] = new_fav_at_home
     
+    # Recalculate Favorite Score and Underdog Score based on new home/away
+    new_home = df.loc[idx, 'Home']
+    new_away = df.loc[idx, 'Away']
+    new_home_score = df.loc[idx, 'Home Score']
+    new_away_score = df.loc[idx, 'Away Score']
+    
+    if new_home == favorite:
+        df.loc[idx, 'Favorite Score'] = new_home_score
+        df.loc[idx, 'Underdog Score'] = new_away_score
+    else:
+        df.loc[idx, 'Favorite Score'] = new_away_score
+        df.loc[idx, 'Underdog Score'] = new_home_score
+    
+    # Recalculate Favorite Cover? based on corrected scores
+    fav_score = df.loc[idx, 'Favorite Score']
+    dog_score = df.loc[idx, 'Underdog Score']
+    spread = df.loc[idx, 'Spread']
+    
+    if pd.notna(fav_score) and pd.notna(dog_score) and pd.notna(spread):
+        margin = fav_score - dog_score
+        df.loc[idx, 'Favorite Cover?'] = 1.0 if margin + spread > 0 else 0.0
+    
+    # Recalculate other computed columns
+    if pd.notna(fav_score) and pd.notna(dog_score):
+        df.loc[idx, 'Favorite - Underdog (+/-)'] = fav_score - dog_score
+    
+    if pd.notna(new_home_score) and pd.notna(new_away_score):
+        df.loc[idx, 'Home/Away +/-'] = new_home_score - new_away_score
+    
     print(f"✅ Fixed: {date_str}")
-    print(f"   Before: {old_away} @ {old_home} (Fav. At Home? = {old_fav_at_home})")
-    print(f"   After:  {df.loc[idx, 'Away']} @ {df.loc[idx, 'Home']} (Fav. At Home? = {new_fav_at_home})")
-    print(f"   Favorite: {favorite}, Underdog: {underdog}")
+    print(f"   Before: {old_away} ({old_away_score}) @ {old_home} ({old_home_score}) (Fav. At Home? = {old_fav_at_home})")
+    print(f"   After:  {df.loc[idx, 'Away']} ({df.loc[idx, 'Away Score']}) @ {df.loc[idx, 'Home']} ({df.loc[idx, 'Home Score']}) (Fav. At Home? = {new_fav_at_home})")
+    print(f"   Favorite: {favorite} ({df.loc[idx, 'Favorite Score']}), Underdog: {underdog} ({df.loc[idx, 'Underdog Score']})")
+    print(f"   Favorite Cover? = {df.loc[idx, 'Favorite Cover?']}")
     print()
     
     fixed_count += 1
