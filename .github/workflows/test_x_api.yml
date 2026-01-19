@@ -1,10 +1,10 @@
-name: 🐦 Test X API Connection
+name: 🐦 Post NBA Predictions to X
 
 on:
   workflow_dispatch:  # Manual trigger only
 
 jobs:
-  test-x-api:
+  post-to-x:
     runs-on: ubuntu-latest
     
     steps:
@@ -23,34 +23,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install tweepy pandas numpy scikit-learn requests-oauthlib
       
-      - name: 🔍 Detailed X API Diagnostics
+      - name: 🐦 Post Today's Predictions to X
         env:
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET_KEY: ${{ secrets.X_API_SECRET_KEY }}
           X_ACCESS_TOLKEN: ${{ secrets.X_ACCESS_TOLKEN }}
           X_ACCESS_TOLKEN_SECRET: ${{ secrets.X_ACCESS_TOLKEN_SECRET }}
         run: |
-          echo "Running detailed diagnostics..."
-          python src/diagnose_x_auth.py
-      
-      - name: 🔐 Test X API Authentication (Tweepy)
-        if: success()
-        env:
-          X_API_KEY: ${{ secrets.X_API_KEY }}
-          X_API_SECRET_KEY: ${{ secrets.X_API_SECRET_KEY }}
-          X_ACCESS_TOLKEN: ${{ secrets.X_ACCESS_TOLKEN }}
-          X_ACCESS_TOLKEN_SECRET: ${{ secrets.X_ACCESS_TOLKEN_SECRET }}
-        run: |
-          echo "Testing with Tweepy library..."
-          python src/test_x_auth.py
-      
-      - name: 📊 Preview Today's Tweet
-        env:
-          X_API_KEY: ${{ secrets.X_API_KEY }}
-          X_API_SECRET_KEY: ${{ secrets.X_API_SECRET_KEY }}
-          X_ACCESS_TOLKEN: ${{ secrets.X_ACCESS_TOLKEN }}
-          X_ACCESS_TOLKEN_SECRET: ${{ secrets.X_ACCESS_TOLKEN_SECRET }}
-        run: |
-          echo ""
-          echo "Generating tweet preview..."
-          python src/post_to_x.py --test
+          echo "🐦 Posting today's NBA predictions to X..."
+          python src/post_to_x.py
