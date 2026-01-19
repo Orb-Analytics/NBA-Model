@@ -31,7 +31,7 @@ jobs:
       - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy scikit-learn
+          pip install pandas numpy scikit-learn tweepy
 
       - name: 🎯 Generate & Email Today's Predictions
         env:
@@ -79,3 +79,13 @@ jobs:
             git commit -m "📊 Update averaged model predictions and results for $(date -u +%Y-%m-%d)"
             git push
           fi
+
+      - name: 🐦 Post Predictions to X
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET_KEY: ${{ secrets.X_API_SECRET_KEY }}
+          X_ACCESS_TOLKEN: ${{ secrets.X_ACCESS_TOLKEN }}
+          X_ACCESS_TOLKEN_SECRET: ${{ secrets.X_ACCESS_TOLKEN_SECRET }}
+        run: |
+          echo "🐦 Posting today's predictions to X..."
+          python src/post_to_x.py
