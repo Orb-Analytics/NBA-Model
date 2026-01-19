@@ -60,8 +60,31 @@ def get_todays_picks(date=None):
     return todays_picks, date
 
 
+def get_yesterdays_results(date=None):
+    """Get yesterday's picks and results from backtest."""
+    if date is None:
+        from datetime import timedelta
+        yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+    else:
+        from datetime import timedelta
+        yesterday = (datetime.strptime(date, '%Y-%m-%d') - timedelta(days=1)).strftime('%Y-%m-%d')
+    
+    # Load backtest
+    backtest = pd.read_csv('data/averaged_model_backtest.csv')
+    backtest['date'] = pd.to_datetime(backtest['date']).dt.strftime('%Y-%m-%d')
+    
+    # Filter to yesterday's picks
+    yesterdays_picks = backtest[
+        (backtest['date'] == yesterday) & 
+        (backtest['pick_side'] != 'NO BET') &
+        (backtest['result'].isin(['WIN', 'LOSS']))
+    ].copy()
+    
+    return yesterdays_picks
+
+
 def get_season_record():
-    """Get current season record."""
+    """Get current season record and units."""
     backtest = pd.read_csv('data/averaged_model_backtest.csv')
     picks = backtest[backtest['pick_side'] != 'NO BET'].copy()
     completed = picks[picks['result'].isin(['WIN', 'LOSS'])]
@@ -69,57 +92,119 @@ def get_season_record():
     wins = len(completed[completed['result'] == 'WIN'])
     losses = len(completed[completed['result'] == 'LOSS'])
     
-    return wins, losses
+    # Calculate total units
+    total_units = 0.0
+    for _, row in completed.iterrows():
+        # Determine which odds to use
+        if row['pick_side'] == 'FAVORITE':
+            odds = row.get('fav_odds', -110)
+        else:
+            odds = row.get('dog_odds', -110)
+        
+        units = calculate_units(odds, row['result'])
+        total_units += units
+    
+    return wins, losses, total_units
+
+
+def calculate_units(odds, result):
+    """Calculate units won/lost for a bet.
+    
+    Args:
+        odds: American odds (e.g., -110, +150)
+        result: 'WIN' or 'LOSS'
+    
+    Returns:
+        float: Units won (positive) or lost (negative)
+    """
+    if result == 'LOSS':
+        return -1.0
+    elif result == 'WIN':
+        if odds < 0:
+            return 100 / abs(odds)
+        else:
+            return odds / 100
+    return 0.0
 
 
 def format_pick_tweet(pick):
     """Format a single pick for tweeting."""
-    # Determine matchup
+    # Determine matchup and odds
     if pick['pick_side'] == 'FAVORITE':
         pick_team = pick['favorite']
         opponent = pick['underdog']
         line = -abs(pick['spread'])
+        odds = pick.get('fav_odds', -110)
     else:
         pick_team = pick['underdog']
         opponent = pick['favorite']
         line = abs(pick['spread'])
+        odds = pick.get('dog_odds', -110)
     
-    # Format edge
+    # Format edge and odds
     edge = pick['edge'] * 100
+    odds_str = f"{int(odds):+d}" if odds == int(odds) else f"{odds:+.0f}"
     
     # Create tweet text
-    tweet = f"🏀 {pick_team} {line:+.1f}\n"
-    tweet += f"vs {opponent}\n"
-    tweet += f"Edge: {edge:.1f}%\n"
+    tweet = f"🏀 {pick_team} {line:+.1f} vs {opponent} ({odds_str}, {edge:.1f}%)\n"
     
     return tweet
 
 
-def create_predictions_tweet(picks_df, date, wins, losses):
-    """Create the main predictions tweet."""
+def format_result_tweet(result):
+    """Format yesterday's result for tweeting."""
+    # Determine emoji
+    emoji = "✅" if result['result'] == 'WIN' else "❌"
+    
+    # Get pick details
+    pick_team = result['pick_team']
+    
+    if result['pick_side'] == 'FAVORITE':
+        line = -abs(result['spread'])
+    else:
+        line = abs(result['spread'])
+    
+    return f"{emoji} {pick_team} {line:+.1f}\n"
+
+
+def create_predictions_tweet(picks_df, yesterdays_df, date, wins, losses, units):
+    """Create the main predictions tweet with yesterday's results."""
     win_pct = (wins / (wins + losses) * 100) if (wins + losses) > 0 else 0
     
-    # Header
-    tweet = f"📊 NBA Predictions - {datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y')}\n\n"
+    # Header with date
+    tweet = f"🏀 {datetime.strptime(date, '%Y-%m-%d').strftime('%b %d')}\n\n"
     
-    # Record
-    tweet += f"Season Record: {wins}-{losses} ({win_pct:.1f}%)\n\n"
+    # Record with units
+    tweet += f"📊 {wins}-{losses} ({win_pct:.1f}%, {units:+.1f}u)\n\n"
     
-    # Picks
+    # TODAY'S PICKS
     if len(picks_df) == 0:
-        tweet += "No picks today - no edge found above 3% threshold\n\n"
+        tweet += "No picks today\n\n"
     else:
-        tweet += f"Today's Picks ({len(picks_df)}):\n\n"
+        tweet += f"Today's Picks:\n"
         
         for idx, pick in picks_df.iterrows():
             pick_text = format_pick_tweet(pick)
+            tweet += pick_text
+        
+        tweet += "\n"
+    
+    # YESTERDAY'S RESULTS
+    if len(yesterdays_df) > 0:
+        tweet += "Yesterday:\n"
+        
+        for idx, result in yesterdays_df.iterrows():
+            result_text = format_result_tweet(result)
             
-            # Check if adding this pick would exceed 280 characters
-            if len(tweet + pick_text) > 260:  # Leave room for footer
-                tweet += f"[+{len(picks_df) - idx} more]\n"
+            # Check character limit
+            if len(tweet + result_text) > 260:
+                remaining = len(yesterdays_df) - idx
+                tweet += f"[+{remaining} more]\n"
                 break
-            
-            tweet += pick_text + "\n"
+                
+            tweet += result_text
+        
+        tweet += "\n"
     
     # Footer
     tweet += "#NBA #SportsBetting"
@@ -135,14 +220,16 @@ def post_predictions(test_mode=False):
     
     # Get data
     picks_df, date = get_todays_picks()
-    wins, losses = get_season_record()
+    yesterdays_df = get_yesterdays_results(date)
+    wins, losses, units = get_season_record()
     
     print(f"\n📅 Date: {date}")
-    print(f"📊 Record: {wins}-{losses}")
-    print(f"🎯 Picks: {len(picks_df)}")
+    print(f"📊 Record: {wins}-{losses} ({units:+.1f}u)")
+    print(f"🎯 Today's Picks: {len(picks_df)}")
+    print(f"📋 Yesterday's Results: {len(yesterdays_df)}")
     
     # Create tweet
-    tweet = create_predictions_tweet(picks_df, date, wins, losses)
+    tweet = create_predictions_tweet(picks_df, yesterdays_df, date, wins, losses, units)
     
     print("\n" + "=" * 80)
     print("TWEET PREVIEW:")
@@ -158,10 +245,10 @@ def post_predictions(test_mode=False):
     
     # Authenticate and post
     try:
-        api = authenticate_x_api()
-        status = api.update_status(tweet)
+        client = authenticate_x_api()
+        response = client.create_tweet(text=tweet)
         print(f"\n✅ Tweet posted successfully!")
-        print(f"🔗 URL: https://twitter.com/user/status/{status.id}")
+        print(f"🔗 Tweet ID: {response.data['id']}")
     except Exception as e:
         print(f"\n❌ Failed to post tweet: {e}")
         raise
