@@ -12,7 +12,7 @@ import pandas as pd
 
 
 def authenticate_x_api():
-    """Authenticate with X API using OAuth 1.0a."""
+    """Authenticate with X API v2."""
     # Get credentials from environment variables
     api_key = os.environ.get('X_API_KEY')
     api_secret = os.environ.get('X_API_SECRET_KEY')
@@ -20,27 +20,21 @@ def authenticate_x_api():
     access_token_secret = os.environ.get('X_ACCESS_TOLKEN_SECRET')
     
     if not all([api_key, api_secret, access_token, access_token_secret]):
-        missing = []
-        if not api_key: missing.append('X_API_KEY')
-        if not api_secret: missing.append('X_API_SECRET_KEY')
-        if not access_token: missing.append('X_ACCESS_TOLKEN')
-        if not access_token_secret: missing.append('X_ACCESS_TOLKEN_SECRET')
-        raise ValueError(f"Missing X API credentials: {', '.join(missing)}")
+        raise Exception("Missing X API credentials in environment variables")
     
-    # Authenticate with OAuth 1.0a
-    auth = tweepy.OAuth1UserHandler(
-        api_key, api_secret,
-        access_token, access_token_secret
+    # Create v2 client
+    client = tweepy.Client(
+        consumer_key=api_key,
+        consumer_secret=api_secret,
+        access_token=access_token,
+        access_token_secret=access_token_secret
     )
-    
-    # Create API object
-    api = tweepy.API(auth)
     
     # Verify credentials
     try:
-        user = api.verify_credentials()
-        print(f"✅ Authenticated as @{user.screen_name}")
-        return api
+        user = client.get_me()
+        print(f"✅ Authenticated as @{user.data.username}")
+        return client
     except Exception as e:
         raise Exception(f"Authentication failed: {e}")
 
