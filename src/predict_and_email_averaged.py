@@ -499,7 +499,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             </div>
     """
     
-    # Today's Picks
+    # Today's Picks FIRST
     html += """
         <div class="section">
             <div class="section-title">🎯 TODAY'S PICKS</div>
@@ -776,32 +776,48 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
             </div>
     """
     
-    # Add performance splits
-    splits = get_performance_splits()
-    if splits:
-        html += f"""
-            <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
-                <div style="font-size: 16px; font-weight: bold; color: #9a29e9; margin-bottom: 10px;">PERFORMANCE SPLITS</div>
-                
-                <div style="margin-bottom: 10px;">
-                    <strong>By Pick Type:</strong><br>
-                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units<br>
-                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units
+    # Today's Picks
+    html += """
+        <div class="section">
+            <div class="section-title">🎯 TODAY'S PICKS</div>
+    """
+    
+    picks = [p for p in predictions if p['pick_side'] != 'NO BET']
+    
+    if not picks:
+        html += "<p>⚪ No picks today - no games meet the 3% edge threshold</p>"
+    else:
+        picks_sorted = sorted(picks, key=lambda x: x['edge'], reverse=True)
+        
+        for pick in picks_sorted:
+            pick_team = pick['pick_team']
+            favorite = pick['favorite']
+            underdog = pick['underdog']
+            
+            if pick['pick_side'] == 'FAVORITE':
+                pick_line = f"{team_logo_html(pick_team)} {pick['pick_line']:+.1f}"
+                pick_odds = pick['fav_odds']
+            else:
+                pick_line = f"{team_logo_html(pick_team)} {pick['pick_line']:+.1f}"
+                pick_odds = pick['dog_odds']
+            
+            matchup_str = f"{team_logo_html(favorite, show_name=False)} <span class='vs'>vs</span> {team_logo_html(underdog, show_name=False)}"
+            
+            html += f"""
+                <div class="pick">
+                    <div class="pick-header">
+                        {pick_line}
+                    </div>
+                    <div class="pick-details">
+                        {matchup_str}<br>
+                        Novig Odds: {format_american_odds(pick_odds)}<br>
+                        Orb Cover Probability: {pick['cover_prob']:.1%}<br>
+                        Edge: {pick['edge']:.1%}
+                    </div>
                 </div>
-                
-                <div style="margin-bottom: 10px;">
-                    <strong>By Home/Away (All Games):</strong><br>
-                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units<br>
-                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units
-                </div>
-                
-                <div>
-                    <strong>By Pick + Location:</strong><br>
-                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units<br>
-                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units<br>
-                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units<br>
-                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units
-                </div>
+            """
+    
+    html += f"""
             </div>
         """
     
@@ -846,50 +862,36 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
         
         html += f"<p style='text-align: center; font-weight: bold; margin-top: 20px;'>Record: {wins}-{losses} | Units: {yesterday_units:+.2f}</p></div>"
     
-    # Today's Picks
-    html += """
-        <div class="section">
-            <div class="section-title">🎯 TODAY'S PICKS</div>
-    """
-    
-    picks = [p for p in predictions if p['pick_side'] != 'NO BET']
-    
-    if not picks:
-        html += "<p>⚪ No picks today - no games meet the 3% edge threshold</p>"
-    else:
-        picks_sorted = sorted(picks, key=lambda x: x['edge'], reverse=True)
-        
-        for pick in picks_sorted:
-            pick_team = pick['pick_team']
-            favorite = pick['favorite']
-            underdog = pick['underdog']
-            
-            if pick['pick_side'] == 'FAVORITE':
-                pick_line = f"{team_logo_html(pick_team)} {pick['pick_line']:+.1f}"
-                pick_odds = pick['fav_odds']
-            else:
-                pick_line = f"{team_logo_html(pick_team)} {pick['pick_line']:+.1f}"
-                pick_odds = pick['dog_odds']
-            
-            matchup_str = f"{team_logo_html(favorite, show_name=False)} <span class='vs'>vs</span> {team_logo_html(underdog, show_name=False)}"
-            
-            html += f"""
-                <div class="pick">
-                    <div class="pick-header">
-                        {pick_line}
-                    </div>
-                    <div class="pick-details">
-                        {matchup_str}<br>
-                        Novig Odds: {format_american_odds(pick_odds)}<br>
-                        Orb Cover Probability: {pick['cover_prob']:.1%}<br>
-                        Edge: {pick['edge']:.1%}
-                    </div>
+    # Add performance splits
+    splits = get_performance_splits()
+    if splits:
+        html += f"""
+            <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <div style="font-size: 16px; font-weight: bold; color: #9a29e9; margin-bottom: 10px;">PERFORMANCE SPLITS</div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>By Pick Type:</strong><br>
+                    • Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units<br>
+                    • Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units
                 </div>
-            """
-    
-    html += f"""
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>By Home/Away (All Games):</strong><br>
+                    • Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units<br>
+                    • Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units
+                </div>
+                
+                <div>
+                    <strong>By Pick + Location:</strong><br>
+                    • Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units<br>
+                    • Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units<br>
+                    • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units<br>
+                    • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units
+                </div>
             </div>
+        """
             
+    html += f"""
             <div style="text-align: center; margin: 30px 0;">
                 <p><strong>Total Games Today:</strong> {len(predictions)}</p>
                 <p><strong>Picks Made:</strong> {len(picks)}</p>
@@ -931,55 +933,7 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     lines.append(f"   {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)")
     lines.append(f"   Units: {season_record['units']:+.2f}")
     lines.append("")
-    
-    # Add performance splits
-    splits = get_performance_splits()
-    if splits:
-        lines.append("PERFORMANCE SPLITS")
-        lines.append("")
-        lines.append("**By Pick Type:**")
-        lines.append(f"- Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units")
-        lines.append(f"- Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units")
-        lines.append("")
-        lines.append("**By Home/Away (All Games):**")
-        lines.append(f"- Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units")
-        lines.append(f"- Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units")
-        lines.append("")
-        lines.append("**By Pick + Location:**")
-        lines.append(f"- Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units")
-        lines.append(f"- Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units")
-        lines.append(f"- Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units")
-        lines.append(f"- Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units")
-        lines.append("")
-    
     lines.append("="*100)
-    
-    # Yesterday's Results (if any)
-    if yesterday_results:
-        lines.append("")
-        lines.append("📅 YESTERDAY'S RESULTS")
-        lines.append("="*100)
-        
-        wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
-        losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
-        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
-        
-        for result in yesterday_results:
-            emoji = "✅" if result['result'] == 'WIN' else "❌" if result['result'] == 'LOSS' else "⏳"
-            
-            if result['pick_side'] == 'FAVORITE':
-                pick_str = f"{result['pick_team']} {-result['spread']:+.1f}"
-            else:
-                pick_str = f"{result['pick_team']} {result['spread']:+.1f}"
-            
-            units = result.get('units', 0.0)
-            lines.append(f"{emoji} {pick_str}")
-            lines.append(f"   {result['favorite']} vs {result['underdog']}")
-            lines.append(f"   Edge: {result['edge']:.1%} | Units: {units:+.2f}")
-            lines.append("")
-        
-        lines.append(f"Record: {wins}-{losses} | Units: {yesterday_units:+.2f}")
-        lines.append("="*100)
     
     # Today's Predictions
     lines.append("")
@@ -1011,6 +965,57 @@ def format_email(predictions, yesterday_results, season_record, date_str):
             lines.append("")
     
     lines.append("="*100)
+    
+    # Yesterday's Results (if any)
+    if yesterday_results:
+        lines.append("")
+        lines.append("📅 YESTERDAY'S RESULTS")
+        lines.append("="*100)
+        
+        wins = sum(1 for r in yesterday_results if r['result'] == 'WIN')
+        losses = sum(1 for r in yesterday_results if r['result'] == 'LOSS')
+        yesterday_units = sum(r.get('units', 0.0) for r in yesterday_results)
+        
+        for result in yesterday_results:
+            emoji = "✅" if result['result'] == 'WIN' else "❌" if result['result'] == 'LOSS' else "⏳"
+            
+            if result['pick_side'] == 'FAVORITE':
+                pick_str = f"{result['pick_team']} {-result['spread']:+.1f}"
+            else:
+                pick_str = f"{result['pick_team']} {result['spread']:+.1f}"
+            
+            units = result.get('units', 0.0)
+            lines.append(f"{emoji} {pick_str}")
+            lines.append(f"   {result['favorite']} vs {result['underdog']}")
+            lines.append(f"   Edge: {result['edge']:.1%} | Units: {units:+.2f}")
+            lines.append("")
+        
+        lines.append(f"Record: {wins}-{losses} | Units: {yesterday_units:+.2f}")
+        lines.append("="*100)
+    
+    # Add performance splits
+    splits = get_performance_splits()
+    if splits:
+        lines.append("")
+        lines.append("PERFORMANCE SPLITS")
+        lines.append("="*100)
+        lines.append("")
+        lines.append("**By Pick Type:**")
+        lines.append(f"- Picking Favorites: {splits['fav_picks']['wins']}-{splits['fav_picks']['losses']} ({splits['fav_picks']['pct']:.1f}%) | {splits['fav_picks']['units']:+.2f} units")
+        lines.append(f"- Picking Underdogs: {splits['dog_picks']['wins']}-{splits['dog_picks']['losses']} ({splits['dog_picks']['pct']:.1f}%) | {splits['dog_picks']['units']:+.2f} units")
+        lines.append("")
+        lines.append("**By Home/Away (All Games):**")
+        lines.append(f"- Favorite at Home: {splits['fav_home']['wins']}-{splits['fav_home']['losses']} ({splits['fav_home']['pct']:.1f}%) | {splits['fav_home']['units']:+.2f} units")
+        lines.append(f"- Favorite Away: {splits['fav_away']['wins']}-{splits['fav_away']['losses']} ({splits['fav_away']['pct']:.1f}%) | {splits['fav_away']['units']:+.2f} units")
+        lines.append("")
+        lines.append("**By Pick + Location:**")
+        lines.append(f"- Picking Favorite at Home: {splits['pfh']['wins']}-{splits['pfh']['losses']} ({splits['pfh']['pct']:.1f}%) | {splits['pfh']['units']:+.2f} units")
+        lines.append(f"- Picking Favorite Away: {splits['pfa']['wins']}-{splits['pfa']['losses']} ({splits['pfa']['pct']:.1f}%) | {splits['pfa']['units']:+.2f} units")
+        lines.append(f"- Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units")
+        lines.append(f"- Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units")
+        lines.append("")
+        lines.append("="*100)
+    
     lines.append("")
     lines.append(f"Total Games Today: {len(predictions)}")
     lines.append(f"Picks Made: {len(picks)}")
