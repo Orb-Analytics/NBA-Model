@@ -244,8 +244,14 @@ def post_predictions(test_mode=False):
         print(f"\n✅ Tweet posted successfully!")
         print(f"🔗 Tweet ID: {response.data['id']}")
     except Exception as e:
-        print(f"\n❌ Failed to post tweet: {e}")
-        raise
+        error_msg = str(e)
+        if "duplicate content" in error_msg.lower():
+            print(f"\n⚠️  Skipping post - already posted today (duplicate content)")
+            print("This is expected if the workflow runs multiple times per day")
+            return  # Exit gracefully without error
+        else:
+            print(f"\n❌ Failed to post tweet: {e}")
+            raise
 
 
 def main():
