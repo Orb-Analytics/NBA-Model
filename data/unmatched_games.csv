@@ -1,1 +1,3 @@
-Date,Fav,Dog
+Date,Home,Away,Home Score,Away Score,Winner,Status
+2026-01-19,Cleveland,Oklahoma City,104,136,Oklahoma City,STATUS_FINAL
+2026-01-19,Washington,LA,106,110,LA,STATUS_FINAL
