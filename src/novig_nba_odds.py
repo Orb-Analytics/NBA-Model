@@ -73,8 +73,27 @@ def is_fav_home(fav_abbr, home_team_full):
     return fav_abbr.upper() in home_team_full.upper()
 
 # === Data Fetching ===
-response = requests.post(url, json={'query': query})
-data = response.json()
+try:
+    response = requests.post(url, json={'query': query}, timeout=30)
+    response.raise_for_status()
+    data = response.json()
+except requests.exceptions.RequestException as e:
+    print(f"❌ Error fetching data from Novig API: {e}")
+    print("⚠️  Skipping odds update - will retry next run")
+    exit(0)  # Exit gracefully without failing the workflow
+
+# Validate response structure
+if 'data' not in data:
+    print("❌ Unexpected API response format:")
+    print(f"Response: {data}")
+    print("⚠️  Skipping odds update - will retry next run")
+    exit(0)  # Exit gracefully without failing the workflow
+
+if 'event' not in data['data']:
+    print("❌ No 'event' key in API response")
+    print(f"Response data: {data['data']}")
+    print("⚠️  Skipping odds update - will retry next run")
+    exit(0)  # Exit gracefully without failing the workflow
 
 now_est = now_eastern
 today_est = now_eastern.date()
