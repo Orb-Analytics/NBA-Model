@@ -1042,6 +1042,27 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     return "\n".join(lines)
 
 
+def load_email_subscribers(subscribers_file='data/email_subscribers.txt'):
+    """Load email subscribers from file."""
+    if not os.path.exists(subscribers_file):
+        print(f"⚠️  Subscriber file not found: {subscribers_file}")
+        print("   Falling back to default recipients")
+        return ['lpchaitin@gmail.com']
+    
+    try:
+        with open(subscribers_file, 'r') as f:
+            emails = [line.strip() for line in f if line.strip() and '@' in line]
+        
+        if not emails:
+            print(f"⚠️  No valid emails in {subscribers_file}")
+            return ['lpchaitin@gmail.com']
+        
+        return emails
+    except Exception as e:
+        print(f"⚠️  Error reading subscriber file: {e}")
+        return ['lpchaitin@gmail.com']
+
+
 def send_email_html(subject, html_body, predictions=None, yesterday_results=None, test_mode=False):
     """Send HTML email (logos loaded from ESPN CDN, Novig ads attached).
     
@@ -1062,8 +1083,11 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
         recipients = 'lpchaitin@gmail.com'
         print("🧪 TEST MODE: Sending only to lpchaitin@gmail.com")
     else:
-        recipients = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com,alexkalta1@gmail.com,pablozilly@icloud.com,kenbats34@yahoo.com,alex@perme.media,rapk65@gmail.com'
-        print("📧 PRODUCTION MODE: Sending to all recipients")
+        # Load subscribers from file
+        subscriber_list = load_email_subscribers()
+        recipients = ','.join(subscriber_list)
+        print(f"📧 PRODUCTION MODE: Sending to {len(subscriber_list)} subscribers")
+        print(f"   Loaded from data/email_subscribers.txt")
     
     # Create multipart message for embedded images
     msg = MIMEMultipart('related')
@@ -1129,11 +1153,15 @@ def send_email(subject, body):
         print("⚠️ SMTP credentials not configured - email not sent")
         return False
     
+    # Load subscribers from file
+    subscriber_list = load_email_subscribers()
+    recipients = ','.join(subscriber_list)
+    
     # Create message
     msg = MIMEMultipart()
     msg['From'] = smtp_username
     msg['To'] = smtp_username  # Show sender in To field
-    msg['Bcc'] = 'lpchaitin@gmail.com,eborsook@gmail.com,benitesa192@gmail.com,henrykdevlin@gmail.com,alexkalta1@gmail.com,pablozilly@icloud.com,blake1809@live.com,kenbats34@yahoo.com,alex@perme.media,rapk65@gmail.com'
+    msg['Bcc'] = recipients
     msg['Subject'] = subject
     
     msg.attach(MIMEText(body, 'plain'))

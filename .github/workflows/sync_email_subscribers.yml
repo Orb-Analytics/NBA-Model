@@ -1,0 +1,52 @@
+name: 📧 Sync Email Subscribers
+
+on:
+  schedule:
+    # Run every 6 hours to check for new subscribers
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  sync-subscribers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+
+      - name: 🔑 Create service account file
+        run: |
+          echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      - name: 🔄 Sync subscribers from Google Sheets
+        env:
+          EMAIL_SUBSCRIBERS_SHEET_ID: ${{ secrets.EMAIL_SUBSCRIBERS_SHEET_ID }}
+        run: |
+          echo "📊 Syncing email subscribers from Google Form responses..."
+          python src/sync_email_subscribers.py
+
+      - name: 💾 Commit updated subscriber list
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/email_subscribers.txt
+          
+          if git diff --staged --quiet; then
+            echo "No new subscribers"
+          else
+            NEW_COUNT=$(git diff --staged data/email_subscribers.txt | grep '^+' | grep -v '^+++' | wc -l)
+            git commit -m "📧 Add $NEW_COUNT new email subscriber(s)"
+            git push
+          fi
