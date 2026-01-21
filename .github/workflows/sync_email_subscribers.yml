@@ -2,8 +2,8 @@ name: 📧 Sync Email Subscribers
 
 on:
   schedule:
-    # Run every 6 hours to check for new subscribers
-    - cron: '0 */6 * * *'
+    # Run once daily at 9:00 AM PT (17:00 UTC) - before predictions run
+    - cron: '0 17 * * *'
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
