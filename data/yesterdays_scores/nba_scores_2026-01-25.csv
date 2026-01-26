@@ -1,0 +1,9 @@
+Date,Home,Away,Home Score,Away Score,Winner,Status
+2026-01-25,Detroit,Sacramento,139,116,Detroit,STATUS_FINAL
+2026-01-25,Memphis,Denver,0,0,,STATUS_POSTPONED
+2026-01-25,Minnesota,Golden State,85,111,Golden State,STATUS_FINAL
+2026-01-25,Milwaukee,Dallas,0,0,,STATUS_POSTPONED
+2026-01-25,Oklahoma City,Toronto,101,103,Toronto,STATUS_FINAL
+2026-01-25,San Antonio,New Orleans,95,104,New Orleans,STATUS_FINAL
+2026-01-25,Phoenix,Miami,102,111,Miami,STATUS_FINAL
+2026-01-25,LA,Brooklyn,126,89,LA,STATUS_FINAL
