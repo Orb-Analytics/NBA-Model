@@ -67,6 +67,26 @@ def load_all_predictions():
     return picks_only
 
 
+def clean_float(value, default=0.0):
+    """
+    Clean float values for JSON serialization.
+    Replace NaN, Inf, -Inf with default value.
+    """
+    if pd.isna(value) or not np.isfinite(value):
+        return default
+    return float(value)
+
+
+def map_confidence_level(edge):
+    """Map edge percentage to confidence level."""
+    if edge >= 5.0:
+        return 'high'
+    elif edge >= 3.0:
+        return 'medium'
+    else:
+        return 'low'
+
+
 def transform_predictions_for_api(df):
     """
     Transform predictions DataFrame to Orb Analytics API format.
