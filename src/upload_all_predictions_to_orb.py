@@ -15,21 +15,21 @@ from datetime import datetime
 
 def load_all_predictions():
     """
-    Load ALL predictions from the history CSV file.
+    Load ALL predictions from the backtest CSV file (has complete results).
     
     Returns:
         DataFrame with all predictions (excluding NO BET)
     """
-    history_path = 'data/averaged_model_predictions_history.csv'
+    backtest_path = 'data/averaged_model_backtest.csv'
     
-    if not Path(history_path).exists():
+    if not Path(backtest_path).exists():
         raise FileNotFoundError(
-            f"Predictions history file not found: {history_path}"
+            f"Predictions backtest file not found: {backtest_path}"
         )
     
-    # Load full history
-    df = pd.read_csv(history_path)
-    print(f"✓ Loaded {len(df)} total predictions from history")
+    # Load full backtest data (has all completed results)
+    df = pd.read_csv(backtest_path)
+    print(f"✓ Loaded {len(df)} total predictions from backtest")
     
     # Only include games where we made a pick (not NO BET)
     picks_only = df[df['pick_side'] != 'NO BET'].copy()
