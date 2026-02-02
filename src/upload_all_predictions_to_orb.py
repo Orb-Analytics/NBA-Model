@@ -9,6 +9,7 @@ import sys
 import json
 import requests
 import pandas as pd
+import numpy as np
 from pathlib import Path
 from datetime import datetime
 
@@ -92,8 +93,8 @@ def transform_predictions_for_api(df):
         # Determine pick team
         pick_team = row['pick_team'] if pd.notna(row['pick_team']) else ''
         
-        # Get the edge (already calculated in your data)
-        edge = float(row['edge']) * 100  # Convert to percentage
+        # Get the edge (already calculated in your data) - clean invalid values
+        edge = clean_float(row['edge'], 0.0) * 100  # Convert to percentage
         
         # Map confidence level based on edge
         confidence = map_confidence_level(edge)
@@ -109,9 +110,9 @@ def transform_predictions_for_api(df):
             'home_team': home_team_name,
             'away_team': away_team_name,
             'pick': pick_team,
-            'spread': float(row['spread']),
-            'ml_probability': float(row['averaged_fav_prob']),
-            'implied_probability': float(row['standardized_fav']),
+            'spread': clean_float(row['spread'], 0.0),
+            'ml_probability': clean_float(row['averaged_fav_prob'], 0.5),
+            'implied_probability': clean_float(row['standardized_fav'], 0.5),
             'edge': edge,
             'confidence': confidence
         }
