@@ -106,12 +106,12 @@ def transform_predictions_for_api(df):
         prediction = {
             'game_id': game_id,
             'date': row['date'],
-            'home_team': home_team,
-            'away_team': away_team,
+            'home_team': home_team_name,
+            'away_team': away_team_name,
             'pick': pick_team,
             'spread': float(row['spread']),
-            'ml_probability': floa_name,
-            'away_team': away_team_name float(row['standardized_fav']),
+            'ml_probability': float(row['averaged_fav_prob']),
+            'implied_probability': float(row['standardized_fav']),
             'edge': edge,
             'confidence': confidence
         }
