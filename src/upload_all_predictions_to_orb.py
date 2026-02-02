@@ -16,27 +16,49 @@ from datetime import datetime
 def load_all_predictions():
     """
     Load ALL predictions from the backtest CSV file (has complete results).
+    Merge with master dataset to get home/away information.
     
     Returns:
         DataFrame with all predictions (excluding NO BET)
     """
     backtest_path = 'data/averaged_model_backtest.csv'
+    master_path = 'data/NBA Training Set 25-26.csv'
     
     if not Path(backtest_path).exists():
         raise FileNotFoundError(
             f"Predictions backtest file not found: {backtest_path}"
         )
     
-    # Load full backtest data (has all completed results)
+    if not Path(master_path).exists():
+        raise FileNotFoundError(
+            f"Master training set not found: {master_path}"
+        )
+    
+    # Load backtest data (has all completed results)
     df = pd.read_csv(backtest_path)
     print(f"✓ Loaded {len(df)} total predictions from backtest")
     
+    # Load master dataset to get Home/Away columns
+    master = pd.read_csv(master_path)
+    master['Date'] = pd.to_datetime(master['Date']).dt.strftime('%Y-%m-%d')
+    
+    # Merge to get Home/Away info
+    # Match on Date, Favorite, Underdog, Spread
+    df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
+    merged = df.merge(
+        master[['Date', 'Favorite', 'Underdog', 'Spread', 'Home', 'Away']],
+        left_on=['date', 'favorite', 'underdog', 'spread'],
+        right_on=['Date', 'Favorite', 'Underdog', 'Spread'],
+        how='left'
+    )
+    
+    print(f"✓ Merged with master dataset to get home/away info")
+    
     # Only include games where we made a pick (not NO BET)
-    picks_only = df[df['pick_side'] != 'NO BET'].copy()
-    print(f"✓ {len(picks_only)} picks to upload (excluding {len(df) - len(picks_only)} NO BET games)")
+    picks_only = merged[merged['pick_side'] != 'NO BET'].copy()
+    print(f"✓ {len(picks_only)} picks to upload (excluding {len(merged) - len(picks_only)} NO BET games)")
     
     # Show date range
-    picks_only['date'] = pd.to_datetime(picks_only['date']).dt.strftime('%Y-%m-%d')
     date_min = picks_only['date'].min()
     date_max = picks_only['date'].max()
     print(f"✓ Date range: {date_min} to {date_max}")
@@ -59,17 +81,13 @@ def transform_predictions_for_api(df):
     for idx, row in df.iterrows():
         # Generate unique game ID
         date_str = str(row['date']).replace('-', '')
-        away_team = str(row['underdog']).replace(' ', '_')
-        home_team_str = 'home' if row['fav_at_home'] == 1 else 'away'
-        game_id = f"{away_team}_at_{row['favorite'].replace(' ', '_')}_{date_str}"
+        away_team = str(row['Away']).replace(' ', '_')
+        home_team = str(row['Home']).replace(' ', '_')
+        game_id = f"{away_team}_at_{home_team}_{date_str}"
         
-        # Determine home/away teams
-        if row['fav_at_home'] == 1:
-            home_team = row['favorite']
-            away_team = row['underdog']
-        else:
-            home_team = row['underdog']
-            away_team = row['favorite']
+        # Home and Away teams from master dataset
+        home_team_name = row['Home']
+        away_team_name = row['Away']
         
         # Determine pick team
         pick_team = row['pick_team'] if pd.notna(row['pick_team']) else ''
@@ -92,8 +110,8 @@ def transform_predictions_for_api(df):
             'away_team': away_team,
             'pick': pick_team,
             'spread': float(row['spread']),
-            'ml_probability': float(row['averaged_fav_prob']),
-            'implied_probability': float(row['standardized_fav']),
+            'ml_probability': floa_name,
+            'away_team': away_team_name float(row['standardized_fav']),
             'edge': edge,
             'confidence': confidence
         }
