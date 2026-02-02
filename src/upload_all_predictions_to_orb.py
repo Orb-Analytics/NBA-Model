@@ -162,7 +162,8 @@ def post_predictions_to_api(predictions, batch_size=50):
     for batch_num, batch in enumerate(batches, 1):
         print(f"\n   Batch {batch_num}/{len(batches)}: {len(batch)} predictions...", end=' ')
         
-        payload = {'predictions': batch}
+        # API expects array directly, not wrapped in object
+        payload = batch
         
         try:
             response = requests.post(endpoint, headers=headers, json=payload, timeout=30)

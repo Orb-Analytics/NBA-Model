@@ -161,7 +161,8 @@ def post_predictions_to_api(predictions):
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'
     }
-    payload = {'predictions': predictions}
+    # API expects array directly, not wrapped in object
+    payload = predictions
     
     print(f"\n📤 Posting {len(predictions)} predictions to Orb Analytics")
     print(f"   Endpoint: {endpoint}")
