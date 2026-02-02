@@ -1,0 +1,31 @@
+name: 🔍 Test Orb Analytics API Connection
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  test-connection:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: 🔍 Test API Connection
+        env:
+          ORB_PLATFORM_URL: ${{ secrets.ORB_PLATFORM_URL }}
+          ORB_PLATFORM_KEY: ${{ secrets.ORB_PLATFORM_KEY }}
+        run: |
+          python src/test_orb_api_connection.py
