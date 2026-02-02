@@ -1,0 +1,55 @@
+name: 🌐 Upload Predictions to Orb Analytics
+
+on:
+  workflow_run:
+    workflows: ["🎯 Generate & Email Daily Predictions"]
+    types:
+      - completed
+  workflow_dispatch:  # Allow manual testing
+    inputs:
+      prediction_date:
+        description: 'Date to upload (YYYY-MM-DD, default: today)'
+        required: false
+        type: string
+
+jobs:
+  upload-to-orb:
+    runs-on: ubuntu-latest
+    # Only run if the prediction workflow succeeded
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests
+
+      - name: 🌐 Upload Predictions to Orb Analytics Platform
+        env:
+          ORB_PLATFORM_URL: ${{ secrets.ORB_PLATFORM_URL }}
+          ORB_PLATFORM_KEY: ${{ secrets.ORB_PLATFORM_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.prediction_date }}" ]; then
+            PRED_DATE="${{ github.event.inputs.prediction_date }}"
+          else
+            PRED_DATE=$(date -u +%Y-%m-%d)
+          fi
+          
+          echo "🌐 Uploading predictions to Orb Analytics platform for: $PRED_DATE"
+          echo "📊 Reading from averaged_model_predictions_history.csv"
+          echo ""
+          
+          python src/upload_predictions_to_orb.py --date "$PRED_DATE"
+          
+          echo ""
+          echo "✅ Upload complete - predictions are now live on Orb Analytics"

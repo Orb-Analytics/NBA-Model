@@ -1,0 +1,99 @@
+name: 🔄 Bulk Upload All Predictions to Orb Analytics
+
+on:
+  workflow_dispatch:  # Manual trigger only
+    inputs:
+      dry_run:
+        description: 'Dry run (show what would be uploaded without uploading)?'
+        required: true
+        type: boolean
+        default: true
+      limit:
+        description: 'Limit number of predictions (leave empty for all 312)'
+        required: false
+        type: string
+      batch_size:
+        description: 'Batch size (default: 50)'
+        required: false
+        type: string
+        default: '50'
+
+jobs:
+  bulk-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests
+
+      - name: 🔄 Bulk Upload Predictions
+        env:
+          ORB_PLATFORM_URL: ${{ secrets.ORB_PLATFORM_URL }}
+          ORB_PLATFORM_KEY: ${{ secrets.ORB_PLATFORM_KEY }}
+        run: |
+          echo "========================================================================"
+          echo "🏀 Bulk Upload NBA Predictions to Orb Analytics"
+          echo "========================================================================"
+          echo ""
+          echo "Configuration:"
+          echo "  Dry Run: ${{ inputs.dry_run }}"
+          echo "  Limit: ${{ inputs.limit || 'None (upload all)' }}"
+          echo "  Batch Size: ${{ inputs.batch_size }}"
+          echo ""
+          
+          # Build command
+          CMD="python src/upload_all_predictions_to_orb.py"
+          
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            CMD="$CMD --dry-run"
+          fi
+          
+          if [ -n "${{ inputs.limit }}" ]; then
+            CMD="$CMD --limit ${{ inputs.limit }}"
+          fi
+          
+          if [ -n "${{ inputs.batch_size }}" ]; then
+            CMD="$CMD --batch-size ${{ inputs.batch_size }}"
+          fi
+          
+          echo "Running: $CMD"
+          echo ""
+          
+          # For actual upload, answer 'yes' automatically
+          if [ "${{ inputs.dry_run }}" = "false" ]; then
+            echo "yes" | $CMD
+          else
+            $CMD
+          fi
+
+      - name: 📊 Summary
+        if: always()
+        run: |
+          echo ""
+          echo "========================================================================"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "✓ Dry run complete"
+            echo ""
+            echo "To actually upload predictions:"
+            echo "1. Go to Actions → 'Bulk Upload All Predictions to Orb Analytics'"
+            echo "2. Click 'Run workflow'"
+            echo "3. Set 'Dry run' to 'false'"
+            echo "4. Click 'Run workflow'"
+          else
+            echo "✓ Upload attempt complete"
+            echo "Check the logs above for results"
+            echo "Verify predictions on Orb Analytics website"
+          fi
+          echo "========================================================================"
