@@ -138,7 +138,9 @@ def post_predictions_to_api(predictions, batch_size=50):
     if not api_key:
         raise ValueError("Missing ORB_PLATFORM_KEY environment variable")
     
-    endpoint = f"{api_url}/predictions/batch"
+    # Use the URL as-is (should include full path to edge function)
+    # e.g., https://project.supabase.co/functions/v1/make-server-xxx/predictions
+    endpoint = api_url.rstrip('/')
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'

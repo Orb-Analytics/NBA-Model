@@ -154,7 +154,9 @@ def post_predictions_to_api(predictions):
             "This should be set in your GitHub Secrets."
         )
     
-    endpoint = f"{api_url}/predictions/batch"
+    # Use the URL as-is (should include full path to edge function)
+    # e.g., https://project.supabase.co/functions/v1/make-server-xxx/predictions
+    endpoint = api_url.rstrip('/')
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'
