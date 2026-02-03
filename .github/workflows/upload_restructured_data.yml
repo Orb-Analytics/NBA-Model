@@ -1,0 +1,29 @@
+name: 🔄 Upload Restructured Data to Orb Analytics
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  upload-restructured:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests
+
+      - name: 🌐 Upload Restructured Data
+        env:
+          ORB_PLATFORM_URL: ${{ secrets.ORB_PLATFORM_URL }}
+          ORB_PLATFORM_KEY: ${{ secrets.ORB_PLATFORM_KEY }}
+        run: |
+          python src/upload_restructured_data_to_orb.py
