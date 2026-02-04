@@ -10,9 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repo
+      # Step 1: Checkout repo and pull latest (including Google Sheets export)
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history to ensure we get latest changes
+      
+      - name: Pull latest changes from Google Sheets export
+        run: |
+          git pull origin main
 
       # Step 2: Set up Python
       - name: Set up Python

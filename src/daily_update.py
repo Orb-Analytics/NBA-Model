@@ -56,16 +56,7 @@ def main():
         print("✅ All scores consistent")
 
     print(f"\n🎯 Daily NBA Data Pipeline Complete — {today}\n")
-
-    # 8️⃣ Commit + Push
-    try:
-        subprocess.run(["git", "add", "."], check=True)
-        commit_msg = f"🏀 NBA Auto-Update: {today}"
-        subprocess.run(["git", "commit", "-m", commit_msg], check=True)
-        subprocess.run(["git", "push"], check=True)
-        print("✅ Successfully pushed updates to GitHub.")
-    except Exception as e:
-        print(f"⚠️ Git push failed: {e}")
+    print("📤 Note: Changes will be committed and pushed by GitHub Actions workflow")
 
 if __name__ == "__main__":
     main()
