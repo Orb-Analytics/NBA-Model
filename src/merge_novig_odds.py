@@ -130,6 +130,13 @@ def merge_novig_odds():
             dog_odds = odds_row["dog_price_american"]
             home_fav = odds_row["home_favorite"]
 
+            # Check if teams were reversed in the match
+            # If odds have dog as fav and fav as dog, swap the odds values
+            if (fav_team_odds == dog) and (dog_team_odds == fav):
+                fav_odds, dog_odds = dog_odds, fav_odds
+                fav_line = -fav_line  # Also flip the spread sign
+                home_fav = 1 - home_fav  # Flip home favorite indicator
+
             # Update spread (fav_line) - always use absolute value for consistency
             df_master.at[i, "Spread"] = abs(fav_line)
 
