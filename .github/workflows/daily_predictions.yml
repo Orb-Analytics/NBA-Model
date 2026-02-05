@@ -87,5 +87,12 @@ jobs:
           X_ACCESS_TOLKEN: ${{ secrets.X_ACCESS_TOLKEN }}
           X_ACCESS_TOLKEN_SECRET: ${{ secrets.X_ACCESS_TOLKEN_SECRET }}
         run: |
-          echo "🐦 Posting today's predictions to X..."
-          python src/post_to_x.py
+          if [ -n "${{ github.event.inputs.prediction_date }}" ]; then
+            PRED_DATE="${{ github.event.inputs.prediction_date }}"
+          else
+            # Use Pacific Time date (UTC-8 hours) to ensure correct date at 11am PT
+            PRED_DATE=$(TZ=America/Los_Angeles date +%Y-%m-%d)
+          fi
+          
+          echo "🐦 Posting predictions for $PRED_DATE to X..."
+          python src/post_to_x.py --date "$PRED_DATE"
