@@ -1,0 +1,4 @@
+fav_team,dog_team,fav_line,dog_line,fav_price,dog_price,fav_price_american,dog_price_american,home_favorite,game_time_est,market,market_timestamp
+MIA,WAS,-12.5,12.5,0.521,0.487,-109,+105,0,2026-02-08T14:05:00-05:00,WAS +12.5,2026-02-08T18:07:55.994+00:00
+TOR,IND,-9.5,9.5,0.501,0.509,-100,-104,1,2026-02-08T15:05:00-05:00,TOR -9.5,2026-02-08T18:09:30.454+00:00
+MIN,LAC,-9.5,9.5,0.483,0.521,+107,-109,1,2026-02-08T15:05:00-05:00,MIN -9.5,2026-02-08T18:08:25.709+00:00
