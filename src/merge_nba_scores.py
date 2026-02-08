@@ -218,22 +218,50 @@ def merge_scores():
                 continue
 
             game = match.iloc[0]
-            home_team = game["Home"]
-            away_team = game["Away"]
+            home_team_mapped = game["Home_mapped"]
+            away_team_mapped = game["Away_mapped"]
             home_score = game["Home Score"]
             away_score = game["Away Score"]
             winner = game["Winner"]
 
-            # Assign scores
-            if fav_home == 1:
-                fav_score, dog_score = home_score, away_score
+            # Determine actual home/away from the scores file (don't trust training set)
+            # Map score file team names to master names for comparison
+            home_is_fav = (home_team_mapped == fav or 
+                          (home_team_mapped == "Los Angeles" and fav in ["La Lakers", "La Clippers"]))
+            away_is_fav = (away_team_mapped == fav or 
+                          (away_team_mapped == "Los Angeles" and fav in ["La Lakers", "La Clippers"]))
+            
+            # Assign scores based on ACTUAL home/away from scores file
+            if home_is_fav:
+                # Favorite is home
+                fav_score = home_score
+                dog_score = away_score
+                actual_fav_home = 1
                 df_master.at[i, "Home"] = fav
                 df_master.at[i, "Away"] = dog
-            else:
-                fav_score, dog_score = away_score, home_score
+            elif away_is_fav:
+                # Favorite is away
+                fav_score = away_score
+                dog_score = home_score
+                actual_fav_home = 0
                 df_master.at[i, "Home"] = dog
                 df_master.at[i, "Away"] = fav
+            else:
+                # Couldn't determine - fall back to training set value
+                print(f"⚠️ Warning: Could not determine home/away for {fav} vs {dog}, using training set value")
+                if fav_home == 1:
+                    fav_score, dog_score = home_score, away_score
+                    actual_fav_home = 1
+                    df_master.at[i, "Home"] = fav
+                    df_master.at[i, "Away"] = dog
+                else:
+                    fav_score, dog_score = away_score, home_score
+                    actual_fav_home = 0
+                    df_master.at[i, "Home"] = dog
+                    df_master.at[i, "Away"] = fav
 
+            # Update Fav. At Home? with actual value from scores
+            df_master.at[i, "Fav. At Home?"] = actual_fav_home
             df_master.at[i, "Favorite Score"] = fav_score
             df_master.at[i, "Underdog Score"] = dog_score
             df_master.at[i, "Winner"] = winner
@@ -247,14 +275,9 @@ def merge_scores():
             df_master.at[i, "Favorite Win?"] = 1 if diff > 0 else 0
 
             # Home/Away Scores
-            if fav_home == 1:
-                df_master.at[i, "Home Score"] = fav_score
-                df_master.at[i, "Away Score"] = dog_score
-            else:
-                df_master.at[i, "Home Score"] = dog_score
-                df_master.at[i, "Away Score"] = fav_score
-
-            df_master.at[i, "Home/Away +/-"] = df_master.at[i, "Home Score"] - df_master.at[i, "Away Score"]
+            df_master.at[i, "Home Score"] = home_score
+            df_master.at[i, "Away Score"] = away_score
+            df_master.at[i, "Home/Away +/-"] = home_score - away_score
 
             updated_rows += 1
 
