@@ -122,16 +122,14 @@ def calculate_units(odds, result):
 
 
 def format_pick_tweet(pick):
-    """Format a single pick for tweeting."""
+    """Format a single pick for tweeting (shortened - no opponent)."""
     # Determine matchup and odds
     if pick['pick_side'] == 'FAVORITE':
         pick_team = pick['favorite']
-        opponent = pick['underdog']
         line = -abs(pick['spread'])
         odds = pick.get('fav_odds', -110)
     else:
         pick_team = pick['underdog']
-        opponent = pick['favorite']
         line = abs(pick['spread'])
         odds = pick.get('dog_odds', -110)
     
@@ -139,8 +137,8 @@ def format_pick_tweet(pick):
     edge = pick['edge'] * 100
     odds_str = f"{int(odds):+d}" if odds == int(odds) else f"{odds:+.0f}"
     
-    # Create tweet text
-    tweet = f"🏀 {pick_team} {line:+.1f} vs {opponent} ({odds_str}, {edge:.1f}%)\n"
+    # Create tweet text (no opponent to save characters)
+    tweet = f"🏀 {pick_team} {line:+.1f} ({odds_str}, {edge:.1f}%)\n"
     
     return tweet
 
@@ -161,8 +159,8 @@ def format_result_tweet(result):
     return f"{emoji} {pick_team} {line:+.1f}\n"
 
 
-def create_predictions_tweet(picks_df, yesterdays_df, date, wins, losses, units):
-    """Create the main predictions tweet with yesterday's results."""
+def create_results_tweet(yesterdays_df, date, wins, losses, units):
+    """Create tweet for yesterday's results and season record."""
     win_pct = (wins / (wins + losses) * 100) if (wins + losses) > 0 else 0
     
     # Header with date
@@ -171,27 +169,15 @@ def create_predictions_tweet(picks_df, yesterdays_df, date, wins, losses, units)
     # Record with units
     tweet += f"📊 {wins}-{losses} ({win_pct:.1f}%, {units:+.1f}u)\n\n"
     
-    # TODAY'S PICKS
-    if len(picks_df) == 0:
-        tweet += "No picks today\n\n"
-    else:
-        tweet += f"Today's Picks:\n"
-        
-        for idx, pick in picks_df.iterrows():
-            pick_text = format_pick_tweet(pick)
-            tweet += pick_text
-        
-        tweet += "\n"
-    
     # YESTERDAY'S RESULTS
     if len(yesterdays_df) > 0:
-        tweet += "Yesterday:\n"
+        tweet += "Yesterday's Results:\n"
         
         for idx, result in yesterdays_df.iterrows():
             result_text = format_result_tweet(result)
             
-            # Check character limit
-            if len(tweet + result_text) > 260:
+            # Check character limit (leave room for hashtags)
+            if len(tweet + result_text + "\n#NBA #SportsBetting") > 280:
                 remaining = len(yesterdays_df) - idx
                 tweet += f"[+{remaining} more]\n"
                 break
@@ -199,6 +185,8 @@ def create_predictions_tweet(picks_df, yesterdays_df, date, wins, losses, units)
             tweet += result_text
         
         tweet += "\n"
+    else:
+        tweet += "No games yesterday\n\n"
     
     # Footer
     tweet += "#NBA #SportsBetting"
@@ -206,8 +194,33 @@ def create_predictions_tweet(picks_df, yesterdays_df, date, wins, losses, units)
     return tweet
 
 
+def create_picks_tweet(picks_df):
+    """Create tweet for today's picks."""
+    # Header
+    tweet = "🏀 Today's Picks:\n\n"
+    
+    # TODAY'S PICKS
+    if len(picks_df) == 0:
+        tweet = "🏀 No picks today\n\n#NBA #SportsBetting"
+    else:
+        for idx, pick in picks_df.iterrows():
+            pick_text = format_pick_tweet(pick)
+            
+            # Check character limit (leave room for hashtags)
+            if len(tweet + pick_text + "\n#NBA #SportsBetting") > 280:
+                remaining = len(picks_df) - idx
+                tweet += f"\n[+{remaining} more]\n"
+                break
+                
+            tweet += pick_text
+        
+        tweet += "\n#NBA #SportsBetting"
+    
+    return tweet
+
+
 def post_predictions(test_mode=False):
-    """Post today's predictions to X."""
+    """Post today's predictions to X as a two-tweet thread."""
     print("=" * 80)
     print("🐦 POSTING NBA PREDICTIONS TO X")
     print("=" * 80)
@@ -222,27 +235,52 @@ def post_predictions(test_mode=False):
     print(f"🎯 Today's Picks: {len(picks_df)}")
     print(f"📋 Yesterday's Results: {len(yesterdays_df)}")
     
-    # Create tweet
-    tweet = create_predictions_tweet(picks_df, yesterdays_df, date, wins, losses, units)
+    # Create tweets
+    results_tweet = create_results_tweet(yesterdays_df, date, wins, losses, units)
+    picks_tweet = create_picks_tweet(picks_df)
     
     print("\n" + "=" * 80)
-    print("TWEET PREVIEW:")
+    print("TWEET 1 - RESULTS & RECORD:")
     print("=" * 80)
-    print(tweet)
+    print(results_tweet)
     print("=" * 80)
-    print(f"Character count: {len(tweet)}")
+    print(f"Character count: {len(results_tweet)}")
+    print("=" * 80)
+    
+    print("\n" + "=" * 80)
+    print("TWEET 2 - TODAY'S PICKS:")
+    print("=" * 80)
+    print(picks_tweet)
+    print("=" * 80)
+    print(f"Character count: {len(picks_tweet)}")
     print("=" * 80)
     
     if test_mode:
-        print("\n⚠️  TEST MODE - Tweet not posted")
+        print("\n⚠️  TEST MODE - Tweets not posted")
         return
     
     # Authenticate and post
     try:
         client = authenticate_x_api()
-        response = client.create_tweet(text=tweet)
-        print(f"\n✅ Tweet posted successfully!")
-        print(f"🔗 Tweet ID: {response.data['id']}")
+        
+        # Post Tweet 1 (Results & Record)
+        print("\n📤 Posting Tweet 1 (Results & Record)...")
+        response1 = client.create_tweet(text=results_tweet)
+        tweet1_id = response1.data['id']
+        print(f"✅ Tweet 1 posted successfully!")
+        print(f"🔗 Tweet ID: {tweet1_id}")
+        
+        # Post Tweet 2 (Today's Picks) as a reply to Tweet 1
+        print("\n📤 Posting Tweet 2 (Today's Picks) as reply...")
+        response2 = client.create_tweet(
+            text=picks_tweet,
+            in_reply_to_tweet_id=tweet1_id
+        )
+        tweet2_id = response2.data['id']
+        print(f"✅ Tweet 2 posted successfully!")
+        print(f"🔗 Tweet ID: {tweet2_id}")
+        print(f"\n🎉 Thread complete!")
+        
     except Exception as e:
         error_msg = str(e)
         if "duplicate content" in error_msg.lower():
