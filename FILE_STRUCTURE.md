@@ -34,13 +34,9 @@ NBA-model/
 │   │   ├── fix_computed_columns.py     # Fix calculations
 │   │   └── validate_data.py            # Data validation
 │   │
-│   ├── 🤖 ML Models (6 scripts)
-│   │   ├── logistic_spread_model.py    # Logistic regression
-│   │   ├── linear_spread_model.py      # Linear regression
-│   │   ├── random_forest_spread_model.py  # Random forest
-│   │   ├── ensemble_spread_models.py   # Ensemble predictor
-│   │   ├── prediction_core.py          # Core utilities
-│   │   └── daily_spread_predictions.py # Feature definitions
+│   ├── 🤖 ML Models (2 scripts)
+│   │   ├── ensemble_spread_models.py   # Ensemble predictor (HOME/AWAY features)
+│   │   └── prediction_core.py          # Core utilities
 │   │
 │   └── 🎯 Averaged Model (4 scripts)
 │       ├── backtest_averaged_simple.py        # Backtest with 3% threshold

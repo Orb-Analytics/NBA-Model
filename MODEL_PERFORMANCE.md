@@ -52,12 +52,12 @@ This logistic regression model predicts NBA games against the spread using a **r
 ## Files
 
 ### Core Model
-- **`src/daily_spread_predictions.py`** - Main model script with rolling predictions
-- **`src/logistic_spread_model.py`** - Original full-dataset training model
+- **`src/ensemble_spread_models.py`** - Ensemble model combining Logistic, Linear, and Random Forest predictors with HOME/AWAY feature sets
+- **`src/predict_and_email_averaged.py`** - Main prediction script with email notifications
 
 ### Analysis
-- **`src/analyze_predictions.py`** - Performance analysis and betting simulations
-- **`tests/test_spread_model.py`** - Testing and demonstration scripts
+- **`src/backtest_averaged_simple.py`** - Performance analysis and backtesting
+- **`src/regenerate_unified_results.py`** - Regenerate all model predictions
 
 ### Data
 - **`data/NBA Training Set 25-26.csv`** - Master training dataset (1,110 games)
@@ -68,36 +68,35 @@ This logistic regression model predicts NBA games against the spread using a **r
 
 ### 1. Run Daily Predictions
 ```bash
-python src/daily_spread_predictions.py
+python src/predict_and_email_averaged.py --date 2026-02-09 --no-email
 ```
 
 This will:
-- Train models on historical data for each date
-- Select top 15 features dynamically
-- Make predictions for that day's games
-- Track performance against actual results
-- Save results to `data/daily_predictions_results.csv`
+- Load ensemble model with HOME/AWAY specific features
+- Train on historical data with Logistic, Linear, and Random Forest models
+- Generate probability predictions for today's games
+- Apply 3% edge threshold for picks
+- Save results to `data/averaged_model_predictions_history.csv`
 
-### 2. Analyze Results
+### 2. Backtest Model
 ```bash
-python src/analyze_predictions.py
+python src/backtest_averaged_simple.py
 ```
 
 Provides:
-- Overall accuracy statistics
-- Performance by model type and confidence level
-- Daily performance breakdown
-- Betting simulation results
-- Pending predictions for upcoming games
+- Overall accuracy statistics (167-146, 53.4%)
+- Performance by confidence level
+- Betting simulation results (+$1,438 profit, +4.59% ROI)
+- Kelly Criterion analysis
 
 ### 3. Use as Library
 ```python
-from src.daily_spread_predictions import DailySpreadPredictor
+from src.ensemble_spread_models import EnsembleSpreadPredictor, HOME_PREDICTORS, AWAY_PREDICTORS
 
 # Initialize
-predictor = DailySpreadPredictor('data/NBA Training Set 25-26.csv')
+predictor = EnsembleSpreadPredictor('data/NBA Training Set 25-26.csv')
 
-# Run predictions for date range
+# Run predictions with ensemble
 predictor.run_daily_predictions(
     start_date='2025-10-21',
     end_date='2025-11-05'

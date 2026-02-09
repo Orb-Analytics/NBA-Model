@@ -30,8 +30,8 @@ This workflow automatically generates NBA spread predictions for today's games a
 - `.github/workflows/daily_predictions.yml` - GitHub Actions workflow
 
 ### Python Scripts
-- `src/predict_today.py` - Generates predictions for today's games
-- `src/daily_spread_predictions.py` - Core prediction model (imported)
+- `src/predict_and_email_averaged.py` - Generates predictions and sends email notifications
+- `src/ensemble_spread_models.py` - Core ensemble model (Logistic + Linear + Random Forest)
 
 ## How It Works
 
