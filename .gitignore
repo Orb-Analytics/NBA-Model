@@ -30,6 +30,9 @@ Thumbs.db
 service_account.json
 *.pem
 *.key
+.env
+.env.local
+*.env
 
 # Logs and temporary files
 *.log
