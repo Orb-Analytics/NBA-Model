@@ -1,0 +1,4 @@
+fav_team,dog_team,fav_line,dog_line,fav_price,dog_price,fav_price_american,dog_price_american,home_favorite,game_time_est,market,market_timestamp
+DET,SAS,-1.5,1.5,0.491,0.517,+104,-107,1,2026-02-23T19:05:00-05:00,DET -1.5,2026-02-23T18:23:20.134+00:00
+MEM,SAC,-3.5,3.5,0.484,0.528,+107,-112,1,2026-02-23T20:05:00-05:00,MEM -3.5,2026-02-23T18:22:09.793+00:00
+HOU,UTA,-13.5,13.5,0.488,0.517,+105,-107,1,2026-02-23T21:35:00-05:00,HOU -13.5,2026-02-23T18:20:13.263+00:00
