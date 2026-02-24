@@ -159,43 +159,50 @@ def format_result_tweet(result):
     return f"{emoji} {pick_team} {line:+.1f}\n"
 
 
-def create_results_tweet(yesterdays_df, date, wins, losses, units):
-    """Create tweet for yesterday's results and season record."""
+def create_results_tweets(yesterdays_df, date, wins, losses, units):
+    """Create tweet(s) for yesterday's results and season record. Returns a list of tweets."""
     win_pct = (wins / (wins + losses) * 100) if (wins + losses) > 0 else 0
     
     # Use 260 as limit to account for emoji overhead (Twitter counts many emojis as 2 chars)
     TWITTER_LIMIT = 260
+    footer = "\n#NBA #SportsBetting"
     
-    # Header with date
-    tweet = f"🏀 {datetime.strptime(date, '%Y-%m-%d').strftime('%b %d')}\n\n"
+    # Header with date and record
+    header = f"🏀 {datetime.strptime(date, '%Y-%m-%d').strftime('%b %d')}\n\n"
+    header += f"📊 {wins}-{losses} ({win_pct:.1f}%, {units:+.1f}u)\n\n"
     
-    # Record with units
-    tweet += f"📊 {wins}-{losses} ({win_pct:.1f}%, {units:+.1f}u)\n\n"
+    # Handle no results case
+    if len(yesterdays_df) == 0:
+        tweet = header + "No games yesterday" + footer
+        return [tweet]
     
-    # YESTERDAY'S RESULTS
-    if len(yesterdays_df) > 0:
-        tweet += "Yesterday's Results:\n"
+    # Build results tweets (may need to split if many results)
+    tweets = []
+    current_tweet = header + "Yesterday's Results:\n"
+    
+    for i, (idx, result) in enumerate(yesterdays_df.iterrows()):
+        result_text = format_result_tweet(result)
         
-        for i, (idx, result) in enumerate(yesterdays_df.iterrows()):
-            result_text = format_result_tweet(result)
-            
-            # Check character limit (leave room for hashtags)
-            potential_tweet = tweet + result_text + "\n#NBA #SportsBetting"
-            if len(potential_tweet) > TWITTER_LIMIT:
-                remaining = len(yesterdays_df) - i
-                tweet += f"[+{remaining} more]\n"
-                break
-                
-            tweet += result_text
-        
-        tweet += "\n"
-    else:
-        tweet += "No games yesterday\n\n"
+        # Check if adding this result would exceed limit
+        potential_tweet = current_tweet + result_text + footer
+        if len(potential_tweet) > TWITTER_LIMIT:
+            # Save current tweet and start a new one
+            tweets.append(current_tweet.rstrip('\n') + footer)
+            current_tweet = result_text
+        else:
+            current_tweet += result_text
     
-    # Footer
-    tweet += "#NBA #SportsBetting"
+    # Add the last tweet
+    if current_tweet:
+        tweets.append(current_tweet.rstrip('\n') + footer)
     
-    return tweet
+    return tweets
+
+
+def create_results_tweet(yesterdays_df, date, wins, losses, units):
+    """Create tweet for yesterday's results (backward compatibility - returns first tweet only)."""
+    tweets = create_results_tweets(yesterdays_df, date, wins, losses, units)
+    return tweets[0] if tweets else "🏀 No games yesterday\n\n#NBA #SportsBetting"
 
 
 def create_picks_tweets(picks_df):
@@ -237,7 +244,7 @@ def create_picks_tweet(picks_df):
 
 
 def post_predictions(test_mode=False):
-    """Post today's predictions to X as a two-tweet thread."""
+    """Post today's predictions to X as a multi-tweet thread."""
     print("=" * 80)
     print("🐦 POSTING NBA PREDICTIONS TO X")
     print("=" * 80)
@@ -253,25 +260,33 @@ def post_predictions(test_mode=False):
     print(f"📋 Yesterday's Results: {len(yesterdays_df)}")
     
     # Create tweets
-    results_tweet = create_results_tweet(yesterdays_df, date, wins, losses, units)
+    results_tweets = create_results_tweets(yesterdays_df, date, wins, losses, units)
     picks_tweets = create_picks_tweets(picks_df)
     
-    print("\n" + "=" * 80)
-    print("TWEET 1 - RESULTS & RECORD:")
-    print("=" * 80)
-    print(results_tweet)
-    print("=" * 80)
-    print(f"Character count: {len(results_tweet)}")
-    print("=" * 80)
-    
-    for i, picks_tweet in enumerate(picks_tweets, start=2):
+    # Display all tweets that will be posted
+    tweet_num = 1
+    for i, results_tweet in enumerate(results_tweets):
         print("\n" + "=" * 80)
-        print(f"TWEET {i} - TODAY'S PICKS ({i-1}/{len(picks_tweets)}):")
+        if len(results_tweets) > 1:
+            print(f"TWEET {tweet_num} - RESULTS & RECORD ({i+1}/{len(results_tweets)}):")
+        else:
+            print(f"TWEET {tweet_num} - RESULTS & RECORD:")
+        print("=" * 80)
+        print(results_tweet)
+        print("=" * 80)
+        print(f"Character count: {len(results_tweet)}")
+        print("=" * 80)
+        tweet_num += 1
+    
+    for i, picks_tweet in enumerate(picks_tweets):
+        print("\n" + "=" * 80)
+        print(f"TWEET {tweet_num} - TODAY'S PICKS ({i+1}/{len(picks_tweets)}):")
         print("=" * 80)
         print(picks_tweet)
         print("=" * 80)
         print(f"Character count: {len(picks_tweet)}")
         print("=" * 80)
+        tweet_num += 1
     
     if test_mode:
         print("\n⚠️  TEST MODE - Tweets not posted")
@@ -280,26 +295,39 @@ def post_predictions(test_mode=False):
     # Authenticate and post
     try:
         client = authenticate_x_api()
+        last_tweet_id = None
+        tweet_num = 1
         
-        # Post Tweet 1 (Results & Record)
-        print("\n📤 Posting Tweet 1 (Results & Record)...")
-        response1 = client.create_tweet(text=results_tweet)
-        last_tweet_id = response1.data['id']
-        print(f"✅ Tweet 1 posted successfully!")
-        print(f"🔗 Tweet ID: {last_tweet_id}")
+        # Post results tweets
+        for i, results_tweet in enumerate(results_tweets):
+            if i == 0:
+                print(f"\n📤 Posting Tweet {tweet_num} (Results & Record)...")
+                response = client.create_tweet(text=results_tweet)
+            else:
+                print(f"\n📤 Posting Tweet {tweet_num} (Results continued {i+1}/{len(results_tweets)}) as reply...")
+                response = client.create_tweet(
+                    text=results_tweet,
+                    in_reply_to_tweet_id=last_tweet_id
+                )
+            
+            last_tweet_id = response.data['id']
+            print(f"✅ Tweet {tweet_num} posted successfully!")
+            print(f"🔗 Tweet ID: {last_tweet_id}")
+            tweet_num += 1
         
         # Post pick tweets as replies
-        for i, picks_tweet in enumerate(picks_tweets, start=2):
-            print(f"\n📤 Posting Tweet {i} (Picks {i-1}/{len(picks_tweets)}) as reply...")
+        for i, picks_tweet in enumerate(picks_tweets):
+            print(f"\n📤 Posting Tweet {tweet_num} (Picks {i+1}/{len(picks_tweets)}) as reply...")
             response = client.create_tweet(
                 text=picks_tweet,
                 in_reply_to_tweet_id=last_tweet_id
             )
             last_tweet_id = response.data['id']
-            print(f"✅ Tweet {i} posted successfully!")
+            print(f"✅ Tweet {tweet_num} posted successfully!")
             print(f"🔗 Tweet ID: {last_tweet_id}")
+            tweet_num += 1
         
-        print(f"\n🎉 Thread complete! ({1 + len(picks_tweets)} tweets)")
+        print(f"\n🎉 Thread complete! ({len(results_tweets) + len(picks_tweets)} tweets)")
         
     except Exception as e:
         error_msg = str(e)
