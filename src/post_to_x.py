@@ -173,12 +173,13 @@ def create_results_tweet(yesterdays_df, date, wins, losses, units):
     if len(yesterdays_df) > 0:
         tweet += "Yesterday's Results:\n"
         
-        for idx, result in yesterdays_df.iterrows():
+        for i, (idx, result) in enumerate(yesterdays_df.iterrows()):
             result_text = format_result_tweet(result)
             
             # Check character limit (leave room for hashtags)
-            if len(tweet + result_text + "\n#NBA #SportsBetting") > 280:
-                remaining = len(yesterdays_df) - idx
+            potential_tweet = tweet + result_text + "\n#NBA #SportsBetting"
+            if len(potential_tweet) > 280:
+                remaining = len(yesterdays_df) - i
                 tweet += f"[+{remaining} more]\n"
                 break
                 
@@ -203,12 +204,13 @@ def create_picks_tweet(picks_df):
     if len(picks_df) == 0:
         tweet = "🏀 No picks today\n\n#NBA #SportsBetting"
     else:
-        for idx, pick in picks_df.iterrows():
+        for i, (idx, pick) in enumerate(picks_df.iterrows()):
             pick_text = format_pick_tweet(pick)
             
             # Check character limit (leave room for hashtags)
-            if len(tweet + pick_text + "\n#NBA #SportsBetting") > 280:
-                remaining = len(picks_df) - idx
+            potential_tweet = tweet + pick_text + "\n#NBA #SportsBetting"
+            if len(potential_tweet) > 280:
+                remaining = len(picks_df) - i
                 tweet += f"\n[+{remaining} more]\n"
                 break
                 
