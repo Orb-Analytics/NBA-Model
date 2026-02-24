@@ -163,6 +163,9 @@ def create_results_tweet(yesterdays_df, date, wins, losses, units):
     """Create tweet for yesterday's results and season record."""
     win_pct = (wins / (wins + losses) * 100) if (wins + losses) > 0 else 0
     
+    # Use 260 as limit to account for emoji overhead (Twitter counts many emojis as 2 chars)
+    TWITTER_LIMIT = 260
+    
     # Header with date
     tweet = f"🏀 {datetime.strptime(date, '%Y-%m-%d').strftime('%b %d')}\n\n"
     
@@ -178,7 +181,7 @@ def create_results_tweet(yesterdays_df, date, wins, losses, units):
             
             # Check character limit (leave room for hashtags)
             potential_tweet = tweet + result_text + "\n#NBA #SportsBetting"
-            if len(potential_tweet) > 280:
+            if len(potential_tweet) > TWITTER_LIMIT:
                 remaining = len(yesterdays_df) - i
                 tweet += f"[+{remaining} more]\n"
                 break
@@ -195,30 +198,42 @@ def create_results_tweet(yesterdays_df, date, wins, losses, units):
     return tweet
 
 
-def create_picks_tweet(picks_df):
-    """Create tweet for today's picks."""
-    # Header
-    tweet = "🏀 Today's Picks:\n\n"
-    
-    # TODAY'S PICKS
+def create_picks_tweets(picks_df):
+    """Create tweet(s) for today's picks. Returns a list of tweets."""
+    # Handle no picks case
     if len(picks_df) == 0:
-        tweet = "🏀 No picks today\n\n#NBA #SportsBetting"
-    else:
-        for i, (idx, pick) in enumerate(picks_df.iterrows()):
-            pick_text = format_pick_tweet(pick)
-            
-            # Check character limit (leave room for hashtags)
-            potential_tweet = tweet + pick_text + "\n#NBA #SportsBetting"
-            if len(potential_tweet) > 280:
-                remaining = len(picks_df) - i
-                tweet += f"\n[+{remaining} more]\n"
-                break
-                
-            tweet += pick_text
-        
-        tweet += "\n#NBA #SportsBetting"
+        return ["🏀 No picks today\n\n#NBA #SportsBetting"]
     
-    return tweet
+    tweets = []
+    current_tweet = "🏀 Today's Picks:\n\n"
+    footer = "\n#NBA #SportsBetting"
+    
+    # Use 260 as limit to account for emoji overhead (Twitter counts many emojis as 2 chars)
+    TWITTER_LIMIT = 260
+    
+    for i, (idx, pick) in enumerate(picks_df.iterrows()):
+        pick_text = format_pick_tweet(pick)
+        
+        # Check if adding this pick would exceed limit
+        potential_tweet = current_tweet + pick_text + footer
+        if len(potential_tweet) > TWITTER_LIMIT:
+            # Save current tweet and start a new one
+            tweets.append(current_tweet.rstrip('\n') + footer)
+            current_tweet = pick_text
+        else:
+            current_tweet += pick_text
+    
+    # Add the last tweet
+    if current_tweet:
+        tweets.append(current_tweet.rstrip('\n') + footer)
+    
+    return tweets
+
+
+def create_picks_tweet(picks_df):
+    """Create tweet for today's picks (backward compatibility - returns first tweet only)."""
+    tweets = create_picks_tweets(picks_df)
+    return tweets[0] if tweets else "🏀 No picks today\n\n#NBA #SportsBetting"
 
 
 def post_predictions(test_mode=False):
@@ -239,7 +254,7 @@ def post_predictions(test_mode=False):
     
     # Create tweets
     results_tweet = create_results_tweet(yesterdays_df, date, wins, losses, units)
-    picks_tweet = create_picks_tweet(picks_df)
+    picks_tweets = create_picks_tweets(picks_df)
     
     print("\n" + "=" * 80)
     print("TWEET 1 - RESULTS & RECORD:")
@@ -249,13 +264,14 @@ def post_predictions(test_mode=False):
     print(f"Character count: {len(results_tweet)}")
     print("=" * 80)
     
-    print("\n" + "=" * 80)
-    print("TWEET 2 - TODAY'S PICKS:")
-    print("=" * 80)
-    print(picks_tweet)
-    print("=" * 80)
-    print(f"Character count: {len(picks_tweet)}")
-    print("=" * 80)
+    for i, picks_tweet in enumerate(picks_tweets, start=2):
+        print("\n" + "=" * 80)
+        print(f"TWEET {i} - TODAY'S PICKS ({i-1}/{len(picks_tweets)}):")
+        print("=" * 80)
+        print(picks_tweet)
+        print("=" * 80)
+        print(f"Character count: {len(picks_tweet)}")
+        print("=" * 80)
     
     if test_mode:
         print("\n⚠️  TEST MODE - Tweets not posted")
@@ -268,20 +284,22 @@ def post_predictions(test_mode=False):
         # Post Tweet 1 (Results & Record)
         print("\n📤 Posting Tweet 1 (Results & Record)...")
         response1 = client.create_tweet(text=results_tweet)
-        tweet1_id = response1.data['id']
+        last_tweet_id = response1.data['id']
         print(f"✅ Tweet 1 posted successfully!")
-        print(f"🔗 Tweet ID: {tweet1_id}")
+        print(f"🔗 Tweet ID: {last_tweet_id}")
         
-        # Post Tweet 2 (Today's Picks) as a reply to Tweet 1
-        print("\n📤 Posting Tweet 2 (Today's Picks) as reply...")
-        response2 = client.create_tweet(
-            text=picks_tweet,
-            in_reply_to_tweet_id=tweet1_id
-        )
-        tweet2_id = response2.data['id']
-        print(f"✅ Tweet 2 posted successfully!")
-        print(f"🔗 Tweet ID: {tweet2_id}")
-        print(f"\n🎉 Thread complete!")
+        # Post pick tweets as replies
+        for i, picks_tweet in enumerate(picks_tweets, start=2):
+            print(f"\n📤 Posting Tweet {i} (Picks {i-1}/{len(picks_tweets)}) as reply...")
+            response = client.create_tweet(
+                text=picks_tweet,
+                in_reply_to_tweet_id=last_tweet_id
+            )
+            last_tweet_id = response.data['id']
+            print(f"✅ Tweet {i} posted successfully!")
+            print(f"🔗 Tweet ID: {last_tweet_id}")
+        
+        print(f"\n🎉 Thread complete! ({1 + len(picks_tweets)} tweets)")
         
     except Exception as e:
         error_msg = str(e)
