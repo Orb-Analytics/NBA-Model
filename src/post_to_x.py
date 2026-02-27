@@ -16,8 +16,8 @@ def authenticate_x_api():
     # Get credentials from environment variables
     api_key = os.environ.get('X_API_KEY')
     api_secret = os.environ.get('X_API_SECRET_KEY')
-    access_token = os.environ.get('X_ACCESS_TOLKEN')  # Note: User's typo in secret name
-    access_token_secret = os.environ.get('X_ACCESS_TOLKEN_SECRET')
+    access_token = os.environ.get('X_ACCESS_TOKEN')
+    access_token_secret = os.environ.get('X_ACCESS_TOKEN_SECRET')
     
     if not all([api_key, api_secret, access_token, access_token_secret]):
         raise Exception("Missing X API credentials in environment variables")

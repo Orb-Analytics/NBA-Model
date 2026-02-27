@@ -84,8 +84,8 @@ jobs:
         env:
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET_KEY: ${{ secrets.X_API_SECRET_KEY }}
-          X_ACCESS_TOLKEN: ${{ secrets.X_ACCESS_TOLKEN }}
-          X_ACCESS_TOLKEN_SECRET: ${{ secrets.X_ACCESS_TOLKEN_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
         run: |
           if [ -n "${{ github.event.inputs.prediction_date }}" ]; then
             PRED_DATE="${{ github.event.inputs.prediction_date }}"
