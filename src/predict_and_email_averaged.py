@@ -74,7 +74,7 @@ TEAM_LOGOS = {
     'Milwaukee': 'mil', 'Minnesota': 'min', 'New Orleans': 'no', 'New York': 'ny',
     'Okla City': 'okc', 'Orlando': 'orl', 'Philadelphia': 'phi', 'Phoenix': 'phx',
     'Portland': 'por', 'Sacramento': 'sac', 'San Antonio': 'sa', 'Toronto': 'tor',
-    'Utah': 'uta', 'Washington': 'wsh'
+    'Utah': 'utah', 'Washington': 'wsh'
 }
 
 
@@ -369,15 +369,14 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .header {{ text-align: center; border-bottom: 3px solid #9a29e9; padding-bottom: 20px; margin-bottom: 20px; }}
             .record {{ font-size: 20px; font-weight: bold; color: #000000; text-align: center; margin: 20px 0; line-height: 1.6; }}
             .section {{ margin: 20px 0; }}
-            .section-title {{ font-size: 24px; font-weight: bold; color: #000000; border-bottom: 2px solid #9a29e9; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
+            .section-title {{ font-size: 24px; font-weight: bold; color: #000000; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
             .pick {{ background-color: #e5e5e5; padding: 25px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .pick-content {{ display: table; width: 100%; }}
             .pick-left {{ display: table-cell; vertical-align: middle; width: 55%; white-space: nowrap; }}
-            .pick-middle {{ display: table-cell; vertical-align: middle; width: 12%; text-align: center; padding: 0 5px; }}
-            .pick-right {{ display: table-cell; vertical-align: middle; width: 33%; text-align: left; border-left: 2px solid #999; padding-left: 15px; }}
-            .pick-right-inner {{ display: table; width: 100%; }}
-            .pick-stats {{ display: table-cell; vertical-align: middle; text-align: left; padding-right: 15px; }}
-            .pick-spread-cell {{ display: table-cell; vertical-align: middle; text-align: right; }}
+            .pick-right {{ display: table-cell; vertical-align: middle; width: 45%; text-align: left; border-left: 2px solid #999; padding-left: 15px; }}
+            .pick-right-container {{ display: table; width: 100%; }}
+            .pick-stats {{ display: table-cell; vertical-align: middle; text-align: left; padding-right: 15px; width: 70%; }}
+            .pick-spread-cell {{ display: table-cell; vertical-align: middle; text-align: right; width: 30%; }}
             .pick-emoji {{ font-size: 48px; display: inline-block; vertical-align: middle; margin-right: 15px; }}
             .pick-logo {{ width: 70px; height: 70px; vertical-align: middle; margin-right: 15px; }}
             .pick-team {{ font-size: 40px; font-weight: bold; display: inline-block; vertical-align: middle; white-space: nowrap; }}
@@ -466,7 +465,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                     <tr>
                         <td valign="top" align="center" style="padding: 0 10px;">
                             <a target="_blank" href="https://orbanalytics.substack.com/">
-                                <img height="32" title="Substack" src="https://ezfbzub.stripocdn.email/content/guids/CABINET_10dc2a87fe0abe172c1afd44c80939bfa38f5d39fb2597892ba47e7e002dcfd0/images/substack_192.png" alt="Substack" width="32" style="display:block;border:0;" />
+                                <img height="32" title="Substack" src="https://cdn.simpleicons.org/substack/FF6719" alt="Substack" width="32" style="display:block;border:0;" />
                             </a>
                         </td>
                         <td align="center" valign="top" style="padding: 0 10px;">
@@ -544,13 +543,17 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                                 <div class="pick-matchup">{location_str} {opponent}</div>
                             </div>
                         </div>
-                        <div class="pick-middle">
-                            <span class="pick-spread-box">{spread_line}</span>
-                        </div>
                         <div class="pick-right">
-                            <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
-                            <div class="pick-stat">Cover Prob: <strong>{cover_prob:.1%}</strong></div>
-                            <div class="pick-stat">Edge: <strong>{pick['edge']:.1%}</strong></div>
+                            <div class="pick-right-container">
+                                <div class="pick-stats">
+                                    <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
+                                    <div class="pick-stat">Cover Prob: <strong>{cover_prob:.1%}</strong></div>
+                                    <div class="pick-stat">Edge: <strong>{pick['edge']:.1%}</strong></div>
+                                </div>
+                                <div class="pick-spread-cell">
+                                    <span class="pick-spread-box">{spread_line}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -626,13 +629,17 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                                 <div class="pick-matchup">{location_str} {opponent}</div>
                             </div>
                         </div>
-                        <div class="pick-middle">
-                            <span class="pick-spread-box">{spread_line}</span>
-                        </div>
                         <div class="pick-right">
-                            <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
-                            <div class="pick-stat">Edge: <strong>{result['edge']:.1%}</strong></div>
-                            <div class="pick-stat">Units: <strong>{units:+.2f}</strong></div>
+                            <div class="pick-right-container">
+                                <div class="pick-stats">
+                                    <div class="pick-stat">Odds: <strong>{format_american_odds(pick_odds)}</strong></div>
+                                    <div class="pick-stat">Edge: <strong>{result['edge']:.1%}</strong></div>
+                                    <div class="pick-stat">Units: <strong>{units:+.2f}</strong></div>
+                                </div>
+                                <div class="pick-spread-cell">
+                                    <span class="pick-spread-box">{spread_line}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -658,7 +665,6 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
     splits = get_performance_splits()
     if splits:
         html += f"""
-            <div class="section splits-section" style="background-color: #e5e5e5; padding: 15px; border-radius: 8px;">
                 <div style="font-size: 18px; font-weight: bold; color: #000000; margin-bottom: 15px; text-align: center;">PERFORMANCE SPLITS</div>
                 
                 <div class="split-row">
@@ -708,20 +714,16 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                         </div>
                     </div>
                 </div>
-            </div>
         """
     
     html += f"""
             <div class="footer">
-                <div class="section-title">ℹ️  MODEL DESCRIPTION</div>
-                <p>Orb Analytics uses an ensemble of three machine learning models (Logistic Regression,
-                Linear Regression, Random Forest) to predict NBA game outcomes. Each
-                day, the models are retrained on all historical data and dynamically select the top
-                15 most predictive features using Lasso regression.</p>
+                <div class="section-title">DISCLAIMER:</div>
+                <p>The information provided on this website is for informational purposes only. It is not intended to be gambling or financial advice, and should not be relied upon as such. We are not responsible for any actions or decisions taken by readers based on the information provided on this website.</p>
                 
-                <p>Predictions are standardized by blending 35% model output with 65% market implied
-                probability to balance statistical signals with market efficiency. We only bet when
-                our edge exceeds 3%, ensuring disciplined bankroll management.</p>
+                <p>The picks and predictions provided on this website are based on our own research and analysis, and are intended to be used for entertainment and informational purposes only. We do not guarantee the accuracy or completeness of the information provided, and we are not responsible for any losses or damages incurred as a result of using this information for gambling or other purposes.</p>
+                
+                <p>By accessing and using this website, you acknowledge and agree to the terms of this disclaimer, and you assume all risks and liabilities associated with your use of the information provided on this website.</p>
                 
                 <p><strong>Season Record: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%) | ROI: {season_record['roi']:+.2f}%</strong></p>
             </div>
@@ -753,7 +755,7 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
             .header {{ text-align: center; border-bottom: 3px solid: #9a29e9; padding-bottom: 20px; margin-bottom: 20px; }}
             .record {{ font-size: 24px; font-weight: bold; color: #9a29e9; text-align: center; margin: 20px 0; }}
             .section {{ margin: 30px 0; }}
-            .section-title {{ font-size: 20px; font-weight: bold; color: #9a29e9; border-bottom: 2px solid #9a29e9; padding-bottom: 10px; margin-bottom: 15px; }}
+            .section-title {{ font-size: 20px; font-weight: bold; color: #9a29e9; padding-bottom: 10px; margin-bottom: 15px; }}
             .pick {{ background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
             .pick-header {{ font-size: 18px; font-weight: bold; margin-bottom: 10px; }}
             .pick-details {{ margin-left: 20px; color: #555; }}
@@ -866,7 +868,6 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
     splits = get_performance_splits()
     if splits:
         html += f"""
-            <div class="section" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px;">
                 <div style="font-size: 16px; font-weight: bold; color: #9a29e9; margin-bottom: 10px;">PERFORMANCE SPLITS</div>
                 
                 <div style="margin-bottom: 10px;">
@@ -888,7 +889,6 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
                     • Picking Underdog Away: {splits['pda']['wins']}-{splits['pda']['losses']} ({splits['pda']['pct']:.1f}%) | {splits['pda']['units']:+.2f} units<br>
                     • Picking Underdog at Home: {splits['pdh']['wins']}-{splits['pdh']['losses']} ({splits['pdh']['pct']:.1f}%) | {splits['pdh']['units']:+.2f} units
                 </div>
-            </div>
         """
             
     html += f"""
@@ -901,15 +901,12 @@ def format_email_html_all_logos(predictions, yesterday_results, season_record, d
             </div>
             
             <div class="footer">
-                <div class="section-title">ℹ️  MODEL DESCRIPTION</div>
-                <p>Orb Analytics uses an ensemble of three machine learning models (Logistic Regression,
-                Linear Regression, Random Forest) to predict NBA game outcomes. Each
-                day, the models are retrained on all historical data and dynamically select the top
-                15 most predictive features using Lasso regression.</p>
+                <div class="section-title">DISCLAIMER:</div>
+                <p>The information provided on this website is for informational purposes only. It is not intended to be gambling or financial advice, and should not be relied upon as such. We are not responsible for any actions or decisions taken by readers based on the information provided on this website.</p>
                 
-                <p>Predictions are standardized by blending 35% model output with 65% market implied
-                probability to balance statistical signals with market efficiency. We only bet when
-                our edge exceeds 3%, ensuring disciplined bankroll management.</p>
+                <p>The picks and predictions provided on this website are based on our own research and analysis, and are intended to be used for entertainment and informational purposes only. We do not guarantee the accuracy or completeness of the information provided, and we are not responsible for any losses or damages incurred as a result of using this information for gambling or other purposes.</p>
+                
+                <p>By accessing and using this website, you acknowledge and agree to the terms of this disclaimer, and you assume all risks and liabilities associated with your use of the information provided on this website.</p>
             </div>
         </div>
     </body>
@@ -1025,17 +1022,23 @@ def format_email(predictions, yesterday_results, season_record, date_str):
     lines.append("Minimum Edge: 3.0%")
     lines.append("")
     lines.append("="*100)
-    lines.append("ℹ️  MODEL DESCRIPTION")
+    lines.append("DISCLAIMER:")
     lines.append("="*100)
     lines.append("")
-    lines.append("Orb Analytics uses an ensemble of three machine learning models (Logistic Regression,")
-    lines.append("Linear Regression, and Random Forest) to predict NBA game outcomes. Each")
-    lines.append("day, the models are retrained on all historical data and dynamically select the top")
-    lines.append("15 most predictive features using Lasso regression.")
+    lines.append("The information provided on this website is for informational purposes only. It is not")
+    lines.append("intended to be gambling or financial advice, and should not be relied upon as such. We are")
+    lines.append("not responsible for any actions or decisions taken by readers based on the information")
+    lines.append("provided on this website.")
     lines.append("")
-    lines.append("Predictions are standardized by blending 35% model output with 65% market implied")
-    lines.append("probability to balance statistical signals with market efficiency. We only bet when")
-    lines.append("our edge exceeds 3%, ensuring disciplined bankroll management.")
+    lines.append("The picks and predictions provided on this website are based on our own research and")
+    lines.append("analysis, and are intended to be used for entertainment and informational purposes only.")
+    lines.append("We do not guarantee the accuracy or completeness of the information provided, and we are")
+    lines.append("not responsible for any losses or damages incurred as a result of using this information")
+    lines.append("for gambling or other purposes.")
+    lines.append("")
+    lines.append("By accessing and using this website, you acknowledge and agree to the terms of this")
+    lines.append("disclaimer, and you assume all risks and liabilities associated with your use of the")
+    lines.append("information provided on this website.")
     lines.append("")
     lines.append("="*100)
     
@@ -1114,11 +1117,11 @@ def send_email_html(subject, html_body, predictions=None, yesterday_results=None
     
     # Attach Novig ad images
     try:
-        with open('Novig_logos/Updated_Novig_map.png', 'rb') as f:
+        with open('Novig_logos/novig-5for50-ORB.png', 'rb') as f:
             img_data = f.read()
         image = MIMEImage(img_data)
         image.add_header('Content-ID', '<novig_ad>')
-        image.add_header('Content-Disposition', 'inline', filename='Updated_Novig_map.png')
+        image.add_header('Content-Disposition', 'inline', filename='novig-5for50-ORB.png')
         msg.attach(image)
         
         print("✅ Novig ad images attached")
