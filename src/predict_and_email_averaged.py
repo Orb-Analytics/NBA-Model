@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from ensemble_spread_models import EnsembleSpreadPredictor
 from prediction_core import american_to_prob
+from verify_game_matchup import verify_games
 
 
 def format_american_odds(odds, default=-110):
@@ -1313,6 +1314,19 @@ def main():
         send_email_html(subject, html_body, predictions, yesterday_results)
     else:
         print("⚠️ Email sending skipped (--no-email flag)")
+    
+    # Verify game matchup consistency (after email, before X posting)
+    print("\n" + "="*100)
+    print("🔍 POST-EMAIL VERIFICATION: Checking game matchup consistency...")
+    print("="*100)
+    verification_passed = verify_games(today_str, verbose=True)
+    
+    if not verification_passed:
+        print("\n⚠️  WARNING: Game verification failed!")
+        print("This may indicate duplicate or incorrect data was used for predictions.")
+        print("Review the data sources before posting to X/Twitter.")
+    else:
+        print("\n✅ Verification passed - safe to proceed with X posting")
 
 
 if __name__ == "__main__":
