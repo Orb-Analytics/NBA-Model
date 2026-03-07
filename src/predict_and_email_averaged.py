@@ -412,7 +412,9 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 .header p {{ font-size: 14px; }}
                 .header div {{ font-size: 16px !important; }}
                 .record {{ font-size: 16px; }}
+                .section {{ text-align: center; }}
                 .section-title {{ font-size: 16px; }}
+                .pick {{ margin-left: auto; margin-right: auto; }}
                 .pick-team {{ font-size: 24px; }}
                 .pick-matchup {{ font-size: 14px; }}
                 .pick-spread-box {{ font-size: 18px; padding: 6px 12px; }}
