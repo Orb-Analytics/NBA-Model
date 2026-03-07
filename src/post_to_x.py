@@ -30,13 +30,10 @@ def authenticate_x_api():
         access_token_secret=access_token_secret
     )
     
-    # Verify credentials
-    try:
-        user = client.get_me()
-        print(f"✅ Authenticated as @{user.data.username}")
-        return client
-    except Exception as e:
-        raise Exception(f"Authentication failed: {e}")
+    # Skip get_me() verification - requires paid API tier
+    # Credentials will be verified when posting tweets
+    print("✅ X API client created successfully")
+    return client
 
 
 def get_todays_picks(date=None):
@@ -335,6 +332,18 @@ def post_predictions(test_mode=False):
             print(f"\n⚠️  Skipping post - already posted today (duplicate content)")
             print("This is expected if the workflow runs multiple times per day")
             return  # Exit gracefully without error
+        elif "403" in error_msg or "401" in error_msg or "unauthorized" in error_msg.lower():
+            print(f"\n❌ Authentication Error: {e}")
+            print("\n🔧 Troubleshooting:")
+            print("• Check X Developer Portal for app permissions ('Read and Write')")
+            print("• Regenerate tokens after changing permissions")
+            print("• Update GitHub secrets with new tokens")
+            raise
+        elif "503" in error_msg:
+            print(f"\n❌ X API Service Error: {e}")
+            print("• X/Twitter API may be temporarily down")
+            print("• Try again in a few minutes")
+            raise
         else:
             print(f"\n❌ Failed to post tweet: {e}")
             raise
