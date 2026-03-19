@@ -80,7 +80,240 @@ jobs:
             git push
           fi
 
-      - name: 🐦 Post Predictions to X
+      - name: � Get Current Record for README
+        id: get_record
+        run: |
+          python << 'EOF'
+          import pandas as pd
+          from datetime import datetime
+          import warnings
+          warnings.filterwarnings('ignore')
+          
+          # Read files
+          backtest = pd.read_csv('data/averaged_model_backtest.csv')
+          master = pd.read_csv('data/NBA Training Set 25-26.csv')
+          
+          # Standardize date formats
+          backtest['date_key'] = pd.to_datetime(backtest['date']).dt.strftime('%Y-%m-%d')
+          master['date_key'] = pd.to_datetime(master['Date']).dt.strftime('%Y-%m-%d')
+          
+          # Create merge keys
+          backtest['merge_key'] = backtest['date_key'] + '|' + backtest['favorite'] + '|' + backtest['underdog']
+          master['merge_key'] = master['date_key'] + '|' + master['Favorite'] + '|' + master['Underdog']
+          
+          # Merge
+          merged = backtest.merge(
+              master[['merge_key', 'Fav. At Home?']],
+              on='merge_key',
+              how='left'
+          )
+          
+          # Filter for picks only
+          picks = merged[merged['pick_side'] != 'NO BET'].copy()
+          
+          # Filter for COMPLETED picks only (exclude PENDING)
+          completed_picks = picks[picks['result'].isin(['WIN', 'LOSS'])].copy()
+          
+          # Overall record (using completed picks only)
+          wins = int((completed_picks['result'] == 'WIN').sum())
+          losses = int((completed_picks['result'] == 'LOSS').sum())
+          total = wins + losses
+          win_pct = (wins / total) * 100 if total > 0 else 0.0
+          
+          # Get the last COMPLETED game date (not pending games)
+          last_date = pd.to_datetime(completed_picks['date']).max().strftime('%B %d, %Y')
+          
+          # Use completed_picks for all subsequent calculations
+          picks = completed_picks
+          
+          # Calculate splits
+          def calc_record(df):
+              w = int((df['result'] == 'WIN').sum())
+              l = int((df['result'] == 'LOSS').sum())
+              t = w + l
+              pct = (w / t) * 100 if t > 0 else 0.0
+              return w, l, pct
+          
+          # 1. Picking favorites vs underdogs
+          fav_picks = picks[picks['pick_side'] == 'FAVORITE']
+          dog_picks = picks[picks['pick_side'] == 'UNDERDOG']
+          fav_w, fav_l, fav_pct = calc_record(fav_picks)
+          dog_w, dog_l, dog_pct = calc_record(dog_picks)
+          
+          # 2. When favorite is at home vs away
+          fav_home_games = picks[picks['Fav. At Home?'] == 1]
+          fav_away_games = picks[picks['Fav. At Home?'] == 0]
+          fav_home_w, fav_home_l, fav_home_pct = calc_record(fav_home_games)
+          fav_away_w, fav_away_l, fav_away_pct = calc_record(fav_away_games)
+          
+          # 3. Picking favorite when they're at home
+          pick_fav_home = picks[(picks['pick_side'] == 'FAVORITE') & (picks['Fav. At Home?'] == 1)]
+          pfh_w, pfh_l, pfh_pct = calc_record(pick_fav_home)
+          
+          # 4. Picking favorite when they're away
+          pick_fav_away = picks[(picks['pick_side'] == 'FAVORITE') & (picks['Fav. At Home?'] == 0)]
+          pfa_w, pfa_l, pfa_pct = calc_record(pick_fav_away)
+          
+          # 5. Picking underdog when they're away (favorite at home)
+          pick_dog_away = picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 1)]
+          pda_w, pda_l, pda_pct = calc_record(pick_dog_away)
+          
+          # 6. Picking underdog when they're at home (favorite away)
+          pick_dog_home = picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 0)]
+          pdh_w, pdh_l, pdh_pct = calc_record(pick_dog_home)
+          
+          # Write to GitHub output
+          import os
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'wins={wins}\n')
+              f.write(f'losses={losses}\n')
+              f.write(f'win_pct={win_pct:.1f}\n')
+              f.write(f'last_date={last_date}\n')
+              # Splits
+              f.write(f'fav_w={fav_w}\n')
+              f.write(f'fav_l={fav_l}\n')
+              f.write(f'fav_pct={fav_pct:.1f}\n')
+              f.write(f'dog_w={dog_w}\n')
+              f.write(f'dog_l={dog_l}\n')
+              f.write(f'dog_pct={dog_pct:.1f}\n')
+              f.write(f'fav_home_w={fav_home_w}\n')
+              f.write(f'fav_home_l={fav_home_l}\n')
+              f.write(f'fav_home_pct={fav_home_pct:.1f}\n')
+              f.write(f'fav_away_w={fav_away_w}\n')
+              f.write(f'fav_away_l={fav_away_l}\n')
+              f.write(f'fav_away_pct={fav_away_pct:.1f}\n')
+              f.write(f'pfh_w={pfh_w}\n')
+              f.write(f'pfh_l={pfh_l}\n')
+              f.write(f'pfh_pct={pfh_pct:.1f}\n')
+              f.write(f'pfa_w={pfa_w}\n')
+              f.write(f'pfa_l={pfa_l}\n')
+              f.write(f'pfa_pct={pfa_pct:.1f}\n')
+              f.write(f'pda_w={pda_w}\n')
+              f.write(f'pda_l={pda_l}\n')
+              f.write(f'pda_pct={pda_pct:.1f}\n')
+              f.write(f'pdh_w={pdh_w}\n')
+              f.write(f'pdh_l={pdh_l}\n')
+              f.write(f'pdh_pct={pdh_pct:.1f}\n')
+          
+          print(f"Record: {wins}-{losses} ({win_pct:.1f}%) through {last_date}")
+          print(f"Picking Favorites: {fav_w}-{fav_l} ({fav_pct:.1f}%)")
+          print(f"Picking Underdogs: {dog_w}-{dog_l} ({dog_pct:.1f}%)")
+          EOF
+
+      - name: 📝 Update README with Current Record
+        env:
+          WINS: ${{ steps.get_record.outputs.wins }}
+          LOSSES: ${{ steps.get_record.outputs.losses }}
+          WIN_PCT: ${{ steps.get_record.outputs.win_pct }}
+          LAST_DATE: ${{ steps.get_record.outputs.last_date }}
+          FAV_W: ${{ steps.get_record.outputs.fav_w }}
+          FAV_L: ${{ steps.get_record.outputs.fav_l }}
+          FAV_PCT: ${{ steps.get_record.outputs.fav_pct }}
+          DOG_W: ${{ steps.get_record.outputs.dog_w }}
+          DOG_L: ${{ steps.get_record.outputs.dog_l }}
+          DOG_PCT: ${{ steps.get_record.outputs.dog_pct }}
+          FAV_HOME_W: ${{ steps.get_record.outputs.fav_home_w }}
+          FAV_HOME_L: ${{ steps.get_record.outputs.fav_home_l }}
+          FAV_HOME_PCT: ${{ steps.get_record.outputs.fav_home_pct }}
+          FAV_AWAY_W: ${{ steps.get_record.outputs.fav_away_w }}
+          FAV_AWAY_L: ${{ steps.get_record.outputs.fav_away_l }}
+          FAV_AWAY_PCT: ${{ steps.get_record.outputs.fav_away_pct }}
+          PFH_W: ${{ steps.get_record.outputs.pfh_w }}
+          PFH_L: ${{ steps.get_record.outputs.pfh_l }}
+          PFH_PCT: ${{ steps.get_record.outputs.pfh_pct }}
+          PFA_W: ${{ steps.get_record.outputs.pfa_w }}
+          PFA_L: ${{ steps.get_record.outputs.pfa_l }}
+          PFA_PCT: ${{ steps.get_record.outputs.pfa_pct }}
+          PDA_W: ${{ steps.get_record.outputs.pda_w }}
+          PDA_L: ${{ steps.get_record.outputs.pda_l }}
+          PDA_PCT: ${{ steps.get_record.outputs.pda_pct }}
+          PDH_W: ${{ steps.get_record.outputs.pdh_w }}
+          PDH_L: ${{ steps.get_record.outputs.pdh_l }}
+          PDH_PCT: ${{ steps.get_record.outputs.pdh_pct }}
+        run: |
+          # Create the new performance section with splits using environment variables
+          cat > /tmp/performance_section.txt <<'ENDPERF'
+          ## 📊 Current Performance
+          **WINS-LOSSES (WIN_PCT%)** through LAST_DATE
+          
+          ### 📈 Performance Splits
+          
+          **By Pick Type:**
+          - Picking Favorites: FAV_W-FAV_L (FAV_PCT%)
+          - Picking Underdogs: DOG_W-DOG_L (DOG_PCT%)
+          
+          **By Home/Away (All Games):**
+          - Favorite at Home: FAV_HOME_W-FAV_HOME_L (FAV_HOME_PCT%)
+          - Favorite Away: FAV_AWAY_W-FAV_AWAY_L (FAV_AWAY_PCT%)
+          
+          **By Pick + Location:**
+          - Picking Favorite at Home: PFH_W-PFH_L (PFH_PCT%)
+          - Picking Favorite Away: PFA_W-PFA_L (PFA_PCT%)
+          - Picking Underdog Away: PDA_W-PDA_L (PDA_PCT%)
+          - Picking Underdog at Home: PDH_W-PDH_L (PDH_PCT%)
+          ENDPERF
+
+          # Replace placeholders with actual values
+          sed -i "s/WINS/${WINS}/g" /tmp/performance_section.txt
+          sed -i "s/LOSSES/${LOSSES}/g" /tmp/performance_section.txt
+          sed -i "s/WIN_PCT/${WIN_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/LAST_DATE/${LAST_DATE}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_W/${FAV_W}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_L/${FAV_L}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_PCT/${FAV_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/DOG_W/${DOG_W}/g" /tmp/performance_section.txt
+          sed -i "s/DOG_L/${DOG_L}/g" /tmp/performance_section.txt
+          sed -i "s/DOG_PCT/${DOG_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_HOME_W/${FAV_HOME_W}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_HOME_L/${FAV_HOME_L}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_HOME_PCT/${FAV_HOME_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_AWAY_W/${FAV_AWAY_W}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_AWAY_L/${FAV_AWAY_L}/g" /tmp/performance_section.txt
+          sed -i "s/FAV_AWAY_PCT/${FAV_AWAY_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/PFH_W/${PFH_W}/g" /tmp/performance_section.txt
+          sed -i "s/PFH_L/${PFH_L}/g" /tmp/performance_section.txt
+          sed -i "s/PFH_PCT/${PFH_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/PFA_W/${PFA_W}/g" /tmp/performance_section.txt
+          sed -i "s/PFA_L/${PFA_L}/g" /tmp/performance_section.txt
+          sed -i "s/PFA_PCT/${PFA_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/PDA_W/${PDA_W}/g" /tmp/performance_section.txt
+          sed -i "s/PDA_L/${PDA_L}/g" /tmp/performance_section.txt
+          sed -i "s/PDA_PCT/${PDA_PCT}/g" /tmp/performance_section.txt
+          sed -i "s/PDH_W/${PDH_W}/g" /tmp/performance_section.txt
+          sed -i "s/PDH_L/${PDH_L}/g" /tmp/performance_section.txt
+          sed -i "s/PDH_PCT/${PDH_PCT}/g" /tmp/performance_section.txt
+          
+          # Replace the entire Current Performance section in README
+          awk '
+            BEGIN { in_perf=0 }
+            /^## 📊 Current Performance/ { 
+              in_perf=1
+              system("cat /tmp/performance_section.txt")
+              next
+            }
+            /^## / && in_perf { in_perf=0 }
+            !in_perf { print }
+          ' README.md > /tmp/readme_new.txt
+          
+          mv /tmp/readme_new.txt README.md
+          
+          echo "✅ Updated README.md with full performance splits"
+
+      - name: 💾 Commit README Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          
+          if git diff --quiet README.md; then
+            echo "No changes to README.md"
+          else
+            git add README.md
+            git commit -m "📝 Update README with current record: ${{ steps.get_record.outputs.wins }}-${{ steps.get_record.outputs.losses }} (${{ steps.get_record.outputs.win_pct }}%)"
+            git push
+            echo "✅ README committed and pushed"
+          fi
+
+      - name: �🐦 Post Predictions to X
         env:
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET_KEY: ${{ secrets.X_API_SECRET_KEY }}

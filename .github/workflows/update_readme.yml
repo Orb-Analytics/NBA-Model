@@ -1,16 +1,11 @@
 name: 📝 Update README with Current Record
 
 on:
-  workflow_run:
-    workflows: ["🎯 Generate & Email Daily Predictions"]
-    types:
-      - completed
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch:  # Manual trigger only (README now updated in daily workflow)
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: 📂 Checkout repo
