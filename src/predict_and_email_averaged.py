@@ -222,8 +222,8 @@ def get_performance_splits(backtest_path='data/averaged_model_backtest.csv', mas
     # By pick + location
     pfh = calc_record(picks[(picks['pick_side'] == 'FAVORITE') & (picks['Fav. At Home?'] == 1)])
     pfa = calc_record(picks[(picks['pick_side'] == 'FAVORITE') & (picks['Fav. At Home?'] == 0)])
-    pda = calc_record(picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 0)])
-    pdh = calc_record(picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 1)])
+    pda = calc_record(picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 1)])  # Fav home = underdog AWAY
+    pdh = calc_record(picks[(picks['pick_side'] == 'UNDERDOG') & (picks['Fav. At Home?'] == 0)])  # Fav away = underdog HOME
     
     return {
         'fav_picks': fav_picks,
