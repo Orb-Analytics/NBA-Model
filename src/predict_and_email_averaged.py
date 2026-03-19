@@ -443,9 +443,11 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 .pick-middle {{ display: block !important; width: 100% !important; text-align: center; margin-bottom: 15px; padding: 0; }}
                 .pick-right {{ display: block !important; width: 100% !important; border-left: none !important; padding-left: 0 !important; border-top: 2px solid #ddd; padding-top: 15px; text-align: center; }}
                 .pick-right-inner {{ display: block !important; text-align: center; }}
-                .pick-stats {{ display: block !important; padding-right: 0 !important; margin-bottom: 10px; text-align: center; }}
-                .pick-spread-cell {{ display: block !important; text-align: center !important; }}
-                .pick-spread-box {{ display: inline-block; width: fit-content; margin: 0; }}
+                .pick-right-container {{ display: block !important; text-align: center; }}
+                .pick-stats {{ display: block !important; width: 100% !important; padding-right: 0 !important; margin-bottom: 10px; text-align: center; }}
+                .pick-stat {{ display: block !important; text-align: center !important; margin: 5px auto; }}
+                .pick-spread-cell {{ display: block !important; width: 100% !important; text-align: center !important; margin-top: 10px; }}
+                .pick-spread-box {{ display: inline-block; width: fit-content; margin: 0 auto; }}
             }}
         </style>
     </head>
