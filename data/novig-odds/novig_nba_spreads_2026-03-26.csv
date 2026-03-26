@@ -1,0 +1,4 @@
+fav_team,dog_team,fav_line,dog_line,fav_price,dog_price,fav_price_american,dog_price_american,home_favorite,game_time_est,market,market_timestamp
+ORL,SAC,-15.5,15.5,0.498,0.524,+101,-110,1,2026-03-26T19:05:00-04:00,ORL -15.5,2026-03-26T18:21:19.054+00:00
+CHA,NYK,-1.5,1.5,0.515,0.499,-106,+100,1,2026-03-26T19:05:00-04:00,CHA -1.5,2026-03-26T18:23:51.019+00:00
+DET,NOP,-3.5,3.5,0.515,0.505,-106,-102,1,2026-03-26T19:05:00-04:00,DET -3.5,2026-03-26T18:23:00.56+00:00
