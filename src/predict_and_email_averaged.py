@@ -118,6 +118,76 @@ def get_yesterday_results(backtest_path='data/averaged_model_backtest.csv', yest
     return records, total_units
 
 
+def get_yesterday_results_from_history(history_path='data/averaged_model_predictions_history.csv', 
+                                       master_path='data/NBA Training Set 25-26.csv',
+                                       yesterday_date=None):
+    """Get yesterday's picks from predictions history and grade them from master data.
+    
+    This is used when predictions are paused to ensure we still show results for
+    picks that were actually emailed, even if they wouldn't be generated again.
+    """
+    if not os.path.exists(history_path):
+        return [], 0.0
+    
+    # Load predictions history
+    history_df = pd.read_csv(history_path)
+    history_df['date'] = pd.to_datetime(history_df['date']).dt.strftime('%Y-%m-%d')
+    
+    if yesterday_date:
+        yesterday_picks = history_df[
+            (history_df['date'] == yesterday_date) & 
+            (history_df['pick_side'] != 'NO BET')
+        ].copy()
+    else:
+        return [], 0.0
+    
+    if yesterday_picks.empty:
+        return [], 0.0
+    
+    # Load master data to get actual results
+    if os.path.exists(master_path):
+        master_df = pd.read_csv(master_path)
+        master_df['date_key'] = pd.to_datetime(master_df['Date']).dt.strftime('%Y-%m-%d')
+        
+        # Grade each pick
+        for idx, pick in yesterday_picks.iterrows():
+            # Find the game in master data
+            game = master_df[
+                (master_df['date_key'] == pick['date']) &
+                (master_df['Favorite'] == pick['favorite']) &
+                (master_df['Underdog'] == pick['underdog'])
+            ]
+            
+            if not game.empty:
+                actual_cover = game.iloc[0]['Actual Cover']
+                
+                # Determine if pick won
+                if pick['pick_side'] == 'FAVORITE':
+                    result = 'WIN' if actual_cover == 1 else 'LOSS'
+                else:  # UNDERDOG
+                    result = 'WIN' if actual_cover == 0 else 'LOSS'
+                
+                yesterday_picks.at[idx, 'result'] = result
+                yesterday_picks.at[idx, 'actual_cover'] = actual_cover
+    
+    # Calculate units for yesterday
+    total_units = 0.0
+    records = yesterday_picks.to_dict('records')
+    
+    for record in records:
+        if record['pick_side'] == 'FAVORITE':
+            odds = record.get('fav_odds', -110)
+        else:
+            odds = record.get('dog_odds', -110)
+        
+        result = record.get('result', '')
+        units = calculate_units(odds, result) if result in ['WIN', 'LOSS'] else 0.0
+        record['units'] = units
+        total_units += units
+    
+    return records, total_units
+
+
 def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_path='data/NBA Training Set 25-26.csv'):
     """Calculate season record from backtest file (includes all results to date)."""
     if not os.path.exists(backtest_path):
@@ -1300,7 +1370,13 @@ def main():
     
     # Get yesterday's results
     print(f"📅 Loading yesterday's results ({yesterday_str})...")
-    yesterday_results, yesterday_units = get_yesterday_results(yesterday_date=yesterday_str)
+    if args.no_picks:
+        # When paused, get results from predictions history (actual emailed picks)
+        # and grade them from the master training set
+        yesterday_results, yesterday_units = get_yesterday_results_from_history(yesterday_date=yesterday_str)
+    else:
+        # When active, get results from backtest file
+        yesterday_results, yesterday_units = get_yesterday_results(yesterday_date=yesterday_str)
     print(f"   Found {len(yesterday_results)} picks from yesterday")
     if yesterday_results:
         print(f"   Yesterday's Units: {yesterday_units:+.2f}")
