@@ -1,10 +1,11 @@
 name: 🎯 Generate & Email Daily Predictions
 
 on:
-  workflow_run:
-    workflows: ["📧 Email NBA Dataset"]
-    types:
-      - completed
+  # DISABLED: Automated predictions paused for remainder of season
+  # workflow_run:
+  #   workflows: ["📧 Email NBA Dataset"]
+  #   types:
+  #     - completed
   workflow_dispatch:  # Allow manual testing
     inputs:
       prediction_date:
@@ -15,7 +16,7 @@ on:
 jobs:
   predict-and-email:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
       - name: 📂 Checkout repo

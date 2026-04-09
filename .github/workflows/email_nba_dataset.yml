@@ -1,16 +1,17 @@
 name: 📧 Email NBA Dataset
 
 on:
-  workflow_run:
-    workflows: ["Update Training Set from Google Sheets"]
-    types:
-      - completed
+  # DISABLED: Automated emails paused for remainder of season
+  # workflow_run:
+  #   workflows: ["Update Training Set from Google Sheets"]
+  #   types:
+  #     - completed
   workflow_dispatch:  # Allow manual testing
 
 jobs:
   email-dataset:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
       - name: 📂 Checkout repo
