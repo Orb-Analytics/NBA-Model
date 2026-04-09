@@ -651,13 +651,8 @@ def format_email_html(predictions, yesterday_results, season_record, date_str, n
             <div class="section">
                 <div class="section-title">⏸️ PICKS PAUSED FOR END OF SEASON</div>
                 <div class="pause-message">
-                    <strong>🏀 No new picks will be issued for the remainder of the regular season.</strong><br><br>
-                    The final weeks of the NBA season are highly unpredictable due to teams resting players, tanking, and playoff positioning. 
-                    We're prioritizing data quality and will resume predictions for the playoffs.<br><br>
-                    We'll continue to send daily updates with:<br>
-                    ✅ Yesterday's results from previous picks<br>
-                    ✅ Season performance tracking<br>
-                    ✅ Final season statistics<br><br>
+                    <strong>🏀 No new picks will be issued for the remainder of the season.</strong><br><br>
+                    The final weeks of the NBA season are highly unpredictable due to teams resting players, tanking, and playoff positioning.<br><br>
                     Thank you for following along this season! 🙏
                 </div>
             </div>
