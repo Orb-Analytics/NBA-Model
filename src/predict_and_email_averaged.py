@@ -1352,18 +1352,26 @@ def main():
     else:
         print("⚠️ Email sending skipped (--no-email flag)")
     
-    # Verify game matchup consistency (after email, before X posting)
-    # Skip verification if no predictions were made
-    if not args.no_picks:
-        print("\n" + "="*100)
+    # Verify game matchup consistency (always run to ensure data quality)
+    print("\n" + "="*100)
+    if args.no_picks:
+        print("🔍 DATA VERIFICATION: Checking game matchup consistency...")
+    else:
         print("🔍 POST-EMAIL VERIFICATION: Checking game matchup consistency...")
-        print("="*100)
-        verification_passed = verify_games(today_str, verbose=True)
-        
-        if not verification_passed:
-            print("\n⚠️  WARNING: Game verification failed!")
+    print("="*100)
+    verification_passed = verify_games(today_str, verbose=True)
+    
+    if not verification_passed:
+        print("\n⚠️  WARNING: Game verification failed!")
+        if args.no_picks:
+            print("This may indicate duplicate or incorrect data in the training set.")
+            print("Review the data sources to ensure data quality.")
+        else:
             print("This may indicate duplicate or incorrect data was used for predictions.")
             print("Review the data sources before posting to X/Twitter.")
+    else:
+        if args.no_picks:
+            print("\n✅ Verification passed - data quality check complete")
         else:
             print("\n✅ Verification passed - safe to proceed with X posting")
 
