@@ -192,8 +192,16 @@ def get_yesterday_results_from_history(history_path='data/averaged_model_predict
     return records, total_units
 
 
-def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_path='data/NBA Training Set 25-26.csv'):
-    """Calculate season record from backtest file (includes all results to date)."""
+def get_season_record(backtest_path='data/averaged_model_backtest.csv', 
+                     master_path='data/NBA Training Set 25-26.csv',
+                     history_path='data/averaged_model_predictions_history.csv',
+                     include_history=False):
+    """Calculate season record from backtest file (includes all results to date).
+    
+    Args:
+        include_history: If True, also include graded picks from predictions_history
+                        that may not be in the backtest file yet (for pause mode)
+    """
     if not os.path.exists(backtest_path):
         return {'wins': 0, 'losses': 0, 'total': 0, 'win_pct': 0.0, 'units': 0.0, 'roi': 0.0}
     
@@ -201,6 +209,61 @@ def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_p
     picks = backtest_df[backtest_df['pick_side'] != 'NO BET'].copy()
     # Filter to completed picks only (exclude PENDING)
     completed_picks = picks[picks['result'].isin(['WIN', 'LOSS'])]
+    
+    # If include_history is True, add picks from history that aren't in backtest
+    if include_history and os.path.exists(history_path) and os.path.exists(master_path):
+        history_df = pd.read_csv(history_path)
+        history_df['date'] = pd.to_datetime(history_df['date']).dt.strftime('%Y-%m-%d')
+        backtest_df['date'] = pd.to_datetime(backtest_df['date']).dt.strftime('%Y-%m-%d')
+        
+        # Get picks from history that aren't in backtest
+        history_picks = history_df[history_df['pick_side'] != 'NO BET'].copy()
+        
+        # Load master data for grading
+        master_df = pd.read_csv(master_path)
+        master_df['date_key'] = pd.to_datetime(master_df['Date']).dt.strftime('%Y-%m-%d')
+        
+        # Find picks in history that aren't in backtest
+        additional_graded_picks = []
+        for _, pick in history_picks.iterrows():
+            # Check if this pick is already in backtest
+            fav_norm = pick['favorite'].replace('LA ', 'La ')
+            und_norm = pick['underdog'].replace('LA ', 'La ')
+            
+            existing = backtest_df[
+                (backtest_df['date'] == pick['date']) &
+                (backtest_df['favorite'] == fav_norm) &
+                (backtest_df['underdog'] == und_norm) &
+                (backtest_df['pick_side'] != 'NO BET')
+            ]
+            
+            if existing.empty:
+                # This pick is in history but not in backtest - grade it
+                game = master_df[
+                    (master_df['date_key'] == pick['date']) &
+                    (master_df['Favorite'] == fav_norm) &
+                    (master_df['Underdog'] == und_norm)
+                ]
+                
+                if not game.empty:
+                    actual_cover = game.iloc[0]['Favorite Cover?']
+                    
+                    # Determine if pick won
+                    if pick['pick_side'] == 'FAVORITE':
+                        result = 'WIN' if actual_cover == 1 else 'LOSS'
+                        odds = pick.get('fav_odds', -110)
+                    else:  # UNDERDOG
+                        result = 'WIN' if actual_cover == 0 else 'LOSS'
+                        odds = pick.get('dog_odds', -110)
+                    
+                    pick['result'] = result
+                    pick['odds_used'] = odds
+                    additional_graded_picks.append(pick)
+        
+        # Add additional picks to completed_picks
+        if additional_graded_picks:
+            additional_df = pd.DataFrame(additional_graded_picks)
+            completed_picks = pd.concat([completed_picks, additional_df], ignore_index=True)
     
     wins = len(completed_picks[completed_picks['result'] == 'WIN'])
     losses = len(completed_picks[completed_picks['result'] == 'LOSS'])
@@ -210,7 +273,10 @@ def get_season_record(backtest_path='data/averaged_model_backtest.csv', master_p
     # Calculate total units
     total_units = 0.0
     for _, row in completed_picks.iterrows():
-        if row['pick_side'] == 'FAVORITE':
+        if 'odds_used' in row and pd.notna(row.get('odds_used')):
+            # From additional picks
+            odds = row['odds_used']
+        elif row['pick_side'] == 'FAVORITE':
             odds = row.get('fav_odds', -110)
         else:
             odds = row.get('dog_odds', -110)
@@ -1387,7 +1453,8 @@ def main():
     
     # Get season record
     print("📊 Loading season record...")
-    season_record = get_season_record()
+    # When paused, include picks from history that may not be in backtest yet
+    season_record = get_season_record(include_history=args.no_picks)
     print(f"   Season: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)")
     print(f"   Total Units: {season_record['units']:+.2f}")
     
