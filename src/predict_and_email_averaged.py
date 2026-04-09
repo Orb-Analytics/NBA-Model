@@ -354,7 +354,7 @@ def get_social_logo_base64(icon_name):
     return f'data:image/svg+xml;base64,{logo_data}'
 
 
-def format_email_html(predictions, yesterday_results, season_record, date_str):
+def format_email_html(predictions, yesterday_results, season_record, date_str, no_picks=False):
     """Format predictions and results into HTML email with team logos."""
     
     html = f"""
@@ -372,6 +372,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             .section {{ margin: 20px 0; }}
             .section-title {{ font-size: 24px; font-weight: bold; color: #000000; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }}
             .pick {{ background-color: #e5e5e5; padding: 25px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #9a29e9; }}
+            .pause-message {{ background-color: #fff3cd; padding: 25px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #ffcc00; text-align: center; font-size: 18px; color: #856404; font-family: Arial, sans-serif; line-height: 1.6; }}
             .pick-content {{ display: table; width: 100%; }}
             .pick-left {{ display: table-cell; vertical-align: middle; width: 55%; white-space: nowrap; }}
             .pick-right {{ display: table-cell; vertical-align: middle; width: 45%; text-align: left; border-left: 2px solid #999; padding-left: 15px; }}
@@ -423,6 +424,7 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                 .pick-logo {{ width: 50px; height: 50px; }}
                 .split-item {{ font-size: 13px; line-height: 1.9; }}
                 .logo {{ width: 35px; height: 35px; }}
+                .pause-message {{ font-size: 16px; padding: 20px; }}
                 
                 /* Stack split layout on mobile with better spacing */
                 .split-row {{ padding: 12px; margin: 8px 0; }}
@@ -503,18 +505,35 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
             </div>
     """
     
-    # Today's Picks FIRST
-    html += """
-        <div class="section">
-            <div class="section-title">🎯 TODAY'S PICKS</div>
-    """
-    
-    picks = [p for p in predictions if p['pick_side'] != 'NO BET']
-    
-    if not picks:
-        html += "<p>⚪ No picks today - no games meet the 3% edge threshold</p>"
+    # Today's Picks FIRST (or pause message if no_picks=True)
+    if no_picks:
+        html += """
+            <div class="section">
+                <div class="section-title">⏸️ PICKS PAUSED FOR END OF SEASON</div>
+                <div class="pause-message">
+                    <strong>🏀 No new picks will be issued for the remainder of the regular season.</strong><br><br>
+                    The final weeks of the NBA season are highly unpredictable due to teams resting players, tanking, and playoff positioning. 
+                    We're prioritizing data quality and will resume predictions for the playoffs.<br><br>
+                    We'll continue to send daily updates with:<br>
+                    ✅ Yesterday's results from previous picks<br>
+                    ✅ Season performance tracking<br>
+                    ✅ Final season statistics<br><br>
+                    Thank you for following along this season! 🙏
+                </div>
+            </div>
+        """
     else:
-        picks_sorted = sorted(picks, key=lambda x: x['edge'], reverse=True)
+        html += """
+            <div class="section">
+                <div class="section-title">🎯 TODAY'S PICKS</div>
+        """
+        
+        picks = [p for p in predictions if p['pick_side'] != 'NO BET']
+        
+        if not picks:
+            html += "<p>⚪ No picks today - no games meet the 3% edge threshold</p>"
+        else:
+            picks_sorted = sorted(picks, key=lambda x: x['edge'], reverse=True)
         
         for pick in picks_sorted:
             pick_team = pick['pick_team']
@@ -563,30 +582,30 @@ def format_email_html(predictions, yesterday_results, season_record, date_str):
                     </div>
                 </div>
             """
-    
-    html += f"""
-            </div>
-            
-            <div class="game-summary-row" style="font-family: Arial, sans-serif; margin-top: 20px;">
-                <div class="game-summary-item">
-                    <span class="game-summary-label">Total Games Today:</span>
-                    <span class="game-summary-value">{len(predictions)}</span>
+        
+        html += f"""
                 </div>
-                <div class="game-summary-item">
-                    <span class="game-summary-label">Picks Made:</span>
-                    <span class="game-summary-value">{len(picks)}</span>
+                
+                <div class="game-summary-row" style="font-family: Arial, sans-serif; margin-top: 20px;">
+                    <div class="game-summary-item">
+                        <span class="game-summary-label">Total Games Today:</span>
+                        <span class="game-summary-value">{len(predictions)}</span>
+                    </div>
+                    <div class="game-summary-item">
+                        <span class="game-summary-label">Picks Made:</span>
+                        <span class="game-summary-value">{len(picks)}</span>
+                    </div>
+                    <div class="game-summary-item">
+                        <span class="game-summary-label">No Bets:</span>
+                        <span class="game-summary-value">{len(predictions) - len(picks)}</span>
+                    </div>
                 </div>
-                <div class="game-summary-item">
-                    <span class="game-summary-label">No Bets:</span>
-                    <span class="game-summary-value">{len(predictions) - len(picks)}</span>
+                
+                <div style="text-align: center; margin: 20px 0; font-family: Arial, sans-serif;">
+                    <p style="margin-top: 20px;">Model: 35% Averaged Models + 65% Implied Odds<br>
+                    Minimum Edge: 3.0%</p>
                 </div>
-            </div>
-            
-            <div style="text-align: center; margin: 20px 0; font-family: Arial, sans-serif;">
-                <p style="margin-top: 20px;">Model: 35% Averaged Models + 65% Implied Odds<br>
-                Minimum Edge: 3.0%</p>
-            </div>
-    """
+        """
     
     # Yesterday's Results
     if yesterday_results:
@@ -1253,6 +1272,8 @@ def main():
                        help='Skip sending email')
     parser.add_argument('--test-mode', action='store_true',
                        help='Send email only to lpchaitin@gmail.com (for testing)')
+    parser.add_argument('--no-picks', action='store_true',
+                       help='Pause predictions - send email with results only, no new picks')
     
     args = parser.parse_args()
     
@@ -1267,9 +1288,14 @@ def main():
     yesterday_str = yesterday.strftime('%Y-%m-%d')
     
     print("="*100)
-    print("🏀 GENERATING AVERAGED MODEL PREDICTIONS")
+    if args.no_picks:
+        print("🏀 SEASON UPDATE (PREDICTIONS PAUSED)")
+    else:
+        print("🏀 GENERATING AVERAGED MODEL PREDICTIONS")
     print("="*100)
     print(f"Date: {today_str}")
+    if args.no_picks:
+        print("⚠️  PREDICTIONS PAUSED FOR END OF SEASON")
     print()
     
     # Get yesterday's results
@@ -1285,20 +1311,24 @@ def main():
     print(f"   Season: {season_record['wins']}-{season_record['losses']} ({season_record['win_pct']:.1f}%)")
     print(f"   Total Units: {season_record['units']:+.2f}")
     
-    # Generate today's predictions
-    print(f"🎯 Generating predictions for {today_str}...")
-    predictions = generate_averaged_predictions(today_str)
-    print(f"   Generated {len(predictions)} predictions")
-    picks = [p for p in predictions if p['pick_side'] != 'NO BET']
-    print(f"   Picks: {len(picks)}")
-    print()
-    
-    # Save predictions to history immediately (before backtest runs)
-    # This ensures only games that were actually predicted/emailed are in the history
-    save_predictions_to_history(predictions, today_str)
+    # Generate today's predictions (unless --no-picks is set)
+    if args.no_picks:
+        print(f"⏸️  Skipping predictions for {today_str} (--no-picks flag set)")
+        predictions = []
+    else:
+        print(f"🎯 Generating predictions for {today_str}...")
+        predictions = generate_averaged_predictions(today_str)
+        print(f"   Generated {len(predictions)} predictions")
+        picks = [p for p in predictions if p['pick_side'] != 'NO BET']
+        print(f"   Picks: {len(picks)}")
+        print()
+        
+        # Save predictions to history immediately (before backtest runs)
+        # This ensures only games that were actually predicted/emailed are in the history
+        save_predictions_to_history(predictions, today_str)
     
     # Format HTML email with team logos
-    html_body = format_email_html(predictions, yesterday_results, season_record, today_str)
+    html_body = format_email_html(predictions, yesterday_results, season_record, today_str, no_picks=args.no_picks)
     
     # Also generate plain text for console preview
     text_body = format_email(predictions, yesterday_results, season_record, today_str)
@@ -1314,23 +1344,28 @@ def main():
     if not args.no_email:
         # Add timestamp to subject to prevent Gmail threading when sending multiple times
         timestamp = datetime.now().strftime('%I:%M%p')
-        subject = f"🏀 NBA Predictions - {today_str} [{timestamp}]"
+        if args.no_picks:
+            subject = f"🏀 NBA Season Update - {today_str} [{timestamp}]"
+        else:
+            subject = f"🏀 NBA Predictions - {today_str} [{timestamp}]"
         send_email_html(subject, html_body, predictions, yesterday_results)
     else:
         print("⚠️ Email sending skipped (--no-email flag)")
     
     # Verify game matchup consistency (after email, before X posting)
-    print("\n" + "="*100)
-    print("🔍 POST-EMAIL VERIFICATION: Checking game matchup consistency...")
-    print("="*100)
-    verification_passed = verify_games(today_str, verbose=True)
-    
-    if not verification_passed:
-        print("\n⚠️  WARNING: Game verification failed!")
-        print("This may indicate duplicate or incorrect data was used for predictions.")
-        print("Review the data sources before posting to X/Twitter.")
-    else:
-        print("\n✅ Verification passed - safe to proceed with X posting")
+    # Skip verification if no predictions were made
+    if not args.no_picks:
+        print("\n" + "="*100)
+        print("🔍 POST-EMAIL VERIFICATION: Checking game matchup consistency...")
+        print("="*100)
+        verification_passed = verify_games(today_str, verbose=True)
+        
+        if not verification_passed:
+            print("\n⚠️  WARNING: Game verification failed!")
+            print("This may indicate duplicate or incorrect data was used for predictions.")
+            print("Review the data sources before posting to X/Twitter.")
+        else:
+            print("\n✅ Verification passed - safe to proceed with X posting")
 
 
 if __name__ == "__main__":

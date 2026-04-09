@@ -48,6 +48,7 @@ jobs:
           
           echo "🔮 Generating and emailing averaged model predictions for: $PRED_DATE"
           echo "📊 Using standardized & averaged model (35% models + 65% implied)"
+          echo "⚠️  PREDICTIONS PAUSED - End of season mode active"
           echo ""
           
           # Run daily backtest update (auto-detects latest data)
@@ -57,13 +58,12 @@ jobs:
           
           echo ""
           
-          # Run averaged model prediction script with email sending enabled
+          # Run averaged model prediction script with --no-picks flag (paused for end of season)
           # This script will:
           # 1. Show yesterday's pick results
           # 2. Display current season record
-          # 3. Generate today's predictions using standardized & averaged model
-          # 4. Send email to configured recipients
-          python src/predict_and_email_averaged.py --date "$PRED_DATE"
+          # 3. Send email WITHOUT generating new predictions (--no-picks flag)
+          python src/predict_and_email_averaged.py --date "$PRED_DATE" --no-picks
 
       - name: 💾 Commit updated predictions and results
         run: |
@@ -313,7 +313,8 @@ jobs:
             echo "✅ README committed and pushed"
           fi
 
-      - name: �🐦 Post Predictions to X
+      - name: 🐦 Post Predictions to X
+        if: false  # DISABLED: Paused for end of season (no new picks being generated)
         env:
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET_KEY: ${{ secrets.X_API_SECRET_KEY }}
