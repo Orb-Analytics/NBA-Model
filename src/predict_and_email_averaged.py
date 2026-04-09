@@ -151,15 +151,19 @@ def get_yesterday_results_from_history(history_path='data/averaged_model_predict
         
         # Grade each pick
         for idx, pick in yesterday_picks.iterrows():
+            # Normalize team names for matching (handle LA vs La inconsistency)
+            fav = pick['favorite'].replace('LA ', 'La ')
+            und = pick['underdog'].replace('LA ', 'La ')
+            
             # Find the game in master data
             game = master_df[
                 (master_df['date_key'] == pick['date']) &
-                (master_df['Favorite'] == pick['favorite']) &
-                (master_df['Underdog'] == pick['underdog'])
+                (master_df['Favorite'] == fav) &
+                (master_df['Underdog'] == und)
             ]
             
             if not game.empty:
-                actual_cover = game.iloc[0]['Actual Cover']
+                actual_cover = game.iloc[0]['Favorite Cover?']
                 
                 # Determine if pick won
                 if pick['pick_side'] == 'FAVORITE':
