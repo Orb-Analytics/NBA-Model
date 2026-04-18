@@ -1,8 +1,8 @@
 name: Update Training Set from Google Sheets
 
 on:
-  schedule:
-    - cron: '0 18 * * *'  # Runs daily at 11:00 AM PT (18:00 UTC) - 1hr after Google Sheets export window
+  # schedule:
+  #   - cron: '0 18 * * *'  # Runs daily at 11:00 AM PT (18:00 UTC) - 1hr after Google Sheets export window
   workflow_dispatch:        # Allow manual runs from GitHub Actions tab
 
 jobs:

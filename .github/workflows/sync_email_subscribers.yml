@@ -1,9 +1,9 @@
 name: 📧 Sync Email Subscribers
 
 on:
-  schedule:
-    # Run once daily at 9:00 AM PT (17:00 UTC) - before predictions run
-    - cron: '0 17 * * *'
+  # schedule:
+  #   # Run once daily at 9:00 AM PT (17:00 UTC) - before predictions run
+  #   - cron: '0 17 * * *'
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
