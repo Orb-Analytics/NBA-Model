@@ -9,6 +9,7 @@ from pathlib import Path
 
 REPO_ROOT    = Path(__file__).resolve().parent
 BACKTEST     = REPO_ROOT / "data" / "averaged_model_backtest.csv"
+RESULTS      = REPO_ROOT / "nba_model_results.csv"
 TRAINING     = REPO_ROOT / "data" / "NBA Training Set 25-26.csv"
 TODAY_OUT    = REPO_ROOT / "nba_predictions.json"
 HISTORY_OUT  = REPO_ROOT / "nba_predictions_history.json"
@@ -69,7 +70,32 @@ else:
     print("⚠️ No picks today — nba_predictions.json not overwritten")
 
 # HISTORY
-df_hist = df[df['result'].isin(['WIN','LOSS'])].copy()
+df_hist = pd.read_csv(RESULTS, encoding='utf-8-sig')
+df_hist['date'] = pd.to_datetime(df_hist['date'], format='%m/%d/%y').dt.strftime('%Y-%m-%d')
+df_hist['pick_team'] = df_hist.apply(
+    lambda row: row['favorite'] if row['Pick Favorite?'] == 1 else row['underdog'],
+    axis=1
+)
+df_hist['result'] = df_hist['Win?'].map({1: 'WIN', 0: 'LOSS'})
+df_hist['pick_side'] = df_hist['Pick Favorite?'].map({1: 'FAVORITE', 0: 'UNDERDOG'})
+df_hist['averaged_fav_prob'] = df_hist[
+    ['logistic_prob', 'linear_prob', 'rf_prob']
+].mean(axis=1)
+df_hist['averaged_dog_prob'] = 1 - df_hist['averaged_fav_prob']
+df_hist['fav_implied'] = df_hist['fav_odds'].apply(
+    lambda odds: 100 / (odds + 100) if odds > 0 else abs(odds) / (abs(odds) + 100)
+)
+df_hist['dog_implied'] = df_hist['dog_odds'].apply(
+    lambda odds: 100 / (odds + 100) if odds > 0 else abs(odds) / (abs(odds) + 100)
+)
+df_hist['edge'] = df_hist.apply(
+    lambda row: (
+        0.35 * row['averaged_fav_prob'] + 0.65 * row['fav_implied'] - row['fav_implied']
+        if row['pick_side'] == 'FAVORITE' else
+        0.35 * row['averaged_dog_prob'] + 0.65 * row['dog_implied'] - row['dog_implied']
+    ),
+    axis=1
+)
 df_hist = df_hist.sort_values('date', ascending=False)
 
 wins   = int((df_hist['result'] == 'WIN').sum())
@@ -92,7 +118,8 @@ for _, row in df_hist.iterrows():
     is_fav    = row['pick_side'] == 'FAVORITE'
     pick_odds = int(row['fav_odds']) if is_fav else int(row['dog_odds'])
     conf      = float(row['averaged_fav_prob']) if is_fav else float(row['averaged_dog_prob'])
-    home, away = get_home_away(row)
+    home = row['favorite'] if row['home_favorite'] == 1 else row['underdog']
+    away = row['underdog'] if row['home_favorite'] == 1 else row['favorite']
     history_picks.append({
         "date":       row['date'],
         "home_team":  home,
